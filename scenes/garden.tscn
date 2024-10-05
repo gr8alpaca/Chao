@@ -1,13 +1,30 @@
-[gd_scene load_steps=7 format=3 uid="uid://c770nfk4mfj0s"]
+[gd_scene load_steps=13 format=3 uid="uid://c770nfk4mfj0s"]
 
 [ext_resource type="Material" uid="uid://bi4su0loiqr6w" path="res://resources/wood_material.tres" id="1_b2vlr"]
+[ext_resource type="PackedScene" uid="uid://cp1lbtskoh1sx" path="res://scenes/pet.tscn" id="1_y2dlp"]
+[ext_resource type="Script" path="res://scripts/stats.gd" id="2_6qkwn"]
+[ext_resource type="Script" path="res://scenes/garden_ui.gd" id="4_h1df4"]
+[ext_resource type="PackedScene" uid="uid://cfgka3j007de2" path="res://scenes/interact_menu.tscn" id="5_mengk"]
+
+[sub_resource type="Resource" id="Resource_a1idj"]
+resource_local_to_scene = true
+script = ExtResource("2_6qkwn")
+name = &""
+life = 100.0
+stamina = 100.0
+speed = 10.0
+power = 10.0
+finesse = 10.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ckir5"]
+size = Vector3(100, 0.1, 100)
 
 [sub_resource type="BoxMesh" id="BoxMesh_464jw"]
 material = ExtResource("1_b2vlr")
 size = Vector3(100, 0.2, 100)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_ckir5"]
-size = Vector3(100, 0.05, 100)
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_rwiv4"]
+plane = Plane(0, 0, 1, 0)
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_doq1q"]
 sky_top_color = Color(0, 0, 0, 1)
@@ -23,20 +40,97 @@ sky_material = SubResource("ProceduralSkyMaterial_doq1q")
 [sub_resource type="Environment" id="Environment_ypsnm"]
 background_mode = 1
 sky = SubResource("Sky_en7oj")
-ambient_light_source = 1
+ambient_light_source = 3
 reflected_light_source = 2
+tonemap_mode = 2
+tonemap_exposure = 1.55
+tonemap_white = 3.61
 
 [node name="Garden" type="Node3D"]
 
+[node name="Pets" type="Node3D" parent="."]
+
+[node name="Pet" parent="Pets" instance=ExtResource("1_y2dlp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.325, 0)
+stats = SubResource("Resource_a1idj")
+
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="Pets/Pet"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.325, 0)
+remote_path = NodePath("../../../Lights/LightOffset")
+update_rotation = false
+update_scale = false
+
 [node name="Environment" type="Node3D" parent="."]
 
-[node name="Floor" type="MeshInstance3D" parent="Environment"]
-mesh = SubResource("BoxMesh_464jw")
-skeleton = NodePath("../..")
+[node name="FloorStaticBody" type="StaticBody3D" parent="Environment"]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/FloorStaticBody"]
 shape = SubResource("BoxShape3D_ckir5")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="Floor" type="MeshInstance3D" parent="Environment/FloorStaticBody/CollisionShape3D"]
+mesh = SubResource("BoxMesh_464jw")
+skeleton = NodePath("../../../..")
+
+[node name="Boundaries" type="Node3D" parent="."]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Boundaries"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Boundaries/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
+shape = SubResource("WorldBoundaryShape3D_rwiv4")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Boundaries/StaticBody3D"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 10, 0, 0)
+shape = SubResource("WorldBoundaryShape3D_rwiv4")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="Boundaries/StaticBody3D"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -10, 0, 0)
+shape = SubResource("WorldBoundaryShape3D_rwiv4")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="Boundaries/StaticBody3D"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 10)
+shape = SubResource("WorldBoundaryShape3D_rwiv4")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, -0.1, 1.5, 2.3)
 environment = SubResource("Environment_ypsnm")
+fov = 80.0
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+visible = false
+light_energy = 7.849
+light_specular = 1.635
+shadow_enabled = true
+shadow_opacity = 0.45
+spot_range = 4096.0
+spot_attenuation = 0.86
+spot_angle = 35.0
+spot_angle_attenuation = 3.86374
+metadata/_edit_lock_ = true
+
+[node name="Lights" type="Node3D" parent="."]
+
+[node name="LightOffset" type="Node3D" parent="Lights"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="Lights/LightOffset"]
+transform = Transform3D(1, 0, 0, 0, 0.258819, 0.965926, 0, -0.965926, 0.258819, 0, 6.325, 1.8)
+light_energy = 10.0
+light_size = 0.2
+shadow_enabled = true
+shadow_bias = 0.2
+shadow_normal_bias = 1.97
+distance_fade_begin = 8.25
+distance_fade_shadow = 20.1
+distance_fade_length = 16.55
+spot_range = 51.927
+spot_attenuation = 1.55
+spot_angle = 49.09
+spot_angle_attenuation = 2.54913
+
+[node name="GardenUI" type="CanvasLayer" parent="."]
+script = ExtResource("4_h1df4")
+
+[node name="InteractMenu" parent="GardenUI" instance=ExtResource("5_mengk")]
+visible = false

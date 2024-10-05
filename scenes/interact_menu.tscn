@@ -1,0 +1,55 @@
+[gd_scene load_steps=2 format=3 uid="uid://cfgka3j007de2"]
+
+[ext_resource type="Script" path="res://scenes/interact_menu.gd" id="1_uj28t"]
+
+[node name="InteractMenu" type="Control" node_paths=PackedStringArray("main_menu", "main_buttons")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_uj28t")
+main_menu = NodePath("MainMenu")
+main_buttons = NodePath("MainMenu/MainButtons")
+metadata/_edit_lock_ = true
+
+[node name="MainMenu" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MainButtons" type="Control" parent="MainMenu"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Schedule" type="Button" parent="MainMenu/MainButtons"]
+custom_minimum_size = Vector2(256, 64)
+layout_mode = 2
+offset_left = 128.0
+offset_top = 256.0
+offset_right = 384.0
+offset_bottom = 320.0
+text = "Set Schedule"
+
+[node name="Feed" type="Button" parent="MainMenu/MainButtons"]
+custom_minimum_size = Vector2(256, 64)
+layout_mode = 2
+offset_left = 208.0
+offset_top = 384.0
+offset_right = 464.0
+offset_bottom = 448.0
+text = "Feed"
+
+[node name="Praise" type="Button" parent="MainMenu/MainButtons"]
+custom_minimum_size = Vector2(256, 64)
+layout_mode = 2
+offset_left = 304.0
+offset_top = 512.0
+offset_right = 560.0
+offset_bottom = 576.0
+text = "Praise
+"
+
+[connection signal="visibility_changed" from="." to="." method="_visibility_changed"]

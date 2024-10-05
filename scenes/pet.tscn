@@ -1,24 +1,23 @@
-[gd_scene load_steps=12 format=3 uid="uid://cp1lbtskoh1sx"]
+[gd_scene load_steps=13 format=3 uid="uid://cp1lbtskoh1sx"]
 
 [ext_resource type="Script" path="res://scenes/pet.gd" id="1_t3pu5"]
 [ext_resource type="Script" path="res://scripts/stats.gd" id="2_apet3"]
+[ext_resource type="Script" path="res://scripts/interactable.gd" id="3_dwkxt"]
+[ext_resource type="Material" uid="uid://cj52sut2j38yc" path="res://resources/highlight_material.tres" id="3_uymjs"]
+[ext_resource type="Material" uid="uid://df0i6cc61sysj" path="res://resources/pet.tres" id="4_oph6j"]
 
 [sub_resource type="Resource" id="Resource_vouog"]
+resource_local_to_scene = true
 script = ExtResource("2_apet3")
+name = &""
 life = 100.0
 stamina = 100.0
 speed = 10.0
 power = 10.0
 finesse = 10.0
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3t3xr"]
-albedo_color = Color(0.415686, 1, 1, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e7d6j"]
-next_pass = SubResource("StandardMaterial3D_3t3xr")
-
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_awqdd"]
-material = SubResource("StandardMaterial3D_e7d6j")
+material = ExtResource("4_oph6j")
 radius = 0.1
 height = 0.5
 
@@ -39,17 +38,21 @@ height = 0.1
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ense1"]
 radius = 0.1
-height = 0.5
+height = 0.55
 
 [node name="Pet" type="CharacterBody3D"]
+collision_layer = 3
+input_capture_on_drag = true
 script = ExtResource("1_t3pu5")
 stats = SubResource("Resource_vouog")
 
 [node name="BodyMesh" type="MeshInstance3D" parent="."]
+material_overlay = ExtResource("3_uymjs")
 mesh = SubResource("CapsuleMesh_awqdd")
 
 [node name="EyeWhiteR" type="MeshInstance3D" parent="BodyMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.037779, 0.211256, 0.0677326)
+material_overlay = ExtResource("3_uymjs")
 mesh = SubResource("SphereMesh_ojkyj")
 skeleton = NodePath("../..")
 
@@ -60,6 +63,7 @@ skeleton = NodePath("../../..")
 
 [node name="EyeWhiteR2" type="MeshInstance3D" parent="BodyMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0287888, 0.211256, 0.0677326)
+material_overlay = ExtResource("3_uymjs")
 mesh = SubResource("SphereMesh_ojkyj")
 skeleton = NodePath("../..")
 
@@ -69,4 +73,16 @@ mesh = SubResource("SphereMesh_mwqtk")
 skeleton = NodePath("../../..")
 
 [node name="BodyCollisionShape" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_ense1")
+
+[node name="VisibleOnScreenNotifier3D" type="VisibleOnScreenNotifier3D" parent="."]
+aabb = AABB(-0.1, -0.2, -0.1, 0.2, 0.4, 0.2)
+
+[node name="Interactable" type="StaticBody3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_dwkxt")
+modulate_material = ExtResource("3_uymjs")
+
+[node name="BodyCollisionShape" type="CollisionShape3D" parent="Interactable"]
 shape = SubResource("CapsuleShape3D_ense1")

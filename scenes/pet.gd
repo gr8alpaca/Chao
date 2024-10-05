@@ -13,5 +13,5 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint(): return
 	
-	velocity.y -=  gravity
-	move_and_slide()
+	# velocity.y -=  gravity
+	# move_and_slide()

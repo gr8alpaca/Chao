@@ -1,8 +1,7 @@
 @tool
 class_name Stats extends Resource
 
-@export var name: StringName
-
+@export var name: StringName = &""
 
 @export var life: float = 100.0
 var current_life: float = 100.0
@@ -14,6 +13,7 @@ var current_stamina: float = 100.0
 @export var power: float = 10.0
 @export var finesse: float = 10.0
 
+
 var modifiers: Dictionary
 
 
@@ -22,6 +22,7 @@ func _get_property_list() -> Array[Dictionary]:
 	for prop: String in modifiers.keys():
 		props.append({name = prop, type = TYPE_FLOAT, usage = PROPERTY_USAGE_EDITOR})
 	return props
+
 
 func _get(property: StringName) -> Variant:
 	match property:
