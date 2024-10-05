@@ -1,0 +1,72 @@
+[gd_scene load_steps=12 format=3 uid="uid://cp1lbtskoh1sx"]
+
+[ext_resource type="Script" path="res://scenes/pet.gd" id="1_t3pu5"]
+[ext_resource type="Script" path="res://scripts/stats.gd" id="2_apet3"]
+
+[sub_resource type="Resource" id="Resource_vouog"]
+script = ExtResource("2_apet3")
+life = 100.0
+stamina = 100.0
+speed = 10.0
+power = 10.0
+finesse = 10.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3t3xr"]
+albedo_color = Color(0.415686, 1, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e7d6j"]
+next_pass = SubResource("StandardMaterial3D_3t3xr")
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_awqdd"]
+material = SubResource("StandardMaterial3D_e7d6j")
+radius = 0.1
+height = 0.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wge4m"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_ojkyj"]
+material = SubResource("StandardMaterial3D_wge4m")
+radius = 0.025
+height = 0.05
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ue3q8"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_mwqtk"]
+material = SubResource("StandardMaterial3D_ue3q8")
+radius = 0.04
+height = 0.1
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ense1"]
+radius = 0.1
+height = 0.5
+
+[node name="Pet" type="CharacterBody3D"]
+script = ExtResource("1_t3pu5")
+stats = SubResource("Resource_vouog")
+
+[node name="BodyMesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_awqdd")
+
+[node name="EyeWhiteR" type="MeshInstance3D" parent="BodyMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.037779, 0.211256, 0.0677326)
+mesh = SubResource("SphereMesh_ojkyj")
+skeleton = NodePath("../..")
+
+[node name="PupilRight" type="MeshInstance3D" parent="BodyMesh/EyeWhiteR"]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -0.00391132, 0.00450188, 0.0179674)
+mesh = SubResource("SphereMesh_mwqtk")
+skeleton = NodePath("../../..")
+
+[node name="EyeWhiteR2" type="MeshInstance3D" parent="BodyMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0287888, 0.211256, 0.0677326)
+mesh = SubResource("SphereMesh_ojkyj")
+skeleton = NodePath("../..")
+
+[node name="PupilRight" type="MeshInstance3D" parent="BodyMesh/EyeWhiteR2"]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0.00157409, 0.00450188, 0.0189129)
+mesh = SubResource("SphereMesh_mwqtk")
+skeleton = NodePath("../../..")
+
+[node name="BodyCollisionShape" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_ense1")
