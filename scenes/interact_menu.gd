@@ -5,7 +5,13 @@ class_name InteractMenu extends Control
 @export var main_menu: Control
 
 @export var main_buttons: Control
-		
+@export var name_label: Label
+
+@export var pet: Pet:
+	set(val):
+
+		pet = val
+
 
 func _ready() -> void:
 	hide()
@@ -16,25 +22,27 @@ func _ready() -> void:
 			but.pressed.connect(_on_main_pressed.bind(but))
 
 
-
-
 func show_main_menu() -> void:
 	assert(main_buttons, "No main_buttons set!")
 	const INTERVAL: float = 0.4
-	const DURATION: float = 2.0
+	for but: BaseButton in get_buttons(main_buttons):
+		but.visible = false
+		create_tween().tween_callback(tween_control.bind(but)).set_delay(but.get_index()*INTERVAL)
+	
 
-	var buttons: Array[BaseButton]
-	for but: BaseButton in main_buttons.get_children(): 
-		buttons.append(but)
 
-	for i: int in buttons.size():
-		var tw: Tween = buttons[i].create_tween().chain()
-		tw.tween_interval(i*INTERVAL)
-		tw.set_parallel().set_trans(Tween.TRANS_ELASTIC)
-		tw.tween_property(buttons[i], "position:x", buttons[i].position.x, DURATION).from(0.0)
-		tw.tween_property(buttons[i], "modulate:a", 1.0, DURATION/2.5).from(0.0)
-		tw.tween_property(buttons[i], "scale:x", 1.0, DURATION/1.5).from(0.1)
-
+func tween_control(control: Control, side: Side = SIDE_LEFT, duration: float = 1.3) -> Tween:
+	var property: String = "x" if side == SIDE_LEFT or side == SIDE_RIGHT else "y"
+	var start_position: float = 0.0 if side < 2 else float(get_window().size[property])		
+	
+	var tw: Tween = create_tween()
+	tw.set_parallel().set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_IN_OUT)
+	tw.tween_property(control, "modulate:a", 1.0, duration / 2.5).from(0.0)
+	tw.tween_property(control, "position:" + property, control.position[property], duration).from(start_position)
+	tw.tween_property(control, "scale:" + property , 1.0, duration / 1.5).from(0.1)
+	tw.tween_callback(control.set_visible.bind(true))
+	
+	return tw
 
 
 func _on_main_pressed(button: BaseButton) -> void:
@@ -42,9 +50,17 @@ func _on_main_pressed(button: BaseButton) -> void:
 
 
 func _pet_interacted(pet: Pet) -> void:
-	show()			
+	show()
 
 
 func _visibility_changed() -> void:
 	if visible:
 		show_main_menu()
+	
+
+func get_buttons(node: Node) -> Array[BaseButton]:
+	var buttons: Array[BaseButton]
+	for child: Node in (node.get_children() if node else []):
+		if child is BaseButton:
+			buttons.push_back(child as BaseButton)
+	return buttons

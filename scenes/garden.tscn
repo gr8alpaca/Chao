@@ -133,4 +133,3 @@ spot_angle_attenuation = 2.54913
 script = ExtResource("4_h1df4")
 
 [node name="InteractMenu" parent="GardenUI" instance=ExtResource("5_mengk")]
-visible = false

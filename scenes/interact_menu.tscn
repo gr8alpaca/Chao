@@ -1,8 +1,23 @@
-[gd_scene load_steps=2 format=3 uid="uid://cfgka3j007de2"]
+[gd_scene load_steps=6 format=3 uid="uid://cfgka3j007de2"]
 
 [ext_resource type="Script" path="res://scenes/interact_menu.gd" id="1_uj28t"]
+[ext_resource type="Script" path="res://scenes/info_panel.gd" id="2_ojhxl"]
+[ext_resource type="Texture2D" uid="uid://cepe6cg5qu3eo" path="res://assets/UI/fantasy-ui-borders.svg" id="3_0wj2f"]
+[ext_resource type="Script" path="res://scripts/level_progress_bar.gd" id="3_dtad3"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sp58t"]
+texture = ExtResource("3_0wj2f")
+texture_margin_left = 13.0
+texture_margin_top = 13.0
+texture_margin_right = 13.0
+texture_margin_bottom = 13.0
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+region_rect = Rect2(612, 40, 48, 48)
+draw_center = false
 
 [node name="InteractMenu" type="Control" node_paths=PackedStringArray("main_menu", "main_buttons")]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -25,31 +40,103 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="Schedule" type="Button" parent="MainMenu/MainButtons"]
-custom_minimum_size = Vector2(256, 64)
+custom_minimum_size = Vector2(288, 64)
 layout_mode = 2
-offset_left = 128.0
-offset_top = 256.0
-offset_right = 384.0
-offset_bottom = 320.0
-text = "Set Schedule"
+offset_left = -15.0519
+offset_top = 384.0
+offset_right = 272.948
+offset_bottom = 448.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.10552, 1)
+text = "Schedule"
 
 [node name="Feed" type="Button" parent="MainMenu/MainButtons"]
+modulate = Color(1, 1, 1, 0.0349233)
 custom_minimum_size = Vector2(256, 64)
 layout_mode = 2
-offset_left = 208.0
-offset_top = 384.0
-offset_right = 464.0
-offset_bottom = 448.0
+offset_left = -1.00407
+offset_top = 480.0
+offset_right = 254.996
+offset_bottom = 544.0
+scale = Vector2(0.118147, 1)
 text = "Feed"
 
 [node name="Praise" type="Button" parent="MainMenu/MainButtons"]
+visible = false
 custom_minimum_size = Vector2(256, 64)
 layout_mode = 2
-offset_left = 304.0
-offset_top = 512.0
-offset_right = 560.0
-offset_bottom = 576.0
+offset_left = 256.0
+offset_top = 576.0
+offset_right = 512.0
+offset_bottom = 640.0
 text = "Praise
 "
+
+[node name="InfoPanel" type="Panel" parent="."]
+visible = false
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -384.0
+offset_top = -124.0
+offset_right = -128.0
+offset_bottom = 132.0
+grow_horizontal = 0
+grow_vertical = 2
+script = ExtResource("2_ojhxl")
+
+[node name="PanelContainer" type="PanelContainer" parent="InfoPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_sp58t")
+
+[node name="MarginContainer" type="MarginContainer" parent="InfoPanel/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+metadata/_edit_lock_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="InfoPanel/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="InfoPanel/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+text = "Stamina"
+
+[node name="LevelProgressBar" type="Control" parent="InfoPanel/PanelContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 8)
+layout_mode = 2
+script = ExtResource("3_dtad3")
+value = 0
+fill_color = Color(0.811452, 0.749462, 0.284306, 1)
+bg_color = Color(0.262745, 0.262745, 0.262745, 1)
+skew_degrees = 45.0
+tween_trans = 7
+tween_ease = 0
+
+[node name="Name" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 208.0
+grow_horizontal = 2
+theme_type_variation = &"HeaderLarge"
+theme_override_font_sizes/font_size = 48
+text = "Pet Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
 
 [connection signal="visibility_changed" from="." to="." method="_visibility_changed"]

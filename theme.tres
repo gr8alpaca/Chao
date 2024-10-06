@@ -1,9 +1,11 @@
-[gd_resource type="Theme" load_steps=7 format=3 uid="uid://d4ixlnscgkmi8"]
+[gd_resource type="Theme" load_steps=8 format=3 uid="uid://d4ixlnscgkmi8"]
 
 [ext_resource type="Texture2D" uid="uid://cepe6cg5qu3eo" path="res://assets/UI/fantasy-ui-borders.svg" id="1_lyhxp"]
-[ext_resource type="FontFile" uid="uid://bim7tmf5pa7su" path="res://assets/DungeonFont.ttf" id="2_p048w"]
+[ext_resource type="FontVariation" uid="uid://cd52j3vtw37yc" path="res://assets/BabyGemoyVariation.tres" id="2_10hku"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dnwmq"]
+content_margin_left = 16.0
+content_margin_right = 16.0
 texture = ExtResource("1_lyhxp")
 texture_margin_left = 13.0
 texture_margin_top = 13.0
@@ -19,6 +21,8 @@ region_rect = Rect2(986, 486, 48, 48)
 modulate_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3q3aq"]
+content_margin_left = 16.0
+content_margin_right = 16.0
 texture = ExtResource("1_lyhxp")
 texture_margin_left = 13.0
 texture_margin_top = 13.0
@@ -33,9 +37,9 @@ axis_stretch_vertical = 1
 region_rect = Rect2(986, 226, 48, 48)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tc378"]
-content_margin_left = 8.0
+content_margin_left = 16.0
 content_margin_top = 8.0
-content_margin_right = 8.0
+content_margin_right = 16.0
 content_margin_bottom = 8.0
 texture = ExtResource("1_lyhxp")
 texture_margin_left = 17.0
@@ -48,6 +52,8 @@ region_rect = Rect2(476, 424, 48, 48)
 modulate_color = Color(0.103744, 0.103744, 0.103744, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_i0q4w"]
+content_margin_left = 16.0
+content_margin_right = 16.0
 texture = ExtResource("1_lyhxp")
 texture_margin_left = 13.0
 texture_margin_top = 13.0
@@ -62,11 +68,36 @@ axis_stretch_vertical = 1
 region_rect = Rect2(986, 486, 48, 48)
 modulate_color = Color(0, 0, 0, 1)
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_myecw"]
+texture = ExtResource("1_lyhxp")
+texture_margin_left = 13.0
+texture_margin_top = 13.0
+texture_margin_right = 13.0
+texture_margin_bottom = 13.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+region_rect = Rect2(102, 300, 48, 48)
+modulate_color = Color(0.52549, 0.678431, 1, 0.282353)
+
 [resource]
 default_base_scale = 2.0
-default_font = ExtResource("2_p048w")
+default_font = ExtResource("2_10hku")
 Button/styles/disabled = SubResource("StyleBoxTexture_dnwmq")
 Button/styles/focus = SubResource("StyleBoxTexture_3q3aq")
 Button/styles/hover = SubResource("StyleBoxTexture_tc378")
 Button/styles/normal = SubResource("StyleBoxTexture_tc378")
 Button/styles/pressed = SubResource("StyleBoxTexture_i0q4w")
+HeaderLarge/font_sizes/font_size = 28
+HeaderMedium/font_sizes/font_size = 24
+HeaderSmall/font_sizes/font_size = 20
+Label/colors/font_outline_color = Color(0, 0, 0, 1)
+Label/colors/font_shadow_color = Color(0, 0, 0, 0.364706)
+Label/constants/outline_size = 4
+Label/constants/shadow_outline_size = 4
+Label/fonts/font = ExtResource("2_10hku")
+MarginContainer/constants/margin_bottom = 0
+MarginContainer/constants/margin_left = 0
+MarginContainer/constants/margin_right = 0
+MarginContainer/constants/margin_top = 0
+Panel/styles/panel = SubResource("StyleBoxTexture_myecw")
+PanelContainer/styles/panel = null

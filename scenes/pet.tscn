@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cp1lbtskoh1sx"]
+[gd_scene load_steps=15 format=3 uid="uid://cp1lbtskoh1sx"]
 
 [ext_resource type="Script" path="res://scenes/pet.gd" id="1_t3pu5"]
 [ext_resource type="Script" path="res://scripts/stats.gd" id="2_apet3"]
@@ -38,15 +38,32 @@ height = 0.1
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ense1"]
 radius = 0.1
-height = 0.55
+height = 0.5
 
-[node name="Pet" type="CharacterBody3D"]
-collision_layer = 3
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fj4mc"]
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+disable_ambient_light = true
+disable_fog = true
+albedo_color = Color(0.780392, 0.580392, 0.109804, 0.447059)
+
+[sub_resource type="SphereMesh" id="SphereMesh_qkefs"]
+material = SubResource("StandardMaterial3D_fj4mc")
+radius = 0.1
+height = 0.2
+
+[node name="Pet" type="CharacterBody3D" node_paths=PackedStringArray("debug_mesh")]
+collision_layer = 7
 input_capture_on_drag = true
+velocity = Vector3(0, -16.3333, 0)
 script = ExtResource("1_t3pu5")
+debug_mesh = NodePath("TargetPosDebug")
 stats = SubResource("Resource_vouog")
+speed = 2.5
 
 [node name="BodyMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0.225, 0)
 material_overlay = ExtResource("3_uymjs")
 mesh = SubResource("CapsuleMesh_awqdd")
 
@@ -73,12 +90,16 @@ mesh = SubResource("SphereMesh_mwqtk")
 skeleton = NodePath("../../..")
 
 [node name="BodyCollisionShape" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.225, 0)
 shape = SubResource("CapsuleShape3D_ense1")
 
 [node name="VisibleOnScreenNotifier3D" type="VisibleOnScreenNotifier3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.225, 0)
+visible = false
 aabb = AABB(-0.1, -0.2, -0.1, 0.2, 0.4, 0.2)
 
 [node name="Interactable" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.225, 0)
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("3_dwkxt")
@@ -86,3 +107,8 @@ modulate_material = ExtResource("3_uymjs")
 
 [node name="BodyCollisionShape" type="CollisionShape3D" parent="Interactable"]
 shape = SubResource("CapsuleShape3D_ense1")
+
+[node name="TargetPosDebug" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.225, 1)
+top_level = true
+mesh = SubResource("SphereMesh_qkefs")
