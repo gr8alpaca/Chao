@@ -36,11 +36,23 @@ func _init() -> void:
 
 func _on_body_entered(body: Node3D) -> void:
 	if not body is Pet: return
-	if next: body.target_position = next.get_path_point(body.position)
+	if next:
+		body.target_position = next.get_path_point()
+
 	printt("Pet entered: ", body.name, body.target_position)
 
+func get_race_path() -> PackedVector3Array:
+	var path: PackedVector3Array
+	var current_wp: Waypoint = self
+	
+	while current_wp:
+		path.push_back(current_wp.get_path_point())
+		current_wp = current_wp.next
 
-func get_path_point(global_pos: Vector3) -> Vector3:
+	return path
+
+
+func get_path_point() -> Vector3:
 	var min_pos: Vector3 = to_global(Vector3.FORWARD * dimensions.z / 2.0)
 	var max_pos: Vector3 = to_global(Vector3.BACK * dimensions.z / 2.0)
 	return min_pos.lerp(max_pos, randf())

@@ -9,12 +9,17 @@
 [sub_resource type="Resource" id="Resource_vouog"]
 resource_local_to_scene = true
 script = ExtResource("2_apet3")
-name = &""
+name = &"Garfield"
 life = 100.0
-stamina = 100.0
-speed = 10.0
+hunger = 0.0
+energy = 100.0
+stress = 0.0
+run = 10.0
+fly = 10.0
+swim = 10.0
 power = 10.0
-finesse = 10.0
+ranks = {}
+levels = {}
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_awqdd"]
 material = ExtResource("4_oph6j")
@@ -60,46 +65,45 @@ velocity = Vector3(0, -16.3333, 0)
 script = ExtResource("1_t3pu5")
 debug_mesh = NodePath("TargetPosDebug")
 stats = SubResource("Resource_vouog")
-speed = 2.5
 
 [node name="BodyMesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0.225, 0)
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0.2, 0)
 material_overlay = ExtResource("3_uymjs")
 mesh = SubResource("CapsuleMesh_awqdd")
 
 [node name="EyeWhiteR" type="MeshInstance3D" parent="BodyMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.037779, 0.211256, 0.0677326)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.037779, 0.2, 0.0677326)
 material_overlay = ExtResource("3_uymjs")
 mesh = SubResource("SphereMesh_ojkyj")
 skeleton = NodePath("../..")
 
 [node name="PupilRight" type="MeshInstance3D" parent="BodyMesh/EyeWhiteR"]
-transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -0.00391132, 0.00450188, 0.0179674)
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -0.00391132, 0, 0.0179674)
 mesh = SubResource("SphereMesh_mwqtk")
 skeleton = NodePath("../../..")
 
 [node name="EyeWhiteR2" type="MeshInstance3D" parent="BodyMesh"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0287888, 0.211256, 0.0677326)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0287888, 0.2, 0.0677326)
 material_overlay = ExtResource("3_uymjs")
 mesh = SubResource("SphereMesh_ojkyj")
 skeleton = NodePath("../..")
 
 [node name="PupilRight" type="MeshInstance3D" parent="BodyMesh/EyeWhiteR2"]
-transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0.00157409, 0.00450188, 0.0189129)
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0.00157409, 0, 0.0189129)
 mesh = SubResource("SphereMesh_mwqtk")
 skeleton = NodePath("../../..")
 
 [node name="BodyCollisionShape" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.225, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
 shape = SubResource("CapsuleShape3D_ense1")
 
 [node name="VisibleOnScreenNotifier3D" type="VisibleOnScreenNotifier3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.225, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
 visible = false
 aabb = AABB(-0.1, -0.2, -0.1, 0.2, 0.4, 0.2)
 
 [node name="Interactable" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.225, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("3_dwkxt")
@@ -109,6 +113,6 @@ modulate_material = ExtResource("3_uymjs")
 shape = SubResource("CapsuleShape3D_ense1")
 
 [node name="TargetPosDebug" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.225, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 1)
 top_level = true
 mesh = SubResource("SphereMesh_qkefs")

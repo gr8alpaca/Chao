@@ -1,0 +1,43 @@
+[gd_scene load_steps=4 format=3 uid="uid://c2j5335dvfv8o"]
+
+[ext_resource type="Script" path="res://scenes/stat_info.gd" id="1_p1ri4"]
+[ext_resource type="Script" path="res://scripts/level_progress_bar.gd" id="1_rgiei"]
+[ext_resource type="Resource" uid="uid://ctigarv3ke2s2" path="res://resources/pet_stats.tres" id="2_vtmr3"]
+
+[node name="StatInfo" type="VBoxContainer" node_paths=PackedStringArray("name_label", "value_label", "bar")]
+script = ExtResource("1_p1ri4")
+stats = ExtResource("2_vtmr3")
+stat_name = &"Speed"
+name_label = NodePath("HBoxContainer/Speed")
+value_label = NodePath("HBoxContainer/Value")
+bar = NodePath("LevelProgressBar")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Speed" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+text = "Speed"
+
+[node name="Value" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HeaderSmall"
+text = "000"
+horizontal_alignment = 2
+
+[node name="LevelProgressBar" type="Control" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
+script = ExtResource("1_rgiei")
+value = 6
+fill_color = Color(0.811452, 0.749462, 0.284306, 1)
+bg_color = Color(0.262745, 0.262745, 0.262745, 1)
+skew_degrees = 45.0
+level_draw_offset = Vector2(16, -16)
+text_color = Color(0.990147, 0.910516, 0.604564, 1)
+font_size = 18
+tween_trans = 7
+tween_ease = 0
+fill_speed = 6.0

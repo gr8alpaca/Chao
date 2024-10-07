@@ -1,8 +1,9 @@
 @tool
 class_name Interactable extends StaticBody3D
 const GROUP: StringName = &"Interactable"
-
+const SIGNAL_ENABLED: StringName = &"enable_input"
 signal interacted
+
 const ALPHA_MODULATE: float = 0.30
 const TWEEN_INTERVAL: float = 0.25
 
@@ -66,9 +67,17 @@ func _notification(what: int) -> void:
 
 		NOTIFICATION_PARENTED:
 			add_to_group(GROUP)
+			
 			if not Engine.is_editor_hint():
-				get_parent().set_meta(GROUP, self)
+				var parent:= get_parent()
+				parent.set_meta(GROUP, self)
+				if not parent.has_user_signal(SIGNAL_ENABLED):
+					parent.add_user_signal(SIGNAL_ENABLED, [{name = &"is_enabled", type = TYPE_BOOL}])
+					parent.connect(SIGNAL_ENABLED, set_enabled)
 
 		NOTIFICATION_EXIT_TREE:
+			var parent: Node = get_parent()
 			if get_parent().has_meta(GROUP):
 				get_parent().remove_meta(GROUP, )
+			if parent.has_user_signal(SIGNAL_ENABLED):
+				parent.remove_user_signal(SIGNAL_ENABLED)

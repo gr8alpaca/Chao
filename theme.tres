@@ -101,3 +101,5 @@ MarginContainer/constants/margin_right = 0
 MarginContainer/constants/margin_top = 0
 Panel/styles/panel = SubResource("StyleBoxTexture_myecw")
 PanelContainer/styles/panel = null
+TextPop/base_type = &"Label"
+TextPop/font_sizes/font_size = 16

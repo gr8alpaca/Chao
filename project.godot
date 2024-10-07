@@ -45,7 +45,7 @@ window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/size/always_on_top=true
 window/size/window_width_override=1920
-window/size/window_height_override=1440
+window/size/window_height_override=1080
 window/stretch/aspect=4
 
 [editor]
@@ -59,6 +59,7 @@ naming/script_name_casing=2
 folder_colors={
 "res://assets/": "pink",
 "res://autoload/": "teal",
+"res://models/": "orange",
 "res://resources/": "gray",
 "res://scenes/": "blue",
 "res://scripts/": "yellow"
@@ -72,8 +73,13 @@ theme/default_font_multichannel_signed_distance_field=true
 
 [layer_names]
 
+3d_physics/layer_1="Physical"
 3d_physics/layer_2="Input"
 3d_physics/layer_3="Pet"
+
+[physics]
+
+3d/default_gravity=1.0
 
 [rendering]
 

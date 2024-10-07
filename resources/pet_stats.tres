@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="Stats" load_steps=2 format=3 uid="uid://ctigarv3ke2s2"]
+
+[ext_resource type="Script" path="res://scripts/stats.gd" id="1_e5qla"]
+
+[resource]
+resource_local_to_scene = true
+script = ExtResource("1_e5qla")
+name = &"Garfield"
+life = 100.0
+hunger = 0.0
+energy = 100.0
+stress = 0.0
+run = 10.0
+fly = 10.0
+swim = 10.0
+power = 10.0
+ranks = {}
+levels = {}
