@@ -8,17 +8,17 @@ signal parallel_ended
 
 @export var name: StringName = &"STATE":
 	set(val): name = val; resource_name = val;
-		
 
-func _init(name: StringName = &"STATE") -> void:
+func _init(state_name: StringName = &"STATE") -> void:
 	resource_local_to_scene = true
-	self.name = name
+	name = state_name
 
 func enter() -> void:
 	pass
 
 func exit() -> void:
 	pass
+
 
 ## State Machine Functions
 func update_process(delta: float) -> void:

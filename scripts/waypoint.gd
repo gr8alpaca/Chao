@@ -2,7 +2,7 @@
 class_name Waypoint extends Area3D
 const GROUP: StringName = &"Waypoint"
 # const DEBUG_MATERIAL: StandardMaterial3D = preload("res://resources/debug_material.tres")
-
+const META_NEXT: StringName = &"next_waypoint"
 
 @export var next: Node3D
 
@@ -12,6 +12,7 @@ const GROUP: StringName = &"Waypoint"
 		update_area()
 
 @export var debug_mode: bool: set = set_debug_mode
+
 @export var foo: bool:
 	set(val):
 		if not val: return
@@ -36,9 +37,9 @@ func _init() -> void:
 
 func _on_body_entered(body: Node3D) -> void:
 	if not body is Pet: return
+	body.set_meta(&"next_waypoint", next)
 	if next:
 		body.target_position = next.get_path_point()
-
 	printt("Pet entered: ", body.name, body.target_position)
 
 func get_race_path() -> PackedVector3Array:

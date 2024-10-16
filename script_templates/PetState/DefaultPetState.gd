@@ -1,3 +1,4 @@
+# 
 @tool
 extends PetState
 
@@ -8,10 +9,6 @@ extends PetState
 
 # var pet: Pet : set = set_pet
 
-
-@export var max_wander_distance: float = 1.5
-@export var min_interval: float = 1.5
-@export var max_interval: float = 4.5
 
 func _init() -> void:
 	super(&"idle")

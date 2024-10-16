@@ -2,10 +2,13 @@
 class_name StateMachine extends Node
 const GROUP: StringName = &"StateMachine"
 
+## force_state(state_name: String)
+const SIGNAL_FORCE_STATE: StringName = &"force_state"
+
 signal state_changed(old_state: State, new_state: State)
 
 @export_category("States")
-@export var state_resources: Array[State] = []
+@export var state_resources: Array[State]
 @export var add_resource_by_script: Script:
 	set(val):
 		if val and val.can_instantiate():
@@ -13,25 +16,25 @@ signal state_changed(old_state: State, new_state: State)
 			if not instance is State:
 				printerr("You can only add scripts that extend 'State' to State Machine.")
 				return
-			state_resources.push_back(instance as State)
-			notify_property_list_changed.call_deferred()
+			state_resources += [instance as State]
+
 
 @export var initial_state_name: String
 
 @export_category("State References")
-@export var reference_variable_names: Array[StringName] = []
-@export var reference_variable_values: Array[Node] = []
+@export var reference_variable_names: Array[StringName]
+@export var reference_variable_values: Array[Node]
 
 @export_category("Debug")
 @export var debug_label: Label
-@export var debug_mode: bool = false
+@export var debug_mode: bool
 
 ## StateName -> State
-@export var states: Dictionary = {}
+var states: Dictionary
 
-var state_locked: bool = false: set = _set_state_locked
+var state_locked: bool: set = _set_state_locked
+
 var current_state: State: set = _set_current_state
-var current_state_name: StringName = &""
 
 var parallel_states: Array[State]
 
@@ -41,31 +44,37 @@ func _set_current_state(new_state: State) -> void:
 		var old_state: State = current_state
 
 		if debug_mode:
-			print("CALLED TRANSITION : %s -> %s" % [current_state_name, new_state.name])
+			print("CALLED TRANSITION : %s -> %s" % [current_state.name if current_state else "<NULL>", new_state.name])
 
 		if current_state: current_state.exit()
 		
 		current_state = new_state
-		current_state_name = current_state.name
-
-		if debug_label: debug_label.text = current_state_name
+		
+		if debug_label:
+			debug_label.text = current_state.name if current_state else ""
 
 		current_state.enter()
 		
 		state_changed.emit(old_state, current_state)
 
 func _ready() -> void:
-	
+	if Engine.is_editor_hint(): return
 	var parent: Node = get_parent()
-	if not parent.is_node_ready(): await parent.ready
+	
+	if not parent.is_node_ready():
+		await parent.ready
+
+	if not parent.has_user_signal(SIGNAL_FORCE_STATE):
+		parent.add_user_signal(SIGNAL_FORCE_STATE, [ {name="state_name", type=TYPE_STRING}])
+	
+	parent.connect(SIGNAL_FORCE_STATE, _on_force_state)
 
 	for state: State in state_resources:
-
 		states[state.name] = state.duplicate()
 		states[state.name].transition_requested.connect(_on_transition_requested, CONNECT_DEFERRED)
-		states[state.name].parallel_started.connect()
-		states[state.name].parallel_ended.connect()
-		## Sets custom reference variables if applicable
+		states[state.name].parallel_started.connect(_on_parallel_started)
+		states[state.name].parallel_ended.connect(_on_parallel_ended)
+
 		for j: int in reference_variable_values.size():
 			states[state.name].set(reference_variable_names[j], reference_variable_values[j])
 	
@@ -80,12 +89,12 @@ func _set_state_locked(set_locked: bool) -> void:
 
 #region Signals 
 
-## Sets state regardless of 'state_locked'
+## Sets state regardless of [state_locked].
 func _on_force_state(state_name: String) -> void:
 	if states.has(state_name): current_state = get_state(state_name)
 	else: print("Tried to force non-existent state: %s" %str(state_name))
 
-## If not state_locked will set current state = get_state(state_name)
+## If not [state_locked], will set current state = get_state(state_name)
 func _on_transition_requested(state_name: String) -> void:
 	if state_locked: return
 	current_state = get_state(state_name)
@@ -102,9 +111,6 @@ func _on_parallel_ended(state: State) -> void:
 		parallel_states.erase(state)
 
 #endregion Signals
-
-
-
 
 
 #region Updates
@@ -148,6 +154,16 @@ func _notification(what: int) -> void:
 		NOTIFICATION_EXIT_TREE:
 			get_parent().remove_meta(GROUP)
 
+
+func _validate_property(property: Dictionary) -> void:
+	match property.name:
+		&"initial_state_name" when state_resources.size() > 0:
+			property.hint = PROPERTY_HINT_ENUM
+			var state_names: PackedStringArray
+			for res : State in state_resources:
+				if res and res.name and not res.name in state_names: 
+					state_names.push_back(res.name)
+			property.hint_string = ",".join(state_names)
 
 func _get_property_list() -> Array[Dictionary]:
 	var props: Array[Dictionary]

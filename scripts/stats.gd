@@ -195,10 +195,10 @@ func _set(property: StringName, value: Variant) -> bool:
 
 func _validate_property(property: Dictionary) -> void:
 	match property.name:
-		&"run", &"fly", &"swim":
+		var p_name when p_name in VISIBLE_STATS:
 			property.hint = PROPERTY_HINT_RANGE
 			property.hint_string = "0.0, 999.9, 1.0, hide_slider, suffix: " + get_grade(property.name)
-			property.usage |= PROPERTY_USAGE_READ_ONLY
+			# property.usage |= PROPERTY_USAGE_READ_ONLY
 
 #endregion Properties
 

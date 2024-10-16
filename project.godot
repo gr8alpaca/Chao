@@ -62,6 +62,7 @@ folder_colors={
 "res://models/": "orange",
 "res://resources/": "gray",
 "res://scenes/": "blue",
+"res://script_templates/": "gray",
 "res://scripts/": "yellow"
 }
 

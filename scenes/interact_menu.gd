@@ -2,25 +2,16 @@
 class_name InteractMenu extends Control
 
 
-@export var main_menu: Control
-
-@export var main_buttons: Control
-
-@export var name_label: Label
-
-@export var panel: InfoPanel
 
 @export var pet: Pet:
 	set(val):
 		if pet == val: return
 		if pet:
 			pet.emit_signal(Interactable.SIGNAL_ENABLED, true)
-			pet.state = Pet.PET_STATE_IDLE
 
 		pet = val
 
 		if pet:
-			pet.look_camera()
 			pet.emit_signal(Interactable.SIGNAL_ENABLED, false)
 			name_label.text = pet.stats.name
 
@@ -45,6 +36,11 @@ var main_menu_active: bool:
 			for but in get_buttons(main_buttons): but.position.x = x_margin
 		queue_redraw()
 
+@export_group("Node References")
+@export var main_menu: Control
+@export var main_buttons: Control
+@export var name_label: Label
+@export var panel: InfoPanel
 
 func _ready() -> void:
 	main_menu_active = false

@@ -27,8 +27,6 @@ func _ready() -> void:
 	
 	init_racers()
 	
-	
-	
 	begin_race()
 
 
@@ -39,6 +37,7 @@ func init_racers() -> void:
 	for i: int in racer_count:
 		racers[i].global_position = line_start.lerp(line_end, inverse_lerp(0.0, racer_count-1, i))
 		racers[i].emit_signal(Interactable.SIGNAL_ENABLED, false)
+		racers[i].emit_signal(StateMachine.SIGNAL_FORCE_STATE, &"race")
 
 
 func begin_race() -> void:
@@ -69,6 +68,16 @@ func _on_goal_reached(body: Node) -> void:
 func print_placings() -> void:
 	for i: int in placings.size():
 		printt("%1.d ->" % i, racers[placings[i]].stats.name, racers[placings[i]])
+
+
+func get_racer_distance_to_goal(racer: Pet) -> float:
+	if racers.find(racer) in placings: return 0.0
+	var accum: float = 0.0
+	var waypoint: Waypoint = racer.get_meta(Waypoint.META_NEXT, get_waypoints()[0])
+	while waypoint:
+		accum += racer.global_position.distance_to(waypoint.global_position)
+		waypoint = waypoint.next if waypoint.next != waypoint else null # Guard in case of recursion...
+	return accum
 
 
 func _waypoints_child_order_changed() -> void:

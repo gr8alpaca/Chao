@@ -2,6 +2,7 @@
 class_name Interactable extends StaticBody3D
 const GROUP: StringName = &"Interactable"
 const SIGNAL_ENABLED: StringName = &"enable_input"
+
 signal interacted
 
 const ALPHA_MODULATE: float = 0.30
