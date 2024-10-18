@@ -1,10 +1,23 @@
-[gd_scene load_steps=8 format=3 uid="uid://cfgka3j007de2"]
+[gd_scene load_steps=6 format=3 uid="uid://cfgka3j007de2"]
 
 [ext_resource type="Script" path="res://scenes/interact_menu.gd" id="1_uj28t"]
 [ext_resource type="Script" path="res://scenes/info_panel.gd" id="2_ojhxl"]
 [ext_resource type="Texture2D" uid="uid://cepe6cg5qu3eo" path="res://assets/UI/fantasy-ui-borders.svg" id="3_0wj2f"]
-[ext_resource type="PackedScene" uid="uid://c2j5335dvfv8o" path="res://scenes/stat_info.tscn" id="4_arbbv"]
-[ext_resource type="Script" path="res://scripts/stats.gd" id="5_mmcid"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qjmug"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+texture = ExtResource("3_0wj2f")
+texture_margin_left = 13.0
+texture_margin_top = 13.0
+texture_margin_right = 13.0
+texture_margin_bottom = 13.0
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+region_rect = Rect2(612, 300, 48, 48)
+modulate_color = Color(0.00149654, 0, 0.324751, 0.27451)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sp58t"]
 texture = ExtResource("3_0wj2f")
@@ -16,21 +29,6 @@ axis_stretch_horizontal = 2
 axis_stretch_vertical = 2
 region_rect = Rect2(612, 40, 48, 48)
 draw_center = false
-
-[sub_resource type="Resource" id="Resource_2efr6"]
-resource_local_to_scene = true
-script = ExtResource("5_mmcid")
-name = &"Garfield"
-life = 100.0
-hunger = 0.0
-energy = 100.0
-stress = 0.0
-run = 10.0
-fly = 10.0
-swim = 10.0
-power = 10.0
-ranks = {}
-levels = {}
 
 [node name="InteractMenu" type="Control" node_paths=PackedStringArray("main_menu", "main_buttons", "name_label", "panel")]
 layout_mode = 3
@@ -79,6 +77,8 @@ offset_top = 0.039978
 offset_right = 384.0
 offset_bottom = 64.04
 grow_vertical = 2
+focus_neighbor_top = NodePath("../Praise")
+focus_previous = NodePath("../Praise")
 text = "Train
 "
 metadata/_edit_lock_ = true
@@ -140,11 +140,13 @@ offset_top = 0.119995
 offset_right = 384.0
 offset_bottom = 64.12
 grow_vertical = 2
+focus_neighbor_bottom = NodePath("../Train")
+focus_next = NodePath("../Train")
 text = "Praise
 "
 metadata/_edit_lock_ = true
 
-[node name="InfoPanel" type="Panel" parent="MainMenu"]
+[node name="InfoPanel" type="PanelContainer" parent="MainMenu"]
 modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(256, 256)
 layout_mode = 1
@@ -152,22 +154,19 @@ anchors_preset = 11
 anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -384.0
-offset_top = 416.0
+offset_left = -420.0
+offset_top = 410.0
 offset_right = -128.0
-offset_bottom = -408.0
+offset_bottom = -402.0
 grow_horizontal = 0
 grow_vertical = 2
 pivot_offset = Vector2(256, 0)
+theme_override_styles/panel = SubResource("StyleBoxTexture_qjmug")
 script = ExtResource("2_ojhxl")
+metadata/_edit_lock_ = true
 
 [node name="PanelContainer" type="PanelContainer" parent="MainMenu/InfoPanel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_sp58t")
 
 [node name="MarginContainer" type="MarginContainer" parent="MainMenu/InfoPanel/PanelContainer"]
@@ -181,11 +180,7 @@ metadata/_edit_lock_ = true
 [node name="StatDisplay" type="VBoxContainer" parent="MainMenu/InfoPanel/PanelContainer/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-
-[node name="StatInfo" parent="MainMenu/InfoPanel/PanelContainer/MarginContainer/StatDisplay" instance=ExtResource("4_arbbv")]
-layout_mode = 2
-stats = SubResource("Resource_2efr6")
-stat_name = &"run"
+theme_override_constants/separation = 14
 
 [node name="Name" type="Label" parent="MainMenu"]
 unique_name_in_owner = true

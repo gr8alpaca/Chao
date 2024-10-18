@@ -1,9 +1,19 @@
 @tool
 class_name Interactable extends StaticBody3D
 const GROUP: StringName = &"Interactable"
+
+
+## connected to set_enabled(is_enabled: bool)
 const SIGNAL_ENABLED: StringName = &"enable_input"
 
+## _on_interaction_started() 
+const SIGNAL_INTERACTION_STARTED: StringName = &"interaction_started"
+
+## _on_interaction_ended()
+const SIGNAL_INTERACTION_ENDED: StringName = &"interaction_ended"
+
 signal interacted
+
 
 const ALPHA_MODULATE: float = 0.30
 const TWEEN_INTERVAL: float = 0.25
@@ -17,7 +27,7 @@ var is_hovered: bool:
 			highlight_tween = create_tween().set_loops(0).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_QUART)
 			highlight_tween.tween_property(modulate_material, ^"albedo_color:a", ALPHA_MODULATE, TWEEN_INTERVAL)
 			highlight_tween.tween_property(modulate_material, ^"albedo_color:a", 0.0, TWEEN_INTERVAL)
-
+		
 		elif highlight_tween:
 			highlight_tween.kill()
 			modulate_material.albedo_color.a = 0.0
@@ -39,15 +49,22 @@ func _init() -> void:
 
 func _input_event(camera: Camera3D, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.is_pressed() and event.button_mask & MOUSE_BUTTON_LEFT:
-		interacted.emit()
+		get_parent().emit_signal(SIGNAL_INTERACTION_STARTED,)
 		if get_parent() is Pet:
-			Event.pet_interacted.emit(get_parent()) 
+			Event.interaction_started.emit(get_parent())
 
 func _mouse_enter() -> void:
 	is_hovered = true
 
 func _mouse_exit() -> void:
 	is_hovered = false
+
+
+func _on_interaction_started() -> void:
+	set_enabled(false)
+
+func _on_interaction_ended() -> void:
+	set_enabled(true)
 
 
 func set_enabled(val: bool) -> void:
@@ -63,22 +80,41 @@ func _get_property_list() -> Array[Dictionary]:
 	return props
 
 
+#region Component
+
+
 func _notification(what: int) -> void:
 	match what:
-
-		NOTIFICATION_PARENTED:
+		NOTIFICATION_PARENTED when not Engine.is_editor_hint():
 			add_to_group(GROUP)
-			
-			if not Engine.is_editor_hint():
-				var parent:= get_parent()
-				parent.set_meta(GROUP, self)
-				if not parent.has_user_signal(SIGNAL_ENABLED):
-					parent.add_user_signal(SIGNAL_ENABLED, [{name = &"is_enabled", type = TYPE_BOOL}])
-					parent.connect(SIGNAL_ENABLED, set_enabled)
 
-		NOTIFICATION_EXIT_TREE:
+			var parent := get_parent()
+			parent.set_meta(GROUP, self)
+			add_and_connect(parent, SIGNAL_ENABLED, [ {name=&"is_enabled", type=TYPE_BOOL}], set_enabled)
+			add_and_connect(parent, SIGNAL_INTERACTION_STARTED, [], _on_interaction_started)
+			add_and_connect(parent, SIGNAL_INTERACTION_ENDED, [], _on_interaction_ended)
+				
+
+		NOTIFICATION_EXIT_TREE when not Engine.is_editor_hint():
 			var parent: Node = get_parent()
-			if get_parent().has_meta(GROUP):
-				get_parent().remove_meta(GROUP, )
-			if parent.has_user_signal(SIGNAL_ENABLED):
-				parent.remove_user_signal(SIGNAL_ENABLED)
+
+			if parent.has_meta(GROUP):
+				parent.remove_meta(GROUP)
+
+			remove_and_disconect(parent, SIGNAL_ENABLED, set_enabled)
+			remove_and_disconect(parent, SIGNAL_INTERACTION_STARTED, _on_interaction_started)
+			remove_and_disconect(parent, SIGNAL_INTERACTION_ENDED, _on_interaction_ended)
+
+
+func add_and_connect(node: Node, signal_name: StringName, arguments: Array[Dictionary]=[], callable: Callable = Callable()) -> void:
+	if not node.has_user_signal(signal_name):
+		node.add_user_signal(signal_name, arguments)
+	if callable.is_valid() and not node.is_connected(signal_name, callable):
+		node.connect(signal_name, callable)
+
+
+func remove_and_disconect(node: Node, signal_name: StringName, callable: Callable = Callable()) -> void:
+	if node.has_user_signal(signal_name):
+		node.remove_user_signal(signal_name)
+	if callable.is_valid() and node.is_connected(signal_name, callable):
+		node.disconnect(signal_name, callable)

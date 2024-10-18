@@ -31,6 +31,7 @@ tonemap_white = 3.61
 resource_local_to_scene = true
 script = ExtResource("2_6qkwn")
 name = &"Garfield"
+fur_color = null
 life = 100.0
 hunger = 0.0
 energy = 100.0
@@ -96,6 +97,7 @@ script = ExtResource("4_h1df4")
 [node name="Pet" parent="." instance=ExtResource("1_y2dlp")]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
 stats = SubResource("Resource_a1idj")
+speed = 0.1049
 
 [node name="RemoteTransform3D" type="RemoteTransform3D" parent="Pet"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.325, 0)

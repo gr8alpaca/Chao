@@ -16,8 +16,7 @@ const META_NEXT: StringName = &"next_waypoint"
 @export var foo: bool:
 	set(val):
 		if not val: return
-		print("Global Position: ", global_position)
-		print(to_global(Vector3.FORWARD))
+		
 
 var debug_mesh: MeshInstance3D = MeshInstance3D.new()
 var collision_shape: CollisionShape3D = CollisionShape3D.new()
@@ -25,10 +24,9 @@ var collision_shape: CollisionShape3D = CollisionShape3D.new()
 
 func _init() -> void:
 	add_to_group(GROUP)
-
+	
 	body_entered.connect(_on_body_entered)
 	
-
 	add_child(collision_shape, false, INTERNAL_MODE_BACK)
 	add_child(debug_mesh, false, INTERNAL_MODE_FRONT)
 	collision_shape.shape = BoxShape3D.new()
@@ -37,10 +35,9 @@ func _init() -> void:
 
 func _on_body_entered(body: Node3D) -> void:
 	if not body is Pet: return
-	body.set_meta(&"next_waypoint", next)
-	if next:
-		body.target_position = next.get_path_point()
+	body.is_moving = false
 	printt("Pet entered: ", body.name, body.target_position)
+
 
 func get_race_path() -> PackedVector3Array:
 	var path: PackedVector3Array

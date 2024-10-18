@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://cp1lbtskoh1sx"]
+[gd_scene load_steps=25 format=3 uid="uid://cp1lbtskoh1sx"]
 
 [ext_resource type="Script" path="res://scenes/pet.gd" id="1_t3pu5"]
 [ext_resource type="Script" path="res://scripts/stats.gd" id="2_apet3"]
@@ -7,13 +7,16 @@
 [ext_resource type="Material" uid="uid://df0i6cc61sysj" path="res://resources/pet.tres" id="4_oph6j"]
 [ext_resource type="Script" path="res://scripts/StateMachine/StateMachine.gd" id="6_b7k50"]
 [ext_resource type="Script" path="res://scripts/StateMachine/State.gd" id="7_crvk2"]
-[ext_resource type="Script" path="res://scripts/StateMachine/States/Pet/IdleState.gd" id="8_fdymg"]
-[ext_resource type="Script" path="res://scripts/StateMachine/States/Pet/interaction.gd" id="9_nnr34"]
+[ext_resource type="Script" path="res://scripts/StateMachine/States/Pet/idle_state.gd" id="8_fdymg"]
+[ext_resource type="Script" path="res://scripts/StateMachine/States/Pet/interaction_state.gd" id="9_nnr34"]
+[ext_resource type="Script" path="res://scripts/StateMachine/States/Pet/tpose_state.gd" id="10_fvavy"]
+[ext_resource type="Script" path="res://scripts/StateMachine/States/Pet/race_state.gd" id="11_2cmky"]
 
 [sub_resource type="Resource" id="Resource_vouog"]
 resource_local_to_scene = true
 script = ExtResource("2_apet3")
 name = &"Garfield"
+fur_color = Color(1, 1, 1, 1)
 life = 100.0
 hunger = 0.0
 energy = 100.0
@@ -26,6 +29,7 @@ ranks = {}
 levels = {}
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_awqdd"]
+resource_local_to_scene = true
 material = ExtResource("4_oph6j")
 radius = 0.1
 height = 0.5
@@ -62,14 +66,14 @@ material = SubResource("StandardMaterial3D_fj4mc")
 radius = 0.1
 height = 0.2
 
-[sub_resource type="Resource" id="Resource_k2hbv"]
+[sub_resource type="Resource" id="Resource_t2nwr"]
 resource_local_to_scene = true
 resource_name = "idle"
 script = ExtResource("8_fdymg")
 wait_time_sec_min = 1.0
 wait_time_sec_max = 5.0
 max_wander_distance = 5.0
-speed_modifier_percent = 10
+speed_modifier_percent = 100
 name = &"idle"
 
 [sub_resource type="Resource" id="Resource_xl5jh"]
@@ -78,6 +82,17 @@ script = ExtResource("9_nnr34")
 look_time = 0.5
 name = &"interaction"
 
+[sub_resource type="Resource" id="Resource_7hcyl"]
+resource_local_to_scene = true
+resource_name = "tpose"
+script = ExtResource("10_fvavy")
+name = &"tpose"
+
+[sub_resource type="Resource" id="Resource_5x848"]
+resource_name = "race"
+script = ExtResource("11_2cmky")
+name = &"race"
+
 [node name="Pet" type="CharacterBody3D" node_paths=PackedStringArray("debug_mesh")]
 collision_layer = 7
 input_capture_on_drag = true
@@ -85,6 +100,8 @@ velocity = Vector3(0, -16.3333, 0)
 script = ExtResource("1_t3pu5")
 debug_mesh = NodePath("TargetPosDebug")
 stats = SubResource("Resource_vouog")
+body_mesh = SubResource("CapsuleMesh_awqdd")
+speed = 0.5045
 
 [node name="BodyMesh" type="MeshInstance3D" parent="."]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0.2, 0)
@@ -138,8 +155,7 @@ mesh = SubResource("SphereMesh_qkefs")
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("reference_variable_values")]
 script = ExtResource("6_b7k50")
-state_resources = Array[ExtResource("7_crvk2")]([SubResource("Resource_k2hbv"), SubResource("Resource_xl5jh")])
-initial_state_name = "idle"
+state_resources = Array[ExtResource("7_crvk2")]([SubResource("Resource_t2nwr"), SubResource("Resource_xl5jh"), SubResource("Resource_7hcyl"), SubResource("Resource_5x848")])
+initial_state_name = "tpose"
 reference_variable_names = Array[StringName]([&"pet"])
 reference_variable_values = [NodePath("..")]
-add_state_by_script... = null

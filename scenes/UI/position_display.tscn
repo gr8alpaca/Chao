@@ -1,0 +1,209 @@
+[gd_scene load_steps=2 format=3 uid="uid://d4efnbwtsy626"]
+
+[ext_resource type="StyleBox" uid="uid://g02rxn0ylt4f" path="res://assets/styleboxes/position_display_panel_border.tres" id="1_s07g7"]
+
+[node name="PositionDisplay" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -51.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 16
+metadata/_edit_lock_ = true
+
+[node name="PictureVBox" type="VBoxContainer" parent="MarginContainer"]
+custom_minimum_size = Vector2(127, 0)
+layout_mode = 2
+
+[node name="1" type="VBoxContainer" parent="MarginContainer/PictureVBox"]
+custom_minimum_size = Vector2(127, 127)
+layout_mode = 2
+size_flags_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/PictureVBox/1"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TextVBox" type="VBoxContainer" parent="MarginContainer"]
+custom_minimum_size = Vector2(127, 0)
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/TextVBox"]
+custom_minimum_size = Vector2(127, 127)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("1_s07g7")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/TextVBox/PanelContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/TextVBox/PanelContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 4
+
+[node name="Label" type="Label" parent="MarginContainer/TextVBox/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "1"
+
+[node name="suffix" type="Label" parent="MarginContainer/TextVBox/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 15
+text = "st"
+
+[node name="Name1" type="Label" parent="MarginContainer/TextVBox/PanelContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 16
+text = "dfadfdddfd"
+vertical_alignment = 1
+clip_text = true
+text_overrun_behavior = 1
+
+[node name="2" type="VBoxContainer" parent="MarginContainer/TextVBox"]
+layout_mode = 2
+size_flags_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/TextVBox/2"]
+layout_mode = 2
+size_flags_vertical = 2
+theme_override_constants/separation = 4
+
+[node name="Label" type="Label" parent="MarginContainer/TextVBox/2/HBoxContainer"]
+layout_mode = 2
+text = "2"
+
+[node name="suffix" type="Label" parent="MarginContainer/TextVBox/2/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 15
+text = "nd"
+
+[node name="3" type="VBoxContainer" parent="MarginContainer/TextVBox"]
+layout_mode = 2
+size_flags_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/TextVBox/3"]
+layout_mode = 2
+size_flags_vertical = 2
+theme_override_constants/separation = 4
+
+[node name="Label" type="Label" parent="MarginContainer/TextVBox/3/HBoxContainer"]
+layout_mode = 2
+text = "3"
+
+[node name="suffix" type="Label" parent="MarginContainer/TextVBox/3/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 15
+text = "rd"
+
+[node name="4" type="VBoxContainer" parent="MarginContainer/TextVBox"]
+layout_mode = 2
+size_flags_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/TextVBox/4"]
+layout_mode = 2
+size_flags_vertical = 2
+theme_override_constants/separation = 4
+
+[node name="Label" type="Label" parent="MarginContainer/TextVBox/4/HBoxContainer"]
+layout_mode = 2
+text = "4"
+
+[node name="suffix" type="Label" parent="MarginContainer/TextVBox/4/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 15
+text = "th"
+
+[node name="5" type="VBoxContainer" parent="MarginContainer/TextVBox"]
+layout_mode = 2
+size_flags_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/TextVBox/5"]
+layout_mode = 2
+size_flags_vertical = 2
+theme_override_constants/separation = 4
+
+[node name="Label" type="Label" parent="MarginContainer/TextVBox/5/HBoxContainer"]
+layout_mode = 2
+text = "5"
+
+[node name="suffix" type="Label" parent="MarginContainer/TextVBox/5/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 15
+text = "th"
+
+[node name="6" type="VBoxContainer" parent="MarginContainer/TextVBox"]
+layout_mode = 2
+size_flags_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/TextVBox/6"]
+layout_mode = 2
+size_flags_vertical = 2
+theme_override_constants/separation = 4
+
+[node name="Label" type="Label" parent="MarginContainer/TextVBox/6/HBoxContainer"]
+layout_mode = 2
+text = "6"
+
+[node name="suffix" type="Label" parent="MarginContainer/TextVBox/6/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 15
+text = "th"
+
+[node name="7" type="VBoxContainer" parent="MarginContainer/TextVBox"]
+layout_mode = 2
+size_flags_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/TextVBox/7"]
+layout_mode = 2
+size_flags_vertical = 2
+theme_override_constants/separation = 4
+
+[node name="Label" type="Label" parent="MarginContainer/TextVBox/7/HBoxContainer"]
+layout_mode = 2
+text = "7"
+
+[node name="suffix" type="Label" parent="MarginContainer/TextVBox/7/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 15
+text = "th"
+
+[node name="8" type="VBoxContainer" parent="MarginContainer/TextVBox"]
+layout_mode = 2
+size_flags_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/TextVBox/8"]
+layout_mode = 2
+size_flags_vertical = 2
+theme_override_constants/separation = 4
+
+[node name="Label" type="Label" parent="MarginContainer/TextVBox/8/HBoxContainer"]
+layout_mode = 2
+text = "8"
+
+[node name="suffix" type="Label" parent="MarginContainer/TextVBox/8/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 15
+text = "th"

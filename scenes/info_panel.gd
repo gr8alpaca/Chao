@@ -1,5 +1,5 @@
 @tool
-class_name InfoPanel extends Panel
+class_name InfoPanel extends Control
 
 @onready var vbox: VBoxContainer = %StatDisplay
 
@@ -12,14 +12,21 @@ class_name InfoPanel extends Panel
 
 		
 func _ready() -> void:
-	Event.pet_interacted.connect(_on_pet_interacted)
+	var vbox:= get_node("%StatDisplay")
+	for prop: StringName in Stats.VISIBLE_STATS:
+		var info_display: StatInfo = info_scene.instantiate()
+		info_display.stat_name = prop
+		vbox.add_child(info_display)
+
+	if Engine.is_editor_hint(): return
+
+	Event.interaction_started.connect(_on_interaction_started)
 
 
-func _on_pet_interacted(pet: Pet) -> void:
+func _on_interaction_started(pet: Pet) -> void:
 	self.pet = pet
 	stats = pet.stats if pet else null
-
-
+	
 func open() -> void:
 	pass
 
@@ -30,4 +37,3 @@ func close() -> void:
 func set_stats(val: Stats) -> void:
 	stats = val
 	if not stats: return
-	

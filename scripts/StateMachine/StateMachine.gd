@@ -3,7 +3,7 @@ class_name StateMachine extends Node
 const GROUP: StringName = &"StateMachine"
 
 ## force_state(state_name: String)
-const SIGNAL_FORCE_STATE: StringName = &"force_state"
+const SIGNAL_STATE: StringName = &"force_state"
 
 signal state_changed(old_state: State, new_state: State)
 
@@ -17,6 +17,7 @@ signal state_changed(old_state: State, new_state: State)
 				printerr("You can only add scripts that extend 'State' to State Machine.")
 				return
 			state_resources += [instance as State]
+			notify_property_list_changed()
 
 
 @export var initial_state_name: String
@@ -64,10 +65,10 @@ func _ready() -> void:
 	if not parent.is_node_ready():
 		await parent.ready
 
-	if not parent.has_user_signal(SIGNAL_FORCE_STATE):
-		parent.add_user_signal(SIGNAL_FORCE_STATE, [ {name="state_name", type=TYPE_STRING}])
+	if not parent.has_user_signal(SIGNAL_STATE):
+		parent.add_user_signal(SIGNAL_STATE, [ {name="state_name", type=TYPE_STRING}])
 	
-	parent.connect(SIGNAL_FORCE_STATE, _on_force_state)
+	parent.connect(SIGNAL_STATE, _on_transition_requested)
 
 	for state: State in state_resources:
 		states[state.name] = state.duplicate()
@@ -160,17 +161,11 @@ func _validate_property(property: Dictionary) -> void:
 		&"initial_state_name" when state_resources.size() > 0:
 			property.hint = PROPERTY_HINT_ENUM
 			var state_names: PackedStringArray
-			for res : State in state_resources:
-				if res and res.name and not res.name in state_names: 
+			for res: State in state_resources:
+				if res and res.name and not res.name in state_names:
 					state_names.push_back(res.name)
 			property.hint_string = ",".join(state_names)
 
 func _get_property_list() -> Array[Dictionary]:
 	var props: Array[Dictionary]
-	props.append({
-		name=&"add_state_by_script...",
-		type=TYPE_OBJECT,
-
-	})
-
 	return props

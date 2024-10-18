@@ -1,7 +1,8 @@
-[gd_resource type="Theme" load_steps=8 format=3 uid="uid://d4ixlnscgkmi8"]
+[gd_resource type="Theme" load_steps=9 format=3 uid="uid://d4ixlnscgkmi8"]
 
 [ext_resource type="Texture2D" uid="uid://cepe6cg5qu3eo" path="res://assets/UI/fantasy-ui-borders.svg" id="1_lyhxp"]
 [ext_resource type="FontVariation" uid="uid://cd52j3vtw37yc" path="res://assets/BabyGemoyVariation.tres" id="2_10hku"]
+[ext_resource type="StyleBox" uid="uid://dgcsntx08vwt1" path="res://assets/styleboxes/panel.tres" id="3_ai7s4"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dnwmq"]
 content_margin_left = 16.0
@@ -95,11 +96,11 @@ Label/colors/font_shadow_color = Color(0, 0, 0, 0.364706)
 Label/constants/outline_size = 4
 Label/constants/shadow_outline_size = 4
 Label/fonts/font = ExtResource("2_10hku")
-MarginContainer/constants/margin_bottom = 0
-MarginContainer/constants/margin_left = 0
-MarginContainer/constants/margin_right = 0
-MarginContainer/constants/margin_top = 0
+MarginContainer/constants/margin_bottom = 4
+MarginContainer/constants/margin_left = 4
+MarginContainer/constants/margin_right = 4
+MarginContainer/constants/margin_top = 4
 Panel/styles/panel = SubResource("StyleBoxTexture_myecw")
-PanelContainer/styles/panel = null
+PanelContainer/styles/panel = ExtResource("3_ai7s4")
 TextPop/base_type = &"Label"
 TextPop/font_sizes/font_size = 16

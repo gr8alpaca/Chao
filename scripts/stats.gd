@@ -1,16 +1,23 @@
 @tool
 class_name Stats extends Resource
 
+const MAX_STAT_VALUE: int = 9999
+
 const VISIBLE_STATS: PackedStringArray = ["run", "swim", "fly", "power"]
 const MIN_RANK: int = 10
 const MAX_RANK: int = 34
 
 const MAX_LEVEL: int = 8
 
+
 signal level_changed(stat_name: StringName, )
 
 
 @export var name: StringName = &""
+@export var fur_color: Color = Color.WHITE:
+	set(val):
+		fur_color = val
+		changed.emit()
 
 #region Hidden
 
@@ -76,6 +83,7 @@ var power: float = 10.0:
 
 
 #endregion Visible
+
 
 #region Rank
 
