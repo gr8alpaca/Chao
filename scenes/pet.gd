@@ -110,7 +110,7 @@ func get_speed() -> float:
 
 func set_stats(val: Stats) -> void:
 	stats = val
-	if not stats.changed.is_connected(_on_stats_changed):
+	if stats and not stats.changed.is_connected(_on_stats_changed):
 		stats.changed.connect(_on_stats_changed)
 	_on_stats_changed()
 
@@ -118,7 +118,7 @@ func set_stats(val: Stats) -> void:
 func _on_stats_changed() -> void:
 	speed = 0.1 if not stats else lerpf(RUN_SPEED_MIN, RUN_SPEED_MAX, inverse_lerp(0, Stats.MAX_STAT_VALUE, stats.run))
 	if body_mesh:
-		body_mesh.material.albedo_color = stats.fur_color
+		body_mesh.material.albedo_color = stats.fur_color if stats else Color.WHITE 
 
 func _to_string() -> String:
 	return "Pet \"%s\"" % stats.name if stats and stats.name else "Pet-%d" % get_instance_id()

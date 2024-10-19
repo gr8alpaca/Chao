@@ -52,6 +52,7 @@ func _ready() -> void:
 			but.pressed.connect(_on_main_pressed.bind(but))
 	
 	for but: BaseButton in find_children("*", "BaseButton", true, false):
+		but.mouse_entered.connect(but.grab_focus)
 		but.focus_entered.connect(_on_button_focus_enter.bind(but))
 		but.focus_exited.connect(_on_button_focus_exit.bind(but))
 
@@ -72,10 +73,13 @@ func show_main_menu() -> void:
 	await create_tween().tween_interval(0.5).finished
 
 	var buttons: Array[BaseButton] = get_buttons(main_buttons)
+	assert(not buttons.is_empty(), "NO BUTTONS FOUND!")
 	for but: BaseButton in buttons:
 		create_tween().tween_callback(tween_control.bind(but, Vector2(0.0, but.position.y), Vector2(x_margin, but.position.y), DURATION)).set_delay(but.get_index() * INTERVAL)
 
-	create_tween().tween_callback(Callable(buttons[0], &"grab_focus")).set_delay((buttons.size() - 1) * INTERVAL + DURATION * 0.85)
+	await create_tween().tween_interval((buttons.size() - 1) * INTERVAL + DURATION * 0.85).finished
+	if get_viewport().gui_get_focus_owner() not in buttons:
+		buttons[0].grab_focus()
 
 
 func hide_main_menu() -> void:
@@ -136,7 +140,8 @@ func _draw() -> void:
 	var w_size: Vector2 = get_window_size()
 	draw_dashed_line(Vector2(x_margin, 0.0), Vector2(x_margin, w_size.y), Color(Color.HOT_PINK, 0.5), )
 	draw_dashed_line(Vector2(w_size.x - x_margin, 0.0), Vector2(w_size.x - x_margin, w_size.y), Color(Color.HOT_PINK, 0.5), )
-
+	draw_line(Vector2(w_size.x / 2.0, 0, ), Vector2(w_size.x / 2.0, w_size.y), Color.RED)
+	draw_line(Vector2(0, w_size.y / 2.0), Vector2(w_size.x, w_size.y / 2.0), Color.RED)
 
 func get_window_size() -> Vector2:
 	return Vector2(ProjectSettings.get_setting("display/window/size/viewport_width", 1920), ProjectSettings.get_setting("display/window/size/viewport_height", 1080))

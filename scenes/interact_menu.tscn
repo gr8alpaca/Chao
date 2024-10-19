@@ -154,16 +154,15 @@ anchors_preset = 11
 anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -420.0
-offset_top = 410.0
+offset_left = -512.0
+offset_top = 344.0
 offset_right = -128.0
-offset_bottom = -402.0
+offset_bottom = -336.0
 grow_horizontal = 0
 grow_vertical = 2
-pivot_offset = Vector2(256, 0)
+pivot_offset = Vector2(384, 0)
 theme_override_styles/panel = SubResource("StyleBoxTexture_qjmug")
 script = ExtResource("2_ojhxl")
-metadata/_edit_lock_ = true
 
 [node name="PanelContainer" type="PanelContainer" parent="MainMenu/InfoPanel"]
 layout_mode = 2
@@ -180,7 +179,7 @@ metadata/_edit_lock_ = true
 [node name="StatDisplay" type="VBoxContainer" parent="MainMenu/InfoPanel/PanelContainer/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 14
+theme_override_constants/separation = 30
 
 [node name="Name" type="Label" parent="MainMenu"]
 unique_name_in_owner = true
@@ -200,21 +199,3 @@ text = "Pet Name"
 horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_lock_ = true
-
-[node name="HMiddl" type="ReferenceRect" parent="."]
-layout_mode = 1
-anchors_preset = 14
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="VMid" type="ReferenceRect" parent="."]
-layout_mode = 1
-anchors_preset = 13
-anchor_left = 0.5
-anchor_right = 0.5
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2

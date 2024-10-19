@@ -12,7 +12,8 @@ class_name InfoPanel extends Control
 
 		
 func _ready() -> void:
-	var vbox:= get_node("%StatDisplay")
+	resized.connect(_on_resized)
+	var vbox := get_node("%StatDisplay")
 	for prop: StringName in Stats.VISIBLE_STATS:
 		var info_display: StatInfo = info_scene.instantiate()
 		info_display.stat_name = prop
@@ -37,3 +38,6 @@ func close() -> void:
 func set_stats(val: Stats) -> void:
 	stats = val
 	if not stats: return
+
+func _on_resized() -> void:
+	pivot_offset.x = size.x

@@ -1,16 +1,17 @@
 [gd_scene load_steps=4 format=3 uid="uid://c2j5335dvfv8o"]
 
 [ext_resource type="Script" path="res://scenes/stat_info.gd" id="1_p1ri4"]
-[ext_resource type="Script" path="res://scripts/level_progress_bar.gd" id="1_rgiei"]
 [ext_resource type="Resource" uid="uid://ctigarv3ke2s2" path="res://resources/pet_stats.tres" id="2_vtmr3"]
+[ext_resource type="Script" path="res://scripts/UI/level_progress_bar.gd" id="3_xil7a"]
 
-[node name="StatInfo" type="VBoxContainer" node_paths=PackedStringArray("name_label", "value_label", "bar")]
+[node name="StatInfo" type="VBoxContainer" node_paths=PackedStringArray("name_label", "value_label", "level_label", "bar")]
 script = ExtResource("1_p1ri4")
 stats = ExtResource("2_vtmr3")
 stat_name = &"Speed"
 name_label = NodePath("HBoxContainer/Speed")
 value_label = NodePath("HBoxContainer/Value")
-bar = NodePath("LevelProgressBar")
+level_label = NodePath("LevelsHBox/Level")
+bar = NodePath("LevelsHBox/LevelProgressBar")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
@@ -27,17 +28,28 @@ theme_type_variation = &"HeaderLarge"
 text = "0000"
 horizontal_alignment = 2
 
-[node name="LevelProgressBar" type="Control" parent="."]
+[node name="LevelsHBox" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Level" type="Label" parent="LevelsHBox"]
 layout_mode = 2
 size_flags_vertical = 0
-script = ExtResource("1_rgiei")
-value = 5
-fill_color = Color(0.811452, 0.749462, 0.284306, 1)
-bg_color = Color(0.262745, 0.262745, 0.262745, 1)
+theme_type_variation = &"HeaderDetail"
+text = "LV. 0"
+vertical_alignment = 1
+
+[node name="Seperator" type="Control" parent="LevelsHBox"]
+custom_minimum_size = Vector2(8, 0)
+layout_mode = 2
+
+[node name="LevelProgressBar" type="Control" parent="LevelsHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("3_xil7a")
+value = 4
+fill_color = Color(0.722556, 0.70114, 0.252287, 1)
+bg_color = Color(0.304462, 0.304462, 0.304462, 0.588235)
 skew_degrees = 45.0
-level_draw_offset = Vector2(16, -16)
-text_color = Color(0.990147, 0.910516, 0.604564, 1)
-font_size = 18
-tween_trans = 7
-tween_ease = 0
-fill_speed = 6.0
+text_color = Color(0.172143, 0.661345, 0.279524, 1)
+fill_speed = 3.0

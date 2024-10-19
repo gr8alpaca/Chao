@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://c770nfk4mfj0s"]
+[gd_scene load_steps=17 format=3 uid="uid://c770nfk4mfj0s"]
 
 [ext_resource type="Script" path="res://scenes/garden.gd" id="1_y2d6v"]
 [ext_resource type="PackedScene" uid="uid://cp1lbtskoh1sx" path="res://scenes/pet.tscn" id="1_y2dlp"]
@@ -6,6 +6,10 @@
 [ext_resource type="PackedScene" uid="uid://bloj0ykofgwco" path="res://models/floor.tscn" id="3_vvfx3"]
 [ext_resource type="Script" path="res://scenes/garden_ui.gd" id="4_h1df4"]
 [ext_resource type="PackedScene" uid="uid://cfgka3j007de2" path="res://scenes/interact_menu.tscn" id="5_mengk"]
+[ext_resource type="Texture2D" uid="uid://bwfl6w5tg2wmy" path="res://assets/fabric_0034_1k_7FUKzQ/fabric_0034_color_1k.jpg" id="7_xdnft"]
+[ext_resource type="Texture2D" uid="uid://cwgw108psm371" path="res://assets/fabric_0034_1k_7FUKzQ/fabric_0034_height_1k.png" id="8_8pfyy"]
+[ext_resource type="Texture2D" uid="uid://duo4vpvckgt16" path="res://assets/fabric_0034_1k_7FUKzQ/fabric_0034_normal_opengl_1k.png" id="9_sw4d3"]
+[ext_resource type="Texture2D" uid="uid://bafa3cib3hmhh" path="res://assets/fabric_0034_1k_7FUKzQ/fabric_0034_roughness_1k.jpg" id="10_6kvnf"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_doq1q"]
 sky_top_color = Color(0, 0, 0, 1)
@@ -31,17 +35,54 @@ tonemap_white = 3.61
 resource_local_to_scene = true
 script = ExtResource("2_6qkwn")
 name = &"Garfield"
-fur_color = null
+fur_color = Color(1, 1, 1, 1)
 life = 100.0
 hunger = 0.0
 energy = 100.0
 stress = 0.0
+stamina = 10.0
 run = 10.0
 fly = 10.0
 swim = 10.0
 power = 10.0
 ranks = {}
-levels = {}
+experience = {
+"fly": 0,
+"power": 0,
+"run": 0,
+"stamina": 0,
+"swim": 0
+}
+rank_stamina = 0
+rank_run = 0
+rank_swim = 0
+rank_fly = 0
+rank_power = 0
+experience_stamina = 0
+experience_run = 0
+experience_swim = 0
+experience_fly = 0
+experience_power = 0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2mmr8"]
+resource_local_to_scene = true
+diffuse_mode = 3
+specular_mode = 1
+albedo_texture = ExtResource("7_xdnft")
+metallic_specular = 0.1
+roughness = 0.5
+roughness_texture = ExtResource("10_6kvnf")
+normal_enabled = true
+normal_texture = ExtResource("9_sw4d3")
+heightmap_enabled = true
+heightmap_scale = 4.0
+heightmap_texture = ExtResource("8_8pfyy")
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_yv6k7"]
+resource_local_to_scene = true
+material = SubResource("StandardMaterial3D_2mmr8")
+radius = 0.1
+height = 0.5
 
 [node name="Garden" type="Node3D"]
 script = ExtResource("1_y2d6v")
@@ -97,7 +138,7 @@ script = ExtResource("4_h1df4")
 [node name="Pet" parent="." instance=ExtResource("1_y2dlp")]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
 stats = SubResource("Resource_a1idj")
-speed = 0.1049
+body_mesh = SubResource("CapsuleMesh_yv6k7")
 
 [node name="RemoteTransform3D" type="RemoteTransform3D" parent="Pet"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.325, 0)

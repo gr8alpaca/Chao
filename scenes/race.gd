@@ -37,11 +37,10 @@ func init_racers() -> void:
 	
 
 	for i: int in racer_count:
-		racers[i].position = line_start.lerp(line_end, inverse_lerp(0, racer_count-1, i) if racer_count > 1 else 0.5) 
+		racers[i].position = line_start.lerp(line_end, inverse_lerp(0, racer_count - 1, i) if racer_count > 1 else 0.5)
+		print("Setting child #%d position:\t %2.0v" % [i, racers[i].position])
 		racers[i].look_at(racers[i].position + Vector3.RIGHT)
 		racers[i].emit_signal(Interactable.SIGNAL_ENABLED, false)
-
-
 
 
 func begin_race() -> void:
@@ -71,7 +70,6 @@ func end_race() -> void:
 func print_placings() -> void:
 	for i: int in placings.size():
 		printt("%1.0d: " % i, placings[i])
-
 
 
 func update_racer_position(distance_to_goal: float, racer: Pet) -> void:
