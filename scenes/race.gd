@@ -35,7 +35,6 @@ func init_racers() -> void:
 	var line_start: Vector3 = get_node(^"%StartingLineStart").position
 	var line_end: Vector3 = get_node(^"%StartingLineEnd").position
 	
-
 	for i: int in racer_count:
 		racers[i].position = line_start.lerp(line_end, inverse_lerp(0, racer_count - 1, i) if racer_count > 1 else 0.5)
 		print("Setting child #%d position:\t %2.0v" % [i, racers[i].position])
@@ -69,7 +68,7 @@ func end_race() -> void:
 
 func print_placings() -> void:
 	for i: int in placings.size():
-		printt("%1.0d: " % i, placings[i])
+		printt("%1.0d: " % (i+1), placings[i])
 
 
 func update_racer_position(distance_to_goal: float, racer: Pet) -> void:
@@ -80,7 +79,7 @@ func _waypoints_child_order_changed() -> void:
 	var children: Array[Waypoint] = get_waypoints()
 	for i: int in children.size():
 		children[i].next = children[i + 1] if i < children.size() - 1 else null
-		
+
 
 func get_waypoints() -> Array[Waypoint]:
 	var pts: Array[Waypoint]

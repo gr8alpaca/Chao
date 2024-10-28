@@ -3,6 +3,7 @@ class_name Stats extends Resource
 
 signal experience_changed(stat_name: StringName, new_experience_amount: int)
 
+const MIN_STAT_VALUE: int = 0
 const MAX_STAT_VALUE: int = 9999
 
 const VISIBLE_STATS: PackedStringArray = ["stamina", "run", "swim", "fly", "power"]
@@ -106,6 +107,7 @@ var power: float = 10.0:
 @export_storage
 var ranks: Dictionary
 
+
 func get_rank(stat: StringName, default: float = MIN_RANK) -> float:
 	return ranks.get(stat, default)
 
@@ -144,6 +146,8 @@ func add_experience(stat: StringName, amount: int = 0) -> void:
 	set_experience(stat, get_experience(stat, 0) + amount)
 
 #endregion Experience
+
+
 
 
 #region Properties

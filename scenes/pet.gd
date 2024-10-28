@@ -21,8 +21,8 @@ signal move_ended
 		_on_stats_changed.call_deferred()
 
 
-@export_range(0.5, 5.0, 0.1, "or_greater", "suffix:m/s")
-var speed: float = 5.0
+@export_range(0.5, 3.0, 0.1, "suffix:m/s")
+var speed: float = 0.5
 
 var speed_modifier: float = 1.0
 
@@ -105,8 +105,20 @@ func set_target_direction(vel: Vector3) -> void:
 
 
 func get_speed() -> float:
+	# if not stats: return speed
+	# var speed_value: float = stats.speed if stats else speed
+	# var t: float = inverse_lerp(Stats.MIN_STAT_VALUE, Stats.MAX_STAT_VALUE, get_stat_value(&"run")) 
+	# lerpf(RUN_SPEED_MIN, RUN_SPEED_MAX, )
 	return speed
 
+
+func get_run_speed() -> float:
+	# var t: float = inverse_lerp(Stats.MIN_STAT_VALUE, Stats.MAX_STAT_VALUE, get_stat_value(&"run")) 
+	return lerpf(RUN_SPEED_MIN, RUN_SPEED_MAX, inverse_lerp(Stats.MIN_STAT_VALUE, Stats.MAX_STAT_VALUE, get_stat_value(&"run")))
+
+
+func get_stat_value(stat: StringName, default: float = 0.0) -> float:
+	return stats.get(stat) if stat in stats else default
 
 func set_stats(val: Stats) -> void:
 	stats = val
@@ -118,7 +130,7 @@ func set_stats(val: Stats) -> void:
 func _on_stats_changed() -> void:
 	speed = 0.1 if not stats else lerpf(RUN_SPEED_MIN, RUN_SPEED_MAX, inverse_lerp(0, Stats.MAX_STAT_VALUE, stats.run))
 	if body_mesh:
-		body_mesh.material.albedo_color = stats.fur_color if stats else Color.WHITE 
+		body_mesh.material.albedo_color = stats.fur_color if stats else Color.WHITE
 
 func _to_string() -> String:
 	return "Pet \"%s\"" % stats.name if stats and stats.name else "Pet-%d" % get_instance_id()

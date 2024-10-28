@@ -18,6 +18,7 @@ swim = 10.0
 power = 10.0
 ranks = {}
 experience = {
+"": 0,
 "experience_fly": 0,
 "experience_power": 0,
 "experience_run": 0,

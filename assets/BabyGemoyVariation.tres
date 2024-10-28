@@ -1,7 +1,11 @@
-[gd_resource type="FontVariation" load_steps=2 format=3 uid="uid://cd52j3vtw37yc"]
+[gd_resource type="FontVariation" load_steps=3 format=3 uid="uid://cd52j3vtw37yc"]
 
 [ext_resource type="FontFile" uid="uid://bguk8ig6on77k" path="res://assets/Baby Gemoy.ttf" id="1_duxxl"]
 
+[sub_resource type="SystemFont" id="SystemFont_bqb0w"]
+font_names = PackedStringArray("Arial Rounded MT")
+
 [resource]
+fallbacks = Array[Font]([SubResource("SystemFont_bqb0w")])
 base_font = ExtResource("1_duxxl")
 spacing_glyph = 2

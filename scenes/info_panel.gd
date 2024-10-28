@@ -31,7 +31,6 @@ func _on_interaction_started(pet: Pet) -> void:
 func open() -> void:
 	pass
 
-
 func close() -> void:
 	pass
 
