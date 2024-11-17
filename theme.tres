@@ -1,8 +1,11 @@
-[gd_resource type="Theme" load_steps=10 format=3 uid="uid://d4ixlnscgkmi8"]
+[gd_resource type="Theme" load_steps=15 format=3 uid="uid://d4ixlnscgkmi8"]
 
 [ext_resource type="Texture2D" uid="uid://cepe6cg5qu3eo" path="res://assets/UI/fantasy-ui-borders.svg" id="1_lyhxp"]
 [ext_resource type="FontVariation" uid="uid://cd52j3vtw37yc" path="res://assets/BabyGemoyVariation.tres" id="2_10hku"]
+[ext_resource type="Script" path="res://scripts/UI/stylebox_pointer.gd" id="2_spswq"]
 [ext_resource type="StyleBox" uid="uid://dgcsntx08vwt1" path="res://assets/styleboxes/panel.tres" id="3_ai7s4"]
+[ext_resource type="StyleBox" uid="uid://ohbmb7pn26ie" path="res://assets/styleboxes/button.tres" id="3_uaqjg"]
+[ext_resource type="Script" path="res://scripts/UI/layered_stylebox.gd" id="4_1vw5u"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dnwmq"]
 content_margin_left = 16.0
@@ -21,23 +24,17 @@ axis_stretch_vertical = 1
 region_rect = Rect2(986, 486, 48, 48)
 modulate_color = Color(0, 0, 0, 1)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3q3aq"]
-content_margin_left = 16.0
-content_margin_right = 16.0
-texture = ExtResource("1_lyhxp")
-texture_margin_left = 13.0
-texture_margin_top = 13.0
-texture_margin_right = 13.0
-texture_margin_bottom = 13.0
-expand_margin_left = 7.0
-expand_margin_top = 7.0
-expand_margin_right = 7.0
-expand_margin_bottom = 7.0
-axis_stretch_horizontal = 1
-axis_stretch_vertical = 1
-region_rect = Rect2(986, 226, 48, 48)
+[sub_resource type="StyleBox" id="StyleBox_vtpsw"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = -1.0
+content_margin_top = -1.0
+content_margin_right = -1.0
+content_margin_bottom = -1.0
+script = ExtResource("2_spswq")
+draw_on_right = true
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tc378"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fp0oj"]
 content_margin_left = 16.0
 content_margin_top = 8.0
 content_margin_right = 16.0
@@ -49,25 +46,43 @@ texture_margin_right = 17.0
 texture_margin_bottom = 17.0
 axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
-region_rect = Rect2(476, 424, 48, 48)
-modulate_color = Color(0.103744, 0.103744, 0.103744, 1)
+region_rect = Rect2(986, 424, 48, 48)
+modulate_color = Color(0.027, 0.027, 0.027, 0.75)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_i0q4w"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nf567"]
 content_margin_left = 16.0
+content_margin_top = 8.0
 content_margin_right = 16.0
+content_margin_bottom = 8.0
 texture = ExtResource("1_lyhxp")
-texture_margin_left = 13.0
-texture_margin_top = 13.0
-texture_margin_right = 13.0
-texture_margin_bottom = 13.0
-expand_margin_left = 7.0
-expand_margin_top = 7.0
-expand_margin_right = 7.0
-expand_margin_bottom = 7.0
+texture_margin_left = 17.0
+texture_margin_top = 17.0
+texture_margin_right = 17.0
+texture_margin_bottom = 17.0
 axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
-region_rect = Rect2(986, 486, 48, 48)
-modulate_color = Color(0, 0, 0, 1)
+region_rect = Rect2(986, 164, 48, 48)
+modulate_color = Color(0.656034, 0.644035, 0.647036, 1)
+
+[sub_resource type="StyleBox" id="StyleBox_1k06n"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = -1.0
+content_margin_top = -1.0
+content_margin_right = -1.0
+content_margin_bottom = -1.0
+script = ExtResource("4_1vw5u")
+style_boxes = Array[StyleBox]([SubResource("StyleBoxTexture_fp0oj"), SubResource("StyleBoxTexture_nf567")])
+
+[sub_resource type="StyleBox" id="StyleBox_tqvgc"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = -1.0
+content_margin_top = -1.0
+content_margin_right = -1.0
+content_margin_bottom = -1.0
+script = ExtResource("2_spswq")
+draw_on_right = false
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8l10f"]
 
@@ -86,10 +101,12 @@ modulate_color = Color(0.52549, 0.678431, 1, 0.282353)
 default_base_scale = 2.0
 default_font = ExtResource("2_10hku")
 Button/styles/disabled = SubResource("StyleBoxTexture_dnwmq")
-Button/styles/focus = SubResource("StyleBoxTexture_3q3aq")
-Button/styles/hover = SubResource("StyleBoxTexture_tc378")
-Button/styles/normal = SubResource("StyleBoxTexture_tc378")
-Button/styles/pressed = SubResource("StyleBoxTexture_i0q4w")
+Button/styles/focus = SubResource("StyleBox_vtpsw")
+Button/styles/hover = ExtResource("3_uaqjg")
+Button/styles/normal = ExtResource("3_uaqjg")
+Button/styles/pressed = SubResource("StyleBox_1k06n")
+ButtonLeft/base_type = &"Button"
+ButtonLeft/styles/focus = SubResource("StyleBox_tqvgc")
 DisplayMedium/base_type = &"Label"
 DisplayMedium/font_sizes/font_size = 64
 DisplaySmall/base_type = &"Label"

@@ -20,6 +20,6 @@ static func draw_pointer(control: Control, draw_on_right: bool = true) -> void:
 		var t: float = inverse_lerp(0, TOTAL_FRAMES, i)
 		var pos_offset: Vector2 = Vector2(i if i < MOVE_PIXELS else TOTAL_FRAMES - i, 0)
 		if not draw_on_right: pos_offset *= Vector2(-1, 0)
-
 		control.draw_animation_slice(TIME_SECS, t * TIME_SECS, t * TIME_SECS + SLICE_TIME_SECS, )
 		control.draw_texture_rect_region(TEXTURE, Rect2(start_position + pos_offset, draw_size), TEXTURE_REGION, Color.WHITE, false)
+	control.draw_end_animation()

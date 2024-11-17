@@ -22,23 +22,31 @@ const DOWN_ARROW_TEXTURE: Texture2D = preload("res://assets/UI/ArrowUp.svg")
 
 var stat_change_displays: Array[HBoxContainer]
 
+func open() -> void:
+	pass
+	
+func close() -> void:
+	pass
 
 func _ready() -> void:
 	if skill_changes_hbox:
 		for i: int in skill_changes_hbox.get_child_count():
 			if i == 0 or not skill_changes_hbox.get_child(i) is HBoxContainer: continue
 			stat_change_displays.push_back(skill_changes_hbox.get_child(i))
-
+	
 	if not exercise_grid:
 		printerr("No Exercise Grid Set!!")
 		return
-
+	
 	for child: Node in exercise_grid.get_children():
 		child.free()
-
+	
 	for exercise: Exercise in exercises:
 		var button: Button = Button.new()
 		button.set_meta(EXERCISE_META, exercise)
+		
+		button.theme_type_variation = &"ButtonLeft"
+		
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		button.name = exercise.name
 		button.text = exercise.name
@@ -51,7 +59,6 @@ func _ready() -> void:
 
 		exercise_grid.add_child(button, )
 		button.owner = owner if owner else self
-	
 	main_stat_vbox.hide()
 
 
@@ -115,15 +122,5 @@ func _on_exercise_focus_exit(exercise: Exercise) -> void:
 		main_stat_vbox.hide()
 
 
-	
-func tween_control(control: Control, from: Vector2 = Vector2.ZERO, to: Vector2 = Vector2.ZERO, duration: float = 1.3) -> Tween:
-	var scale_property: String = "scale:x" if from.y == to.y else "scale:y"
-	control.visible = false
-	var tw: Tween = create_tween()
-	tw.set_parallel().set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_IN_OUT)
-	tw.tween_property(control, "modulate:a", 1.0, duration / 2.5).from(0.0)
-	tw.tween_property(control, "position", to, duration).from(from)
-	tw.tween_property(control, "scale:x", 1.0, duration / 1.5).from(0.1)
-	tw.tween_callback(control.set_visible.bind(true))
-
-	return tw
+func _get_minimum_size() -> Vector2:
+	return get_child(0).get_combined_minimum_size() if get_child_count() else Vector2()

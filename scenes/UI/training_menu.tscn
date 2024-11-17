@@ -1,7 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://cipgok3b55loo"]
+[gd_scene load_steps=12 format=3 uid="uid://cipgok3b55loo"]
 
 [ext_resource type="Script" path="res://scenes/UI/training_menu.gd" id="1_0oqrm"]
 [ext_resource type="Script" path="res://scripts/misc/exercise.gd" id="2_s5xrk"]
+[ext_resource type="Script" path="res://scripts/UI/layered_stylebox.gd" id="3_hf7jd"]
+[ext_resource type="StyleBox" uid="uid://dgcsntx08vwt1" path="res://assets/styleboxes/panel.tres" id="4_j14iu"]
+[ext_resource type="Texture2D" uid="uid://cepe6cg5qu3eo" path="res://assets/UI/fantasy-ui-borders.svg" id="5_7542v"]
 
 [sub_resource type="Resource" id="Resource_7obey"]
 resource_name = "Jog"
@@ -39,54 +42,81 @@ swim = 0
 fly = 1
 power = 0
 
+[sub_resource type="Resource" id="Resource_a13ir"]
+resource_name = "Lift"
+script = ExtResource("2_s5xrk")
+name = &"Lift"
+drag_unicode_code = 127947
+symbol = "🏋"
+fatigue = -1
+run = 0
+swim = 0
+fly = 0
+power = 1
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jsay0"]
+texture = ExtResource("5_7542v")
+texture_margin_left = 13.0
+texture_margin_top = 13.0
+texture_margin_right = 13.0
+texture_margin_bottom = 13.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+region_rect = Rect2(986, 226, 48, 48)
+draw_center = false
+
+[sub_resource type="StyleBox" id="StyleBox_x0mg3"]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = -1.0
+content_margin_top = -1.0
+content_margin_right = -1.0
+content_margin_bottom = -1.0
+script = ExtResource("3_hf7jd")
+style_boxes = Array[StyleBox]([ExtResource("4_j14iu"), SubResource("StyleBoxTexture_jsay0")])
+
 [node name="TrainingMenu" type="Control" node_paths=PackedStringArray("exercise_grid", "display_name_label", "fatigue_arrow", "main_stat_vbox", "skill_changes_hbox")]
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = 0
+offset_right = 1000.0
+offset_bottom = 273.0
+size_flags_vertical = 4
 script = ExtResource("1_0oqrm")
-exercises = Array[ExtResource("2_s5xrk")]([SubResource("Resource_7obey"), SubResource("Resource_bx3rk"), SubResource("Resource_73t7h")])
+exercises = Array[ExtResource("2_s5xrk")]([SubResource("Resource_7obey"), SubResource("Resource_bx3rk"), SubResource("Resource_73t7h"), SubResource("Resource_a13ir")])
 exercise_grid = NodePath("MainVBox/Exercises/ExerciseGrid")
 display_name_label = NodePath("MainVBox/Exercises/ExerciseInfo/StatVBox/ExerciseName")
 fatigue_arrow = NodePath("MainVBox/Exercises/ExerciseInfo/StatVBox/SkillChanges/Fatigue/FatigueArrow")
 main_stat_vbox = NodePath("MainVBox/Exercises/ExerciseInfo/StatVBox")
 skill_changes_hbox = NodePath("MainVBox/Exercises/ExerciseInfo/StatVBox/SkillChanges")
-metadata/_edit_lock_ = true
-
-[node name="ColorRect" type="ColorRect" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0.25)
-metadata/_edit_lock_ = true
 
 [node name="MainVBox" type="VBoxContainer" parent="."]
-visible = false
-custom_minimum_size = Vector2(1200, 0)
-layout_mode = 2
-offset_left = 360.0
-offset_top = 252.0
-offset_right = 1560.0
-offset_bottom = 827.0
+custom_minimum_size = Vector2(1000, 0)
+layout_mode = 1
+offset_right = 887.0
+offset_bottom = 273.0
 theme_override_constants/separation = 48
-metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="MainVBox"]
+layout_mode = 2
+theme_type_variation = &"DisplayMedium"
+text = "Schedule training"
+horizontal_alignment = 1
 
 [node name="Exercises" type="HBoxContainer" parent="MainVBox"]
 layout_mode = 2
+theme_override_constants/separation = 16
 
 [node name="ExerciseGrid" type="GridContainer" parent="MainVBox/Exercises"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/v_separation = 24
 columns = 2
 
 [node name="Jog" type="Button" parent="MainVBox/Exercises/ExerciseGrid"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_type_variation = &"ButtonLeft"
 text = "Jog"
 metadata/Exercise = SubResource("Resource_7obey")
 
@@ -99,17 +129,26 @@ metadata/Exercise = SubResource("Resource_bx3rk")
 [node name="Jump" type="Button" parent="MainVBox/Exercises/ExerciseGrid"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_type_variation = &"ButtonLeft"
 text = "Jump"
 metadata/Exercise = SubResource("Resource_73t7h")
 
-[node name="ExerciseInfo" type="PanelContainer" parent="MainVBox/Exercises"]
-custom_minimum_size = Vector2(600, 150)
+[node name="Lift" type="Button" parent="MainVBox/Exercises/ExerciseGrid"]
 layout_mode = 2
 size_flags_horizontal = 3
+text = "Lift"
+metadata/Exercise = SubResource("Resource_a13ir")
+
+[node name="ExerciseInfo" type="PanelContainer" parent="MainVBox/Exercises"]
+custom_minimum_size = Vector2(400, 150)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBox_x0mg3")
 
 [node name="StatVBox" type="VBoxContainer" parent="MainVBox/Exercises/ExerciseInfo"]
 visible = false
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
 
 [node name="ExerciseName" type="Label" parent="MainVBox/Exercises/ExerciseInfo/StatVBox"]
 unique_name_in_owner = true
@@ -181,73 +220,3 @@ theme_type_variation = &"HeaderSmall"
 text = "Fatigue"
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="WeekDisplay" type="HBoxContainer" parent="MainVBox"]
-layout_mode = 2
-
-[node name="Week1" type="VBoxContainer" parent="MainVBox/WeekDisplay"]
-layout_mode = 2
-size_flags_horizontal = 6
-theme_override_constants/separation = 16
-
-[node name="WeekLabel" type="Label" parent="MainVBox/WeekDisplay/Week1"]
-layout_mode = 2
-text = "Week 1"
-horizontal_alignment = 1
-
-[node name="ActivityDisplay1" type="PanelContainer" parent="MainVBox/WeekDisplay/Week1"]
-custom_minimum_size = Vector2(200, 200)
-layout_mode = 2
-
-[node name="Week2" type="VBoxContainer" parent="MainVBox/WeekDisplay"]
-layout_mode = 2
-size_flags_horizontal = 6
-theme_override_constants/separation = 16
-
-[node name="WeekLabel" type="Label" parent="MainVBox/WeekDisplay/Week2"]
-layout_mode = 2
-text = "Week 2"
-horizontal_alignment = 1
-
-[node name="ActivityDisplay2" type="PanelContainer" parent="MainVBox/WeekDisplay/Week2"]
-custom_minimum_size = Vector2(200, 200)
-layout_mode = 2
-
-[node name="Week3" type="VBoxContainer" parent="MainVBox/WeekDisplay"]
-layout_mode = 2
-size_flags_horizontal = 6
-theme_override_constants/separation = 16
-
-[node name="WeekLabel" type="Label" parent="MainVBox/WeekDisplay/Week3"]
-layout_mode = 2
-text = "Week 3"
-horizontal_alignment = 1
-
-[node name="ActivityDisplay3" type="PanelContainer" parent="MainVBox/WeekDisplay/Week3"]
-custom_minimum_size = Vector2(200, 200)
-layout_mode = 2
-
-[node name="Week4" type="VBoxContainer" parent="MainVBox/WeekDisplay"]
-layout_mode = 2
-size_flags_horizontal = 6
-theme_override_constants/separation = 16
-
-[node name="WeekLabel" type="Label" parent="MainVBox/WeekDisplay/Week4"]
-layout_mode = 2
-text = "Week 4"
-horizontal_alignment = 1
-
-[node name="ActivityDisplay4" type="PanelContainer" parent="MainVBox/WeekDisplay/Week4"]
-custom_minimum_size = Vector2(200, 200)
-layout_mode = 2
-
-[node name="Label" type="Label" parent="."]
-visible = false
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 75.0
-grow_horizontal = 2
-theme_type_variation = &"DisplayMedium"
-text = "Schedule training"
-horizontal_alignment = 1

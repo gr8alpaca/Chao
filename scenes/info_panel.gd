@@ -10,12 +10,12 @@ class_name InfoPanel extends Control
 		
 @export var stats: Stats: set = set_stats
 
-		
+
 func _ready() -> void:
-	resized.connect(_on_resized)
-	var vbox := get_node("%StatDisplay")
+	var vbox := get_node(^"%StatDisplay")
 	for prop: StringName in Stats.VISIBLE_STATS:
 		var info_display: StatInfo = info_scene.instantiate()
+		info_display.size_flags_vertical = Control.SIZE_EXPAND | Control.SIZE_SHRINK_CENTER
 		info_display.stat_name = prop
 		vbox.add_child(info_display)
 
@@ -27,16 +27,14 @@ func _ready() -> void:
 func _on_interaction_started(pet: Pet) -> void:
 	self.pet = pet
 	stats = pet.stats if pet else null
-	
-func open() -> void:
-	pass
+
+
+func open(delay_sec: float = 0.0) -> void:
+	emit_signal(Animator.SIGNAL_SHOW, delay_sec)
 
 func close() -> void:
-	pass
+	emit_signal(Animator.SIGNAL_HIDE)
+
 
 func set_stats(val: Stats) -> void:
 	stats = val
-	if not stats: return
-
-func _on_resized() -> void:
-	pivot_offset.x = size.x
