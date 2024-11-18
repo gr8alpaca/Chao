@@ -61,7 +61,7 @@ func _ready() -> void:
 		button.owner = owner if owner else self
 	main_stat_vbox.hide()
 
-
+#{"type": "files", "files": [item.get_metadata(0)], "from": self}
 func _get_exercise_drag_data(at_position: Vector2, exercise: Exercise) -> Variant:
 	var lbl := Label.new()
 	lbl.text = exercise.get_drag_preview()

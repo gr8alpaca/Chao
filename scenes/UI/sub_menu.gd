@@ -39,8 +39,7 @@ func set_active_menu(val: Control) -> void:
 	if tweak:
 		tweak.side = enter_side
 		tweak.active = true
-	
-	
+
 
 func _on_menu_button_pressed(but: BaseButton) -> void:
 	update_active_menu()
@@ -50,8 +49,8 @@ func update_active_menu() -> void:
 	var pressed_button: BaseButton = main_button_group.get_pressed_button()
 	if not pressed_button:
 		active_menu = null
-	var index: int = main_button_group.get_buttons().find(pressed_button)
 	
+	var index: int = main_button_group.get_buttons().find(pressed_button)
 	active_menu = menus[index] if index != -1 and index < tweaks.size() else null
 	print("Opening %s menu..." % main_button_group.get_pressed_button().name if active_menu else "Closing Current Menu...")
 
