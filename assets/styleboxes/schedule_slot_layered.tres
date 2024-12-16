@@ -1,0 +1,44 @@
+[gd_resource type="StyleBox" script_class="LayeredStyleBox" load_steps=5 format=3 uid="uid://3e54p6igb58x"]
+
+[ext_resource type="Script" path="res://scripts/UI/layered_stylebox.gd" id="1_b65sy"]
+[ext_resource type="Texture2D" uid="uid://cepe6cg5qu3eo" path="res://assets/UI/fantasy-ui-borders.svg" id="2_s1moj"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_eiluk"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+texture = ExtResource("2_s1moj")
+texture_margin_left = 13.0
+texture_margin_top = 13.0
+texture_margin_right = 13.0
+texture_margin_bottom = 13.0
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+region_rect = Rect2(612, 424, 48, 48)
+modulate_color = Color(0.219608, 0.219608, 0.305882, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_r4kf2"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+texture = ExtResource("2_s1moj")
+texture_margin_left = 13.0
+texture_margin_top = 13.0
+texture_margin_right = 13.0
+texture_margin_bottom = 13.0
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+region_rect = Rect2(612, 164, 48, 48)
+draw_center = false
+
+[resource]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+script = ExtResource("1_b65sy")
+style_boxes = Array[StyleBox]([SubResource("StyleBoxTexture_eiluk"), SubResource("StyleBoxTexture_r4kf2")])

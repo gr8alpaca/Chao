@@ -15,7 +15,7 @@ enum Mode {ELASTIC, LINEAR, SHOWN, HIDE}
 @export var target: Control : set = set_target
 @export var side: Side = SIDE_LEFT: set = set_side
 
-		
+
 @export_enum("None:0", "Hide Alpha:1", "Hide Visibility:2") 
 var hide_mode: int = 1: set = set_hide_mode
 
@@ -46,6 +46,7 @@ var hide_time_scale: float = 1.0:
 
 
 @export_group("Transitions & Easing")
+
 @export var trans_type_show: Tween.TransitionType = Tween.TRANS_BACK
 @export var trans_type_hide: Tween.TransitionType = Tween.TRANS_BACK
 @export var ease_type_show: Tween.EaseType = Tween.EASE_IN_OUT
@@ -116,6 +117,7 @@ func set_target(val: Control) -> void:
 	set_elapsed(elapsed_sec)
 	set_physics_process(val != null)
 
+
 func set_elapsed(val: float) -> void:
 	elapsed_sec = clampf(val, 0.0, duration_sec)
 	
@@ -150,7 +152,7 @@ func _notification(what: int) -> void:
 			if not Engine.is_editor_hint():
 				get_viewport().size_changed.connect(_on_viewport_size_changed)
 				screen = get_viewport_rect().size
-		
+			
 		NOTIFICATION_TRANSFORM_CHANGED:
 			calculate_delta()
 		
@@ -196,6 +198,8 @@ func get_target_scale() -> Vector2:
 		tscale.y = (target.size.y * target.scale.y)/maxf(size.y, 0.01)
 	return tscale
 
+#func get_
+
 func update_pivot() -> void:
 	if not auto_adjust_pivot: return
 	var pivot_vector:= Vector2()
@@ -224,6 +228,7 @@ func _draw() -> void:
 	if target_rect_visible:
 		draw_set_transform(target.global_position - global_position if target else target_position_delta, target.rotation - rotation if target else rotation, get_target_scale())
 		draw_rect(Rect2(0,0,size.x, size.y), TARGET_RECT_COLOR, false, 2.0)
+
 
 func _get_minimum_size() -> Vector2:
 	var min_size: Vector2 = Vector2.ZERO

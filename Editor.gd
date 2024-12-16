@@ -4,6 +4,7 @@ extends EditorScript
 
 func _run() -> void:
 	print("Running...")
+	print("💤".unicode_at(0))
 	var scene: Node = get_scene()
 	print(scene.get_node("%Tweak").screen)
 	#var name_label: Label = scene.name_label

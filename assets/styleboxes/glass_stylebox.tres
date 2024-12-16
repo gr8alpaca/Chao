@@ -1,0 +1,16 @@
+[gd_resource type="StyleBoxTexture" load_steps=2 format=3 uid="uid://dgvkljulenyi"]
+
+[ext_resource type="Texture2D" uid="uid://ygwk6uppy3i6" path="res://assets/UI/GlassStyleBox.png" id="1_mpu53"]
+
+[resource]
+content_margin_left = 10.0
+content_margin_top = 6.0
+content_margin_right = 10.0
+content_margin_bottom = 6.0
+texture = ExtResource("1_mpu53")
+texture_margin_left = 22.0
+texture_margin_top = 24.0
+texture_margin_right = 22.0
+texture_margin_bottom = 24.0
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2

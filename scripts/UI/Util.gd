@@ -20,3 +20,7 @@ static func tween_fade(control: Control, final_alpha_value: float = 0.0, time_se
 	var tw: Tween = control.create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
 	tw.tween_property(control, ^"modulate:a", final_alpha_value, time_sec)
 	return tw
+
+static func focus_button(but: BaseButton) -> void:
+	if but and but.visible and not but.button_pressed and not but.has_focus(): 
+		but.grab_focus()

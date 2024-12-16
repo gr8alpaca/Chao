@@ -10,10 +10,15 @@ signal interaction_ended
 signal garden_entered(garden: Garden)
 signal race_entered(race: Race, first_waypoint: Waypoint)
 
+#region Schedule
 
-#region Race events
+signal schedule_activity(activity: Exercise)
+
+#endregion Schedule
+
+#region Race
 
 signal race_started
 signal race_finished(race: Race)
 
-#endregion Race events
+#endregion Race

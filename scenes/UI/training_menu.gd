@@ -11,6 +11,7 @@ const DOWN_ARROW_TEXTURE: Texture2D = preload("res://assets/UI/ArrowUp.svg")
 @export var exercises: Array[Exercise]
 
 @export_group("Node References")
+
 @export var exercise_grid: GridContainer
 @export var display_name_label: Label
 @export var fatigue_arrow: Label
@@ -24,7 +25,7 @@ var stat_change_displays: Array[HBoxContainer]
 
 func open() -> void:
 	pass
-	
+
 func close() -> void:
 	pass
 
@@ -50,15 +51,18 @@ func _ready() -> void:
 		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		button.name = exercise.name
 		button.text = exercise.name
-
+		
 		button.mouse_entered.connect(button.grab_focus)
 		button.focus_entered.connect(_on_exercise_focus_enter.bind(exercise))
 		button.focus_exited.connect(_on_exercise_focus_exit.bind(exercise))
 		button.pressed.connect(_on_exercise_pressed.bind(exercise))
 		button.set_drag_forwarding(_get_exercise_drag_data.bind(exercise), Callable(), Callable())
-
+		
 		exercise_grid.add_child(button, )
 		button.owner = owner if owner else self
+	
+	
+	
 	main_stat_vbox.hide()
 
 #{"type": "files", "files": [item.get_metadata(0)], "from": self}
@@ -100,22 +104,16 @@ func display_exercise(exercise: Exercise) -> void:
 			stat_change_displays[i].show()
 			continue
 		stat_change_displays[i].hide()
-
-
 	main_stat_vbox.show()
 
 
-# func set_stat_arrow(label: Label, value: int = 0,) -> void:
-# 	label.text = char(11014 if value > 0 else 11015).repeat(abs(value))
-# 	label.modulate = Color(0.15, 0.4, 0.0, 1.0) if value > 0 else Color(0.45, 0.0, 0.0, 1.0)
-
-
 func _on_exercise_pressed(exercise: Exercise) -> void:
-	pass
+	Event.schedule_activity.emit(exercise)
 
 
 func _on_exercise_focus_enter(exercise: Exercise) -> void:
 	display_exercise(exercise)
+
 
 func _on_exercise_focus_exit(exercise: Exercise) -> void:
 	if exercise_label.text == exercise.name:

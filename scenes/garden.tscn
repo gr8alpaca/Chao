@@ -134,7 +134,17 @@ spot_angle_attenuation = 2.54913
 script = ExtResource("4_h1df4")
 
 [node name="InteractMenu" parent="GardenUI" instance=ExtResource("5_mengk")]
-modulate = Color(1, 1, 1, 0)
+
+[node name="FocusLabel" type="Label" parent="GardenUI"]
+top_level = true
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 29.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 24
+text = "Current Focus: "
+vertical_alignment = 1
+metadata/_edit_lock_ = true
 
 [node name="Pet" parent="." instance=ExtResource("1_y2dlp")]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)

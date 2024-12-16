@@ -11,7 +11,6 @@ var label: Label = Label.new()
 func _init() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	
-	custom_minimum_size = Vector2(200, 200)
 	label.custom_minimum_size = Vector2(custom_minimum_size.x, 32)
 	
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -55,6 +54,7 @@ func _draw() -> void:
 	draw_string_outline(font, draw_pos, activity_string, 0, -1, font_size, FONT_OUTLINE_SIZE, Color.BLACK)
 	draw_string(font, draw_pos, activity_string, 0, -1, font_size)
 
+
 func set_activity(val: Exercise) -> void:
 	activity = val
 	queue_redraw()
@@ -63,8 +63,10 @@ func set_activity(val: Exercise) -> void:
 func set_label_week(week_index: int) -> void:
 	label.text = "Week %d" % maxi(week_index, 1)
 
+
 func position_label() -> void:
 	label.position = Vector2(0.0, size.y + LABEL_Y_OFFSET)
+
 
 func _notification(what: int) -> void:
 	match what:
