@@ -23,11 +23,17 @@ const DOWN_ARROW_TEXTURE: Texture2D = preload("res://assets/UI/ArrowUp.svg")
 
 var stat_change_displays: Array[HBoxContainer]
 
+
 func open() -> void:
-	pass
+	for but: BaseButton in exercise_grid.get_children():
+		but.disabled = false
+	focus_button(exercise_grid.get_child(0))
+
 
 func close() -> void:
-	pass
+	for but: BaseButton in exercise_grid.get_children():
+		but.disabled = true
+
 
 func _ready() -> void:
 	if skill_changes_hbox:
@@ -52,37 +58,26 @@ func _ready() -> void:
 		button.name = exercise.name
 		button.text = exercise.name
 		
-		button.mouse_entered.connect(button.grab_focus)
+		button.mouse_entered.connect(focus_button.bind(button))
 		button.focus_entered.connect(_on_exercise_focus_enter.bind(exercise))
 		button.focus_exited.connect(_on_exercise_focus_exit.bind(exercise))
 		button.pressed.connect(_on_exercise_pressed.bind(exercise))
 		button.set_drag_forwarding(_get_exercise_drag_data.bind(exercise), Callable(), Callable())
 		
-		exercise_grid.add_child(button, )
+		exercise_grid.add_child(button)
 		button.owner = owner if owner else self
 	
-	
-	
-	main_stat_vbox.hide()
+	close()
+	main_stat_vbox.modulate.a = 0.0
 
-#{"type": "files", "files": [item.get_metadata(0)], "from": self}
+
+
+
 func _get_exercise_drag_data(at_position: Vector2, exercise: Exercise) -> Variant:
 	var lbl := Label.new()
 	lbl.text = exercise.get_drag_preview()
 	set_drag_preview(lbl)
 	return exercise
-
-
-func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
-	return false
-
-
-func _drop_data(at_position: Vector2, data: Variant) -> void:
-	pass
-
-
-func _get_drag_data(at_position: Vector2) -> Variant:
-	return {}
 
 
 func display_exercise(exercise: Exercise) -> void:
@@ -104,7 +99,12 @@ func display_exercise(exercise: Exercise) -> void:
 			stat_change_displays[i].show()
 			continue
 		stat_change_displays[i].hide()
-	main_stat_vbox.show()
+	main_stat_vbox.modulate.a = 1.0
+
+
+func focus_button(but: BaseButton) -> void:
+	if but and but.visible and not but.button_pressed and not but.has_focus(): 
+		but.grab_focus()
 
 
 func _on_exercise_pressed(exercise: Exercise) -> void:
@@ -117,7 +117,7 @@ func _on_exercise_focus_enter(exercise: Exercise) -> void:
 
 func _on_exercise_focus_exit(exercise: Exercise) -> void:
 	if exercise_label.text == exercise.name:
-		main_stat_vbox.hide()
+		main_stat_vbox.modulate.a = 0.0
 
 
 func _get_minimum_size() -> Vector2:

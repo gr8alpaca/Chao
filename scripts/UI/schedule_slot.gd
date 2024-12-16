@@ -31,6 +31,10 @@ func _drop_data(at_position: Vector2, data: Variant) -> void:
 
 
 func _get_drag_data(at_position: Vector2) -> Variant:
+	if activity:
+		var lbl := Label.new()
+		lbl.text = activity.get_drag_preview()
+		set_drag_preview(lbl)
 	return activity
 
 
@@ -47,10 +51,8 @@ func _draw() -> void:
 	while font_size > 0 and string_size.x > size.x - MARGINS_SIZE:
 		font_size -= 1
 		string_size = font.get_string_size(activity_string, 0, -1, font_size)
-		
-	var draw_pos: Vector2 = (size - string_size)/Vector2(2, 2)
-	#print("SIZE: %01.01v\t|\tDRAW POS: %01.01v" % [ssize, draw_pos])
-	#draw_set_transform(draw_pos)
+	
+	var draw_pos: Vector2 = (size - string_size)/Vector2(2.0, 2.0)  + Vector2(0.0, font.get_ascent(font_size))
 	draw_string_outline(font, draw_pos, activity_string, 0, -1, font_size, FONT_OUTLINE_SIZE, Color.BLACK)
 	draw_string(font, draw_pos, activity_string, 0, -1, font_size)
 
@@ -67,11 +69,15 @@ func set_label_week(week_index: int) -> void:
 func position_label() -> void:
 	label.position = Vector2(0.0, size.y + LABEL_Y_OFFSET)
 
-
+func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_mask&MOUSE_BUTTON_LEFT and event.double_click:
+		activity = null
+		accept_event()
+		
 func _notification(what: int) -> void:
 	match what:
 		NOTIFICATION_RESIZED:
 			position_label()
-
+		
 		NOTIFICATION_PARENTED:
 			label.text = "Week %d" % (get_index() + 1)

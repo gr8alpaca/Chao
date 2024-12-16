@@ -44,9 +44,10 @@ gdscript/warnings/empty_file=0
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/size/always_on_top=true
-window/size/window_width_override=1920
-window/size/window_height_override=1080
-window/stretch/aspect=4
+window/size/window_width_override=480
+window/size/window_height_override=270
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
 
 [editor]
 
@@ -71,6 +72,14 @@ folder_colors={
 theme/default_theme_scale=2.0
 theme/custom="res://theme.tres"
 theme/default_font_multichannel_signed_distance_field=true
+
+[input]
+
+back={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194308,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+]
+}
 
 [layer_names]
 

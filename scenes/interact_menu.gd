@@ -44,7 +44,6 @@ func show_main_menu() -> void:
 
 
 func hide_main_menu() -> void:
-	
 	release_current_focus()
 	name_label_container.close()
 	info_panel_container.close()
@@ -58,7 +57,6 @@ func release_current_focus() -> void:
 	if focus_owner: focus_owner.release_focus()
 
 
-
 func focus_button(control: Control) -> void:
 	if control and control.focus_mode and control.visible and not control.has_focus(): 
 		control.grab_focus()
@@ -66,7 +64,10 @@ func focus_button(control: Control) -> void:
 func _unhandled_key_input(event: InputEvent) -> void:
 	if Input.is_key_pressed(KEY_ESCAPE):
 		self.pet = null
-
+		accept_event()
+	if Input.is_key_pressed(KEY_P):
+		main_menu_active = !main_menu_active
+		accept_event()
 
 func set_pet(val: Pet):
 		if pet == val: return
