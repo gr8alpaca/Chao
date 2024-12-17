@@ -173,7 +173,7 @@ func _notification(what: int) -> void:
 			calculate_delta()
 
 
-func calculate_delta() -> void:
+func calculate_delta() -> void: 
 	var scaled_size: = size * (Vector2.ONE - (base_scale - target_scale)) 
 	match side:
 		SIDE_LEFT: 
@@ -191,6 +191,7 @@ func calculate_delta() -> void:
 	#print("Target Position Delta: %01.01v" % target_position_delta)
 	set_elapsed(elapsed_sec)
 
+
 func get_target_scale() -> Vector2:
 	var tscale: Vector2 = target_scale
 	if target:
@@ -198,7 +199,6 @@ func get_target_scale() -> Vector2:
 		tscale.y = (target.size.y * target.scale.y)/maxf(size.y, 0.01)
 	return tscale
 
-#func get_
 
 func update_pivot() -> void:
 	if not auto_adjust_pivot: return
@@ -263,7 +263,7 @@ func _validate_property(property: Dictionary) -> void:
 			
 		&"side", &"target_scale" when target:
 			property.usage &= ~(PROPERTY_USAGE_EDITOR)
-			
+		
 		&"scale_target_side", &"target_scale_delta",&"base_scale", &"target_scale" when not scale_enabled:
 			property.usage &= ~(PROPERTY_USAGE_EDITOR)
 			

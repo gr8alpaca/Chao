@@ -95,3 +95,10 @@ back={
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+
+[shader_globals]
+
+TIME_SCALE={
+"type": "float",
+"value": 1.0
+}
