@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=9 format=3 uid="uid://d4ixlnscgkmi8"]
+[gd_resource type="Theme" load_steps=10 format=3 uid="uid://d4ixlnscgkmi8"]
 
 [ext_resource type="StyleBox" uid="uid://dgvkljulenyi" path="res://assets/styleboxes/glass_stylebox.tres" id="1_htnmm"]
 [ext_resource type="FontVariation" uid="uid://cd52j3vtw37yc" path="res://assets/BabyGemoyVariation.tres" id="2_10hku"]
@@ -26,11 +26,14 @@ content_margin_bottom = -1.0
 script = ExtResource("2_spswq")
 draw_on_right = false
 
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_vs1ht"]
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8l10f"]
 
 [resource]
 default_base_scale = 2.0
 default_font = ExtResource("2_10hku")
+Button/constants/align_to_largest_stylebox = 1
 Button/styles/disabled = ExtResource("1_htnmm")
 Button/styles/focus = SubResource("StyleBox_vtpsw")
 Button/styles/hover = ExtResource("3_v8s6q")
@@ -42,6 +45,11 @@ DisplayMedium/base_type = &"Label"
 DisplayMedium/font_sizes/font_size = 64
 DisplaySmall/base_type = &"Label"
 DisplaySmall/font_sizes/font_size = 48
+FlatButton/colors/font_hover_color = Color(1, 1, 1, 1)
+FlatButton/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+FlatButton/colors/font_pressed_color = Color(1, 1, 1, 1)
+FlatButton/colors/icon_disabled_color = Color(1, 1, 1, 1)
+FlatButton/icons/icon = SubResource("CompressedTexture2D_vs1ht")
 HeaderDetail/base_type = &"Label"
 HeaderDetail/font_sizes/font_size = 10
 HeaderDetail/styles/normal = SubResource("StyleBoxEmpty_8l10f")

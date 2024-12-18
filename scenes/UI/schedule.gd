@@ -36,10 +36,12 @@ func add_activity(activity: Exercise) -> void:
 			schedule_changed.emit()
 			break
 
+
 func remove_activity(index: int) -> void:
 	slots[index].activity = null
 	schedule_changed.emit()
-	
+
+
 func remove_last_activity() -> void:
 	for i: int in slots.size():
 		i = slots.size() - 1 - i
@@ -47,13 +49,12 @@ func remove_last_activity() -> void:
 			remove_activity((i))
 			break
 
+
 func update_start_button() -> void:
 	for slot: ScheduleSlot in slots:
 		if slot.activity == null:
-			start_week_tweak.get_child(0).disabled = true
 			start_week_tweak.close()
 			return
-	## No need to enable button, is connected to signal...
 	start_week_tweak.open()
 	
 
@@ -86,11 +87,18 @@ func _notification(what: int) -> void:
 	match what:
 		NOTIFICATION_READY:
 			Event.schedule_activity.connect(_on_schedule_activity)
+			if Engine.is_editor_hint():
+				return
+			assert(start_week_tweak != null, "No start week tweak set!")
 			var start_week_button: BaseButton = start_week_tweak.get_child(0)
 			start_week_button.pressed.connect(_on_start_week_pressed)
 			start_week_tweak.close()
-			start_week_tweak.opened.connect(start_week_tweak.get_child(0).set_disabled.bind(false))
-		
+			start_week_tweak.opened.connect(start_week_button.set_disabled.bind(false))
+			start_week_tweak.closing.connect(start_week_button.set_disabled.bind(true))
+			for slot: ScheduleSlot in slots:
+				slot.activity_changed.connect(update_start_button)
+			
+			
 		NOTIFICATION_MOUSE_ENTER when mini_visible:
 			pass
 		

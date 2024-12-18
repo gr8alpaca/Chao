@@ -33,7 +33,10 @@ func _ready() -> void:
 	create_tween().tween_callback(set_modulate.bind(Color.WHITE)).set_delay(0.5)
 	for but: BaseButton in find_children("*", "BaseButton", true, false):
 		but.mouse_entered.connect(focus_button.bind(but))
-
+	
+	var err:= get_node(^"%StartWeek").connect(&"pressed", _on_start_week_pressed)
+	if err: 
+		printerr(error_string(err) + " -  Start Week Button")
 
 func show_main_menu() -> void:
 	const SECTION_DELAY_SEC: float = 0.5
@@ -80,3 +83,6 @@ func set_pet(val: Pet):
 				name_label_container.get_child(0).text = pet.stats.name
 		
 		main_menu_active = (pet != null)
+
+func _on_start_week_pressed() -> void:
+	pass

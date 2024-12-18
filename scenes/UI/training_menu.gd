@@ -99,6 +99,7 @@ func display_exercise(exercise: Exercise) -> void:
 			stat_change_displays[i].show()
 			continue
 		stat_change_displays[i].hide()
+		
 	main_stat_vbox.modulate.a = 1.0
 
 

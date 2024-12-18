@@ -1,8 +1,13 @@
 @tool
 class_name Tweak extends Container
 
+signal opening
 signal opened
+
+signal closing
 signal closed
+
+signal activity_changed(is_active: bool)
 
 const RECT_COLOR := Color(1, 0.411765, 0.705882, 0.5)
 const TARGET_RECT_COLOR := Color(Color.FUCHSIA, 0.5)
@@ -98,8 +103,6 @@ func set_hide_mode(val: int) -> void:
 	if hide_mode == val: return
 	
 	hide_mode = val
-	
-			
 
 
 func set_side(val: Side) -> void:
@@ -107,9 +110,11 @@ func set_side(val: Side) -> void:
 		calculate_delta()
 		set_elapsed(elapsed_sec)
 
+
 func set_active(val: bool) -> void:
 	active = val
 	set_process(true)
+	emit_signal(&"opening" if val else &"closing")
 
 
 func set_target(val: Control) -> void:
