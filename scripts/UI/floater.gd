@@ -3,24 +3,20 @@ class_name Floater extends Container
 
 @export var active: bool = true : set = set_active
 
-
 @export_range(0.0, 100.0, 1.0, "or_greater", "suffix:px") var max_x_distance: float = 0.0:
 	set(val): max_x_distance = val; queue_redraw();
 
 @export_range(0.0, 100.0, 1.0, "or_greater", "suffix:px") var max_y_distance: float = 0.0:
 	set(val): max_y_distance = val ; queue_redraw();
 
-@export_range(0.0, 20.0, 0.05, "suffix:s") var cycle_speed_sec: float = 5.0
-@export_range(0.0, 2.0, 0.02, ) var volatility: float = 1.15
+@export_range(0.05, 20.0, 0.05, "suffix:s") var cycle_speed_sec: float = 7.0
+@export_range(0.05, 2.0, 0.02, ) var volatility: float = 1.25
 
-@export_range(0.0, 90.0, 1.0, "suffix:°") var max_rotation_degrees: float = 0.5
-@export_range(0.0, 20.0, 0.05, "suffix:s") var rotation_cycle_speed_sec: float = 1.0
-
+@export_range(0.0, 90.0, 1.0, "suffix:°", "hide_slider") var max_rotation_deg: float = 0.5
+@export_range(0.05, 20.0, 0.05, "suffix:s") var rotation_cycle_speed_sec: float = 10.0
 
 @export var draw_movement_area : bool = true:
-	set(val):
-		draw_movement_area = val
-		queue_redraw()
+	set(val): draw_movement_area = val; queue_redraw();
 
 var time: float = 0.0
 
@@ -29,17 +25,16 @@ func _process(delta: float) -> void:
 	
 	for c: Control in get_child_controls():
 		var time : float = self.time * TAU
-		
-		var pos:= max_x_distance * Vector2(sin(time / volatility / cycle_speed_sec), cos(time/ cycle_speed_sec)) * Vector2(1.0 ,max_y_distance / max_x_distance)
-		
-		c.position = pos
-		c.rotation_degrees = sin(time / rotation_cycle_speed_sec) * max_rotation_degrees
+		c.position = Vector2(sin(time / volatility / cycle_speed_sec), cos((time)/ cycle_speed_sec + PI/2)) * Vector2(max_x_distance ,max_y_distance)
+		c.rotation_degrees = sin(time / rotation_cycle_speed_sec) * max_rotation_deg
+
 
 func set_active(val: bool) -> void:
 	active = val
 	set_process(val)
 	if not val:
 		_process(-time)
+
 
 func _notification(what: int) -> void:
 	match what:
