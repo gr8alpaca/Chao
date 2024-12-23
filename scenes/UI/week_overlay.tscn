@@ -1,0 +1,124 @@
+[gd_scene load_steps=9 format=3 uid="uid://inyo3kaot6un"]
+
+[ext_resource type="Script" path="res://scripts/UI/floater.gd" id="1_w1gj6"]
+[ext_resource type="Script" path="res://scripts/UI/week_overlay.gd" id="1_wxd8j"]
+[ext_resource type="Script" path="res://scripts/UI/tweak.gd" id="2_see5u"]
+[ext_resource type="PackedScene" uid="uid://c2j5335dvfv8o" path="res://scenes/stat_info.tscn" id="4_4e1qb"]
+[ext_resource type="Script" path="res://scripts/stats.gd" id="5_lbpgh"]
+
+[sub_resource type="Gradient" id="Gradient_1fhh4"]
+offsets = PackedFloat32Array(0, 0.330435, 1)
+colors = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 0.226087, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_t7llu"]
+gradient = SubResource("Gradient_1fhh4")
+width = 128
+height = 128
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 1)
+
+[sub_resource type="Resource" id="Resource_rjacp"]
+resource_local_to_scene = true
+script = ExtResource("5_lbpgh")
+name = &"Garfield"
+fur_color = Color(1, 1, 1, 1)
+life = 100.0
+hunger = 0.0
+energy = 100.0
+stress = 0.0
+stamina = 10.0
+run = 10.0
+fly = 10.0
+swim = 10.0
+power = 10.0
+ranks = {}
+experience = {
+"": 0,
+"experience_fly": 0,
+"experience_power": 0,
+"experience_run": 0,
+"experience_stamina": 0,
+"experience_swim": 0,
+"fly": 0,
+"power": 0,
+"run": 0,
+"stamina": 0,
+"swim": 0
+}
+rank_stamina = 0
+rank_run = 0
+rank_swim = 0
+rank_fly = 0
+rank_power = 0
+experience_stamina = 0
+experience_run = 0
+experience_swim = 0
+experience_fly = 0
+experience_power = 0
+
+[node name="WeekOverlay" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_wxd8j")
+metadata/_edit_lock_ = true
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_t7llu")
+expand_mode = 1
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 38.0
+
+[node name="WeekTweak" type="Container" parent="."]
+layout_mode = 2
+offset_left = 59.1486
+offset_top = 31.38
+offset_right = 292.149
+offset_bottom = 88.38
+script = ExtResource("2_see5u")
+target_scale = Vector2(0.3, 1)
+debug_rect_visible = false
+
+[node name="WeekFloater" type="Container" parent="WeekTweak"]
+layout_mode = 2
+script = ExtResource("1_w1gj6")
+max_x_distance = 8.0
+max_y_distance = 8.0
+max_rotation_deg = 2.0
+
+[node name="WeekLabel" type="Label" parent="WeekTweak/WeekFloater"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Week 1"
+
+[node name="StatsHBox" type="HBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -131.0
+offset_bottom = -77.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
+
+[node name="StatInfo" parent="StatsHBox" instance=ExtResource("4_4e1qb")]
+layout_mode = 2
+stats = SubResource("Resource_rjacp")
+stat_name = &"Test"

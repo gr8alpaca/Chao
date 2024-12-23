@@ -77,7 +77,7 @@ func _get_exercise_drag_data(at_position: Vector2, exercise: Exercise) -> Varian
 	var lbl := Label.new()
 	lbl.text = exercise.get_drag_preview()
 	set_drag_preview(lbl)
-	return exercise
+	return {activity = exercise}
 
 
 func display_exercise(exercise: Exercise) -> void:

@@ -22,12 +22,15 @@ var mini_visible: bool: set = set_mini_visible
 @export var start_week_tweak: Tweak
 
 func open(delay_sec: float = 0.0) -> void:
+	const START_BUTTON_BONUS_DELAY: float = 2.0
 	set_mini_visible(true)
 	set_slots_visible(true, delay_sec)
+	create_tween().tween_callback(update_start_button).set_delay(delay_sec + START_BUTTON_BONUS_DELAY)
 
 func close() -> void:
 	set_slots_visible(false)
 	set_mini_visible(false)
+	update_start_button()
 
 func add_activity(activity: Exercise) -> void:
 	for slot: ScheduleSlot in slots:
@@ -51,6 +54,10 @@ func remove_last_activity() -> void:
 
 
 func update_start_button() -> void:
+	if not tweeners[0].active:
+		start_week_tweak.close()
+		return
+		
 	for slot: ScheduleSlot in slots:
 		if slot.activity == null:
 			start_week_tweak.close()

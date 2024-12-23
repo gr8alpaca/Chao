@@ -26,12 +26,15 @@ func open(delay_sec: float = 0.0) -> void:
 	var cons:= get_cons()
 	for i: int in cons.size():
 		cons[i].open(i * interval_sec + delay_sec)
-
+	for but: BaseButton in get_buttons():
+		but.focus_mode = Control.FOCUS_ALL
+	
 
 func close() -> void:
+	for but: BaseButton in get_buttons():
+		but.focus_mode = Control.FOCUS_NONE
 	for con: Tweak in get_cons():
 		con.close()
-
 
 func _on_button_pressed(but: BaseButton) -> void:
 	var pressed_button: BaseButton = MAIN_BUTTON_GROUP.get_pressed_button()

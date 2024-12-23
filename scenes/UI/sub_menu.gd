@@ -55,7 +55,7 @@ func _on_main_button_toggled(is_toggled: bool, button: BaseButton, tweak: Tweak,
 	tweak.side = enter_side if is_toggled else exit_side
 	tweak.active = is_toggled
 	
-	if not is_toggled and button and button.visible and not button.has_focus():
+	if not is_toggled and button and button.visible and button.focus_mode and not button.has_focus():
 		button.grab_focus()
 	
 	if is_toggled and button.has_focus():

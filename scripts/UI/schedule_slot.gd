@@ -46,20 +46,24 @@ func _process(delta: float) -> void:
 	
 
 func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
-	return data is Exercise
+	return data is Dictionary and "activity" in data
 
 
 func _drop_data(at_position: Vector2, data: Variant) -> void:
-	activity = data
-
+	if data.get("source"):
+		data.source.activity = activity
+	activity = data.activity
+	
 
 func _get_drag_data(at_position: Vector2) -> Variant:
 	if activity:
 		var lbl := Label.new()
 		lbl.text = activity.get_drag_preview()
 		set_drag_preview(lbl)
-	return activity
-
+	return {
+		activity = activity,
+		source = self
+		}
 
 func _draw() -> void:
 	if not activity: return
@@ -88,9 +92,6 @@ func set_activity(val: Exercise) -> void:
 	button.disabled = activity == null
 	queue_redraw()
 	activity_changed.emit()
-	
-		
-
 
 
 func set_label_week(week_index: int) -> void:
@@ -104,7 +105,8 @@ func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_mask&MOUSE_BUTTON_LEFT and event.double_click:
 		activity = null
 		accept_event()
-		
+
+
 func _notification(what: int) -> void:
 	match what:
 		NOTIFICATION_READY when not activity and not Engine.is_editor_hint():

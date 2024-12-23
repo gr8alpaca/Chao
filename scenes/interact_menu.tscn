@@ -39,40 +39,6 @@ grow_vertical = 2
 mouse_filter = 1
 metadata/_edit_lock_ = true
 
-[node name="Floater" type="Container" parent="MainMenu"]
-layout_mode = 0
-offset_left = 1560.0
-offset_top = 852.0
-offset_right = 1837.0
-offset_bottom = 976.0
-script = ExtResource("11_axnr7")
-max_x_distance = 20.0
-max_y_distance = 10.0
-cycle_speed_sec = 7.25
-volatility = 1.26
-rotation_cycle_speed_sec = 10.75
-
-[node name="StartWeekTweak" type="Container" parent="MainMenu/Floater"]
-custom_minimum_size = Vector2(64, 64)
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 4
-script = ExtResource("10_hsmpm")
-side = 2
-hide_mode = 2
-target_scale = Vector2(0.3, 1)
-debug_rect_visible = false
-metadata/_edit_lock_ = true
-
-[node name="StartWeek" type="Button" parent="MainMenu/Floater/StartWeekTweak"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 8
-theme_override_font_sizes/font_size = 48
-text = "Start"
-metadata/_edit_lock_ = true
-
 [node name="MainMenuMargin" type="MarginContainer" parent="MainMenu"]
 layout_mode = 1
 anchors_preset = 15
@@ -133,6 +99,7 @@ size_flags_vertical = 6
 focus_neighbor_left = NodePath(".")
 focus_neighbor_bottom = NodePath("../../FeedCon/Feed")
 focus_next = NodePath("../../FeedCon/Feed")
+focus_mode = 0
 toggle_mode = true
 button_group = ExtResource("4_8dhx7")
 text = "Train
@@ -155,6 +122,7 @@ focus_neighbor_top = NodePath("../../TrainCon/Train")
 focus_neighbor_bottom = NodePath("../../Rest/Rest")
 focus_next = NodePath("../../Rest/Rest")
 focus_previous = NodePath("../../TrainCon/Train")
+focus_mode = 0
 toggle_mode = true
 button_group = ExtResource("4_8dhx7")
 text = "Feed"
@@ -176,6 +144,7 @@ focus_neighbor_top = NodePath("../../FeedCon/Feed")
 focus_neighbor_bottom = NodePath("../../Compete/Compete")
 focus_next = NodePath("../../Compete/Compete")
 focus_previous = NodePath("../../FeedCon/Feed")
+focus_mode = 0
 toggle_mode = true
 button_group = ExtResource("4_8dhx7")
 text = "Rest"
@@ -197,6 +166,7 @@ focus_neighbor_top = NodePath("../../Rest/Rest")
 focus_neighbor_bottom = NodePath("../../Praise/Praise")
 focus_next = NodePath("../../Praise/Praise")
 focus_previous = NodePath("../../Rest/Rest")
+focus_mode = 0
 toggle_mode = true
 button_group = ExtResource("4_8dhx7")
 text = "Compete"
@@ -216,6 +186,7 @@ size_flags_vertical = 6
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath("../../Compete/Compete")
 focus_previous = NodePath("../../Compete/Compete")
+focus_mode = 0
 toggle_mode = true
 button_group = ExtResource("4_8dhx7")
 text = "Praise
@@ -296,7 +267,7 @@ script = ExtResource("4_gaqtc")
 tweeners = [NodePath("ScheduleSlotsHBox/SlotCon1"), NodePath("ScheduleSlotsHBox/SlotCon2"), NodePath("ScheduleSlotsHBox/SlotCon3"), NodePath("ScheduleSlotsHBox/SlotCon4")]
 slots = [NodePath("ScheduleSlotsHBox/SlotCon1/Slot1"), NodePath("ScheduleSlotsHBox/SlotCon2/Slot2"), NodePath("ScheduleSlotsHBox/SlotCon3/Slot3"), NodePath("ScheduleSlotsHBox/SlotCon4/Slot4")]
 targets_container = NodePath("TargetsContainer")
-start_week_tweak = NodePath("../../../Floater/StartWeekTweak")
+start_week_tweak = NodePath("../../../FloaterStartWeek/StartWeekTweak")
 
 [node name="ScheduleSlotsHBox" type="HBoxContainer" parent="MainMenu/MainMenuMargin/MainMenuVBox/ScheduleUI"]
 layout_mode = 2
@@ -406,3 +377,40 @@ size_flags_vertical = 4
 mouse_filter = 2
 border_color = Color(0.918742, 0.67661, 0.324875, 1)
 border_width = 2.0
+
+[node name="FloaterStartWeek" type="Container" parent="MainMenu"]
+layout_mode = 0
+offset_left = 1560.0
+offset_top = 852.0
+offset_right = 1837.0
+offset_bottom = 976.0
+script = ExtResource("11_axnr7")
+max_x_distance = 20.0
+max_y_distance = 10.0
+cycle_speed_sec = 7.25
+volatility = 1.26
+rotation_cycle_speed_sec = 10.75
+metadata/_edit_lock_ = true
+
+[node name="StartWeekTweak" type="Container" parent="MainMenu/FloaterStartWeek"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+script = ExtResource("10_hsmpm")
+active = false
+side = 2
+hide_mode = 2
+target_scale = Vector2(0.3, 1)
+debug_rect_visible = false
+metadata/_edit_lock_ = true
+
+[node name="StartWeek" type="Button" parent="MainMenu/FloaterStartWeek/StartWeekTweak"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_type_variation = &"ButtonLeft"
+theme_override_font_sizes/font_size = 48
+text = "Start"
+metadata/_edit_lock_ = true

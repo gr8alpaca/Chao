@@ -17,6 +17,7 @@ boot_splash/show_image=false
 
 [autoload]
 
+Master="*res://autoload/Master.gd"
 Event="*res://autoload/Event.gd"
 
 [debug]

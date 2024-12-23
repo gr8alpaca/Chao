@@ -213,10 +213,10 @@ func _get_property_list() -> Array[Dictionary]:
 
 
 func _get(property: StringName) -> Variant:
-
+	
 	if "experience_" in property:
 		return get_experience(property.trim_prefix("experience_"), 0)
-
+	
 	if "rank_" in property:
 		return ranks.get(property.trim_prefix("rank_"), 0)
 	

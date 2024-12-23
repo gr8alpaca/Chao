@@ -23,7 +23,6 @@ var main_menu_active: bool:
 @export var schedule_ui: ScheduleUI
 @export var submenu: Control
 
-
 func _init() -> void:
 	modulate.a = 0.0
 
@@ -34,9 +33,8 @@ func _ready() -> void:
 	for but: BaseButton in find_children("*", "BaseButton", true, false):
 		but.mouse_entered.connect(focus_button.bind(but))
 	
-	var err:= get_node(^"%StartWeek").connect(&"pressed", _on_start_week_pressed)
-	if err: 
-		printerr(error_string(err) + " -  Start Week Button")
+	get_node(^"%StartWeek").pressed.connect(_on_start_week_pressed)
+
 
 func show_main_menu() -> void:
 	const SECTION_DELAY_SEC: float = 0.5
@@ -85,4 +83,5 @@ func set_pet(val: Pet):
 		main_menu_active = (pet != null)
 
 func _on_start_week_pressed() -> void:
-	pass
+	main_menu_active = false
+	

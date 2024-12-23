@@ -53,7 +53,7 @@ func _notification(what: int) -> void:
 			for control: Control in get_child_controls():
 				control.position = Vector2.ZERO
 			
-		NOTIFICATION_DRAW when draw_movement_area:
+		NOTIFICATION_DRAW when draw_movement_area and Engine.is_editor_hint():
 			draw_rect(Rect2(-max_x_distance, -max_y_distance, size.x+2*max_x_distance, size.y + 2*max_y_distance), Color(1, 0.412, 0.706, 0.3), false)
 
 

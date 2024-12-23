@@ -20,3 +20,6 @@ var symbol: String
 
 func get_drag_preview() -> String:
 	return symbol + " " + name
+
+func get_stat_changes() -> PackedStringArray:
+	return PackedStringArray()

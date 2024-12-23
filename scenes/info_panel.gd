@@ -5,9 +5,9 @@ class_name InfoPanel extends Control
 
 @export var info_scene: PackedScene = preload("res://scenes/stat_info.tscn"):
 	set(val): info_scene = val if val else preload("res://scenes/stat_info.tscn")
-		
+
 @export var pet: Pet
-		
+
 @export var stats: Stats: set = set_stats
 
 
@@ -18,9 +18,9 @@ func _ready() -> void:
 		info_display.size_flags_vertical = Control.SIZE_EXPAND | Control.SIZE_SHRINK_CENTER
 		info_display.stat_name = prop
 		vbox.add_child(info_display)
-
+	
 	if Engine.is_editor_hint(): return
-
+	
 	Event.interaction_started.connect(_on_interaction_started)
 
 
