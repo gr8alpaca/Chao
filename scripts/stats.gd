@@ -67,7 +67,7 @@ var stress: float = 0.00:
 @export_range(0.0, 999.9, 5.0, "hide_slider")
 var stamina: float = 10.0:
 	set(val):
-		run = val
+		stamina = val
 		changed.emit()
 
 
@@ -125,15 +125,12 @@ func get_grade(stat: StringName) -> String:
 
 #region Experience
 
-@export_storage
-var experience: Dictionary
 
 func get_experience(stat: StringName, default: int = 0) -> int:
-	return experience.get_or_add(stat, default)
+	return get(stat) if stat in self else default
 
 func set_experience(stat: StringName, value: int = 0) -> void:
-	experience[stat] = clampi(value, 0, MAX_EXPERIENCE)
-	
+	set(stat, clampi(value, 0, MAX_EXPERIENCE))
 
 func get_level(stat: StringName, default: int = 0) -> int:
 	return get_experience(stat) / EXPERIENCE_PER_LEVEL

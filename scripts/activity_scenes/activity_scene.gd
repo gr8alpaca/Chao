@@ -1,23 +1,32 @@
 @tool
 class_name ActivityScene extends Node3D
 
-signal activity_finished
+signal apply_stats
 
-var pet: Pet  : set = set_pet
-var activity: Activity
+var pet: Pet: set = set_pet
+var activity: Activity: set = set_activity
 
-func init(pet: Pet, activity: Activity) -> ActivityScene:
+func open(pet: Pet, activity: Activity) -> ActivityScene:
 	assert(pet and activity)
 	self.activity = activity
 	self.pet = pet
+	pet.emit_signal(StateMachine.SIGNAL_STATE, &"sleep")
+	add_child(pet, true)
+	#pet.process_mode = Node.PROCESS_MODE_DISABLED
 	return self
 
-func start() -> void:
+func play() -> void:
 	pass
+
+
+func apply_activity_deltas(act: Activity) -> void:
+	var deltas: Dictionary = ActivityXP.roll_exercise(activity)
+	for stat: StringName in deltas.keys():
+		pet.stats.add_experience(stat, deltas[stat])
 
 
 func set_pet(val: Pet) -> void:
 	pet = val
-	add_child(val, true)
-	if activity.name == &"Rest":
-		pet.emit_signal(StateMachine.SIGNAL_STATE, &"sleep")
+
+func set_activity(val: Activity) -> void:
+	activity = val

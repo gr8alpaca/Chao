@@ -78,8 +78,6 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(real_velocity.x, 0, speed)
 		velocity.z = move_toward(real_velocity.z, 0, speed)
 
-		# var dir: Vector3 = global_position.direction_to(target_position)
-		
 	# print("Floor: %s\t%01.02v\t%01.02v" % [is_on_floor(), velocity, xz_dir])
 	move_and_slide()
 

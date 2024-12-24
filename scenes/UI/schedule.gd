@@ -84,6 +84,14 @@ func _on_schedule_activity(activity: Exercise) -> void:
 func _on_start_week_pressed() -> void:
 	pass
 
+
+func get_activities() -> Array[Activity]:
+	var result: Array[Activity]
+	for i: int in slots.size():
+		result.push_back(slots[i].activity)
+	return result
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_pressed() and event.is_action_pressed(&"back"):
 		remove_last_activity()

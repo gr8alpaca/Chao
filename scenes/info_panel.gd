@@ -30,10 +30,10 @@ func _on_interaction_started(pet: Pet) -> void:
 
 
 func open(delay_sec: float = 0.0) -> void:
-	emit_signal(Animator.SIGNAL_SHOW, delay_sec)
+	pass
 
 func close() -> void:
-	emit_signal(Animator.SIGNAL_HIDE)
+	pass
 
 
 func set_stats(val: Stats) -> void:

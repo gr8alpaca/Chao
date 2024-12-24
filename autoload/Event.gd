@@ -1,8 +1,9 @@
 @tool
 extends Node
 
+signal change_scene(node: Node)
 
-signal scene_changed(scene_node: Node)
+# Interaction Events
 
 signal interaction_started(pet: Pet)
 signal interaction_ended

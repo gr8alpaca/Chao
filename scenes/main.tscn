@@ -5,4 +5,5 @@
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_4bq74")
+packed_scenes = Array[PackedScene]([ExtResource("2_cw876")])
 start_scene = ExtResource("2_cw876")

@@ -1,11 +1,14 @@
 @tool
 class_name Garden extends Node3D
-
+@export var activity_scene: PackedScene
 
 func _ready() -> void:
-	Event.garden_entered.emit(self)
+	return
+	#Event.garden_entered.emit(self)
 
-	
+#func _on_start_week()
+
+
 func get_pets() -> Array[Pet]:
 	var pets: Array[Pet]
 	for child: Node in get_children():

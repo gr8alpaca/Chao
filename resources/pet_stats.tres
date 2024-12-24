@@ -12,31 +12,18 @@ hunger = 0.0
 energy = 100.0
 stress = 0.0
 stamina = 10.0
-run = 10.0
+run = 27.0
 fly = 10.0
 swim = 10.0
 power = 10.0
 ranks = {}
-experience = {
-"": 0,
-"experience_fly": 0,
-"experience_power": 0,
-"experience_run": 0,
-"experience_stamina": 0,
-"experience_swim": 0,
-"fly": 0,
-"power": 0,
-"run": 0,
-"stamina": 0,
-"swim": 0
-}
 rank_stamina = 0
 rank_run = 0
 rank_swim = 0
 rank_fly = 0
 rank_power = 0
-experience_stamina = 0
-experience_run = 0
-experience_swim = 0
-experience_fly = 0
-experience_power = 0
+experience_stamina = 10
+experience_run = 27
+experience_swim = 10
+experience_fly = 10
+experience_power = 10

@@ -15,10 +15,12 @@ var drawn_value: float: set = set_drawn_value
 
 @export var test_add_value: int:
 	set(val):
-
 		add_value(val)
-		
-@export_category("Theme Settings")
+
+@export_range(1.0, 10.0, 0.25, "suffix:segment/sec")
+var fill_speed: float = 1.0
+
+@export_group("Theme Settings")
 
 @export var fill_color: Color = Color.LIGHT_YELLOW:
 	set(val):
@@ -44,7 +46,7 @@ var drawn_value: float: set = set_drawn_value
 		skew_degrees = (val)
 		queue_redraw()
 
-@export_category("Level Text")
+@export_subgroup("Level Text")
 
 @export var level_draw_offset: Vector2 = Vector2(4, 0)
 
@@ -56,17 +58,10 @@ var drawn_value: float: set = set_drawn_value
 
 @export var font_size: int = 20
 @export var text_velocity: Vector2
-@export_range(1.0, 5.0, 0.2, "suffix:sec") var text_duration: float = 2.5
 
+@export_range(1.0, 5.0, 0.2, "suffix:sec") 
+var text_duration: float = 2.5
 
-@export_category("Animation Settings")
-@export var tween_duration: float = 0.75
-@export var tween_trans: Tween.TransitionType = Tween.TRANS_ELASTIC
-@export var tween_ease: Tween.EaseType = Tween.EASE_OUT
-
-
-@export_range(1.0, 10.0, 0.25, "suffix:segment/sec")
-var fill_speed: float = 1.0
 
 
 func _process(delta: float) -> void:
@@ -76,7 +71,7 @@ func _process(delta: float) -> void:
 			return
 		set_process(false)
 		return
-
+	
 	drawn_value = move_toward(drawn_value, value, delta * fill_speed) if drawn_value < value else float(value)
 
 
@@ -91,7 +86,6 @@ func add_value(val: int) -> void:
 
 func set_value(val: int) -> void:
 	value = clampi(val, MIN_VALUE, MAX_VALUE)
-
 	set_process(value != drawn_value)
 
 

@@ -9,7 +9,7 @@ const TRANSITION_TIME_SEC: float = 1.5
 @export var start_scene: PackedScene
 
 var rect: ColorRect
-
+var focus_label: Label 
 
 
 func _ready() -> void:
@@ -22,6 +22,7 @@ func _ready() -> void:
 	if start_scene:
 		enter_scene(start_scene.instantiate())
 	
+	Event.change_scene.connect(change_scene)
 
 func change_scene(node: Node) -> void:
 	if (get_child_count() and get_child(0) == node) or Engine.is_editor_hint(): 
@@ -61,6 +62,10 @@ func set_scenes(val: Array[PackedScene]) -> void:
 	packed_scenes = val
 	
 
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_pressed() and not event.is_echo() and Input.is_key_pressed(KEY_9):
+		focus_label.visible = !focus_label.visible
+
 func create_canvas() -> void:
 	var canvas: CanvasLayer = CanvasLayer.new()
 	canvas.layer = 100
@@ -71,12 +76,12 @@ func create_canvas() -> void:
 	canvas.add_child(rect)
 	
 	if not Engine.is_editor_hint():
-		var focus_label: Label = Label.new()
+		focus_label = Label.new()
 		canvas.add_child(focus_label)
 		focus_label.position += Vector2(12, 12)
-		get_window().gui_focus_changed.connect(_on_gui_focus_changed.bind(focus_label))
+		get_window().gui_focus_changed.connect(_on_gui_focus_changed)
 		
 	add_child(canvas, false, INTERNAL_MODE_FRONT)
 
-func _on_gui_focus_changed(control: Control, lbl: Label) -> void:
-	lbl.text = "Current Focus: %s" % (control.name if control else "None")
+func _on_gui_focus_changed(control: Control) -> void:
+	focus_label.text = "Current Focus: %s" % (control.name if control else "None")

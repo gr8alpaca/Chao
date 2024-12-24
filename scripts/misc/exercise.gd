@@ -20,6 +20,6 @@ var power: int = 0
 ## Does NOT include fatigue!
 func get_stat_changes() -> PackedStringArray:
 	var stat_changes: PackedStringArray
-	for stat: StringName in [&"run", &"swim", &"fly", &"power"]:
+	for stat: StringName in [&"fatigue", &"run", &"swim", &"fly", &"power"]:
 		if get(stat) != 0: stat_changes.push_back(stat)
 	return stat_changes

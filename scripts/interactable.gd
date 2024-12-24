@@ -101,10 +101,6 @@ func _notification(what: int) -> void:
 			if parent.has_meta(GROUP):
 				parent.remove_meta(GROUP)
 
-			remove_and_disconect(parent, SIGNAL_ENABLED, set_enabled)
-			remove_and_disconect(parent, SIGNAL_INTERACTION_STARTED, _on_interaction_started)
-			remove_and_disconect(parent, SIGNAL_INTERACTION_ENDED, _on_interaction_ended)
-
 
 func add_and_connect(node: Node, signal_name: StringName, arguments: Array[Dictionary]=[], callable: Callable = Callable()) -> void:
 	if not node.has_user_signal(signal_name):

@@ -84,4 +84,8 @@ func set_pet(val: Pet):
 
 func _on_start_week_pressed() -> void:
 	main_menu_active = false
-	
+	pet.get_parent().remove_child(pet)
+	var activity_handler: ActivitySceneHandler = ActivitySceneHandler.new()
+	activity_handler.open(pet, schedule_ui.get_activities())
+	activity_handler.ready.connect(activity_handler.advance_week, CONNECT_DEFERRED)
+	Event.change_scene.emit(activity_handler)
