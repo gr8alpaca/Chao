@@ -2,6 +2,8 @@
 extends Node
 
 
+signal scene_changed(scene_node: Node)
+
 signal interaction_started(pet: Pet)
 signal interaction_ended
 

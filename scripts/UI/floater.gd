@@ -19,12 +19,18 @@ class_name Floater extends Container
 	set(val): draw_movement_area = val; queue_redraw();
 
 var time: float = 0.0
+var time_offset = 0.0
+
+func _init(max_x: float = 0.0, max_y: float = 0.0) -> void:
+	max_x_distance = max_x
+	max_y_distance = max_y
+	time_offset = randf()*TAU
 
 func _process(delta: float) -> void:
 	time += delta
 	
 	for c: Control in get_child_controls():
-		var time : float = self.time * TAU
+		var time : float = self.time * TAU + time_offset
 		c.position = Vector2(sin(time / volatility / cycle_speed_sec), cos((time)/ cycle_speed_sec + PI/2)) * Vector2(max_x_distance ,max_y_distance)
 		c.rotation_degrees = sin(time / rotation_cycle_speed_sec) * max_rotation_deg
 

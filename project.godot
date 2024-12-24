@@ -11,13 +11,12 @@ config_version=5
 [application]
 
 config/name="LudemDare56"
-run/main_scene="res://scenes/garden.tscn"
+run/main_scene="res://scenes/main.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 boot_splash/show_image=false
 
 [autoload]
 
-Master="*res://autoload/Master.gd"
 Event="*res://autoload/Event.gd"
 
 [debug]
@@ -45,8 +44,8 @@ gdscript/warnings/empty_file=0
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/size/always_on_top=true
-window/size/window_width_override=480
-window/size/window_height_override=270
+window/size/window_width_override=1920
+window/size/window_height_override=1080
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
