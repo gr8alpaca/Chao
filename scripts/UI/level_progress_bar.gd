@@ -92,10 +92,10 @@ func set_value(val: int) -> void:
 func level_up() -> void:
 	clear()
 	level_hit.emit()
-	var text_pop := TextPop.new().set_fade(TextPop.FADE_NORMAL | TextPop.FADE_COLOR).set_fs(font_size).set_alt_col(text_color) \
-	.set_pos(Vector2(size.x, 0) + level_draw_offset).set_txt("Level Up").set_vel(text_velocity)
-	add_child(text_pop)
-	text_pop.start(text_duration, )
+	#var text_pop := TextPop.new().set_fade(TextPop.FADE_NORMAL | TextPop.FADE_COLOR).set_fs(font_size).set_alt_col(text_color) \
+	#.set_pos(Vector2(size.x, 0) + level_draw_offset).set_txt("Level Up").set_vel(text_velocity)
+	#add_child(text_pop)
+	#text_pop.start(text_duration, )
 
 
 func clear() -> void:

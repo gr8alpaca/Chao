@@ -5,46 +5,64 @@
 [ext_resource type="Script" path="res://scripts/UI/floater.gd" id="3_uvx0j"]
 [ext_resource type="Script" path="res://scripts/UI/level_progress_bar.gd" id="3_xil7a"]
 
-[node name="StatInfo" type="VBoxContainer" node_paths=PackedStringArray("name_label", "value_label", "value_delta_label", "level_label", "bar")]
+[node name="StatInfo" type="Control" node_paths=PackedStringArray("name_label", "value_label", "value_delta_label", "level_label", "bar")]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 236.0
+offset_bottom = 54.0
+mouse_filter = 1
 script = ExtResource("1_p1ri4")
 stat_name = &"test"
 stats = ExtResource("2_vtmr3")
-name_label = NodePath("HBoxContainer/Speed")
-value_label = NodePath("HBoxContainer/Value")
-value_delta_label = NodePath("HBoxContainer/Value/Floater/ValueDelta")
-level_label = NodePath("LevelsHBox/Level")
-bar = NodePath("LevelsHBox/LevelProgressBar")
+name_label = NodePath("StatInfo/HBoxContainer/StatName")
+value_label = NodePath("StatInfo/HBoxContainer/Value")
+value_delta_label = NodePath("StatInfo/HBoxContainer/Value/Floater/ValueDelta")
+level_label = NodePath("StatInfo/LevelsHBox/Level")
+bar = NodePath("StatInfo/LevelsHBox/LevelProgressBar")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="StatInfo" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="StatInfo"]
 layout_mode = 2
 
-[node name="Speed" type="Label" parent="HBoxContainer"]
+[node name="StatName" type="Label" parent="StatInfo/HBoxContainer"]
 layout_mode = 2
 theme_type_variation = &"HeaderLarge"
 text = "Test"
 
-[node name="Seperator2" type="Control" parent="HBoxContainer"]
+[node name="Seperator2" type="Control" parent="StatInfo/HBoxContainer"]
 custom_minimum_size = Vector2(16, 0)
 layout_mode = 2
 
-[node name="Value" type="Label" parent="HBoxContainer"]
+[node name="Value" type="Label" parent="StatInfo/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"HeaderLarge"
 text = "0000"
 horizontal_alignment = 2
 
-[node name="Floater" type="Container" parent="HBoxContainer/Value"]
-layout_mode = 0
-offset_top = -40.0
-offset_right = 91.0
-offset_bottom = -6.0
+[node name="Floater" type="Container" parent="StatInfo/HBoxContainer/Value"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -92.0
+offset_top = -50.0
+offset_bottom = -16.0
+grow_horizontal = 0
 script = ExtResource("3_uvx0j")
-max_x_distance = 4.0
-max_y_distance = 2.0
+max_x_distance = 5.0
+max_y_distance = 3.0
+draw_movement_area = false
 metadata/_edit_lock_ = true
 
-[node name="ValueDelta" type="Label" parent="HBoxContainer/Value/Floater"]
+[node name="ValueDelta" type="Label" parent="StatInfo/HBoxContainer/Value/Floater"]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -55,22 +73,22 @@ text = "-  0"
 horizontal_alignment = 2
 metadata/_edit_lock_ = true
 
-[node name="LevelsHBox" type="HBoxContainer" parent="."]
+[node name="LevelsHBox" type="HBoxContainer" parent="StatInfo"]
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="Level" type="Label" parent="LevelsHBox"]
+[node name="Level" type="Label" parent="StatInfo/LevelsHBox"]
 layout_mode = 2
 size_flags_vertical = 0
 theme_type_variation = &"HeaderDetail"
 text = "LV.  0"
 vertical_alignment = 1
 
-[node name="Seperator" type="Control" parent="LevelsHBox"]
+[node name="Seperator" type="Control" parent="StatInfo/LevelsHBox"]
 custom_minimum_size = Vector2(8, 0)
 layout_mode = 2
 
-[node name="LevelProgressBar" type="Control" parent="LevelsHBox"]
+[node name="LevelProgressBar" type="Control" parent="StatInfo/LevelsHBox"]
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("3_xil7a")

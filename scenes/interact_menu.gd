@@ -51,8 +51,8 @@ func hide_main_menu() -> void:
 	schedule_ui.close()
 	main_buttons.close()
 	submenu.close()
-	
-	
+
+
 func release_current_focus() -> void:
 	var focus_owner:= get_window().gui_get_focus_owner()
 	if focus_owner: focus_owner.release_focus()
@@ -62,6 +62,7 @@ func focus_button(control: Control) -> void:
 	if control and control.focus_mode and control.visible and not control.has_focus(): 
 		control.grab_focus()
 
+
 func _unhandled_key_input(event: InputEvent) -> void:
 	if Input.is_key_pressed(KEY_ESCAPE):
 		self.pet = null
@@ -69,6 +70,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	if Input.is_key_pressed(KEY_P):
 		main_menu_active = !main_menu_active
 		accept_event()
+
 
 func set_pet(val: Pet):
 		if pet == val: return

@@ -165,12 +165,14 @@ func _notification(what: int) -> void:
 			set_elapsed(elapsed_sec)
 		
 		NOTIFICATION_PRE_SORT_CHILDREN:
-			size.x = maxf(size.x, get_combined_minimum_size().x)
-			size.y = maxf(size.y, get_combined_minimum_size().y)
+			var new_size: Vector2 = Vector2(maxf(size.x, get_combined_minimum_size().x), maxf(size.y, get_combined_minimum_size().y))
+			set_size.call_deferred(new_size)
+			#size.x = maxf(size.x, get_combined_minimum_size().x)
+			#size.y = maxf(size.y, get_combined_minimum_size().y)
 			
 			for child: Control in get_child_controls():
-				child.size.x = size.x
-				child.size.y = size.y
+				child.size.x = new_size.x
+				child.size.y = new_size.y
 			
 		NOTIFICATION_SORT_CHILDREN:
 			for child: Control in get_child_controls():

@@ -7,8 +7,11 @@ enum {FADE_NONE, FADE_NORMAL, FADE_COLOR}
 @export var velocity: Vector2:
 	set(val):
 		velocity = val
-		set_process(velocity != Vector2.ZERO)
+		
 
+var is_started: bool:
+	set(val):
+		is_started = val
 
 var time: float = 1.5:
 	get: return maxf(time, 0.5)
@@ -29,20 +32,18 @@ func set_time(time: float) -> TextPop:
 	return self
 
 func _process(delta: float) -> void:
-	if not velocity:
-		set_process(false)
-		return
-
 	if not visible or Engine.is_editor_hint():
 		return
 	
-	position += velocity
+	position += velocity*delta
 
 func start(time: float = self.time, is_one_shot: bool = true) -> void:
 	const ALPHA_SECONDS: float = 0.4
 	const COLOR_TWEEN_SECONDS: float = 0.8
 
 	self.time = time
+	
+	set_process(velocity != Vector2())
 	
 	if fade & FADE_NORMAL:
 		var tw: Tween = create_tween().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_SINE)

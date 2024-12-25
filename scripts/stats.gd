@@ -45,9 +45,9 @@ var hunger: float = 0.0:
 
 
 @export_range(0.0, 100.0, 1.0, "suffix:%")
-var energy: float = 100.0:
+var fatigue: float = 0.0:
 	set(val):
-		energy = val
+		fatigue = val
 		changed.emit()
 
 

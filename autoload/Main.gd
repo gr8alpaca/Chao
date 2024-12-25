@@ -50,7 +50,6 @@ func exit_scene() -> void:
 	tw.tween_property(rect, ^"modulate:a", 1.0, (1.0 - rect.modulate.a) * TRANSITION_TIME_SEC)
 	tw.tween_callback(remove_child.bind(get_child(0)))
 	tw.tween_callback(get_child(0).free)
-	
 
 
 func set_scenes(val: Array[PackedScene]) -> void:
@@ -60,7 +59,7 @@ func set_scenes(val: Array[PackedScene]) -> void:
 		if val.count(val[i]) > 1:
 			val.remove_at(i)
 	packed_scenes = val
-	
+
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_pressed() and not event.is_echo() and Input.is_key_pressed(KEY_9):
@@ -79,6 +78,7 @@ func create_canvas() -> void:
 		focus_label = Label.new()
 		canvas.add_child(focus_label)
 		focus_label.position += Vector2(12, 12)
+		focus_label.modulate.a = 0.4
 		get_window().gui_focus_changed.connect(_on_gui_focus_changed)
 		
 	add_child(canvas, false, INTERNAL_MODE_FRONT)

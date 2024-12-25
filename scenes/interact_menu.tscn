@@ -13,6 +13,7 @@
 [ext_resource type="Script" path="res://scripts/UI/floater.gd" id="11_axnr7"]
 
 [node name="InteractMenu" type="Control" node_paths=PackedStringArray("name_label_container", "main_buttons", "info_panel_container", "stat_panel", "schedule_ui", "submenu")]
+modulate = Color(1, 1, 1, 0)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -97,8 +98,10 @@ custom_minimum_size = Vector2(256, 64)
 layout_mode = 2
 size_flags_vertical = 6
 focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../../Praise/Praise")
 focus_neighbor_bottom = NodePath("../../FeedCon/Feed")
 focus_next = NodePath("../../FeedCon/Feed")
+focus_previous = NodePath("../../Praise/Praise")
 focus_mode = 0
 toggle_mode = true
 button_group = ExtResource("4_8dhx7")
@@ -185,6 +188,8 @@ layout_mode = 2
 size_flags_vertical = 6
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath("../../Compete/Compete")
+focus_neighbor_bottom = NodePath("../../TrainCon/Train")
+focus_next = NodePath("../../TrainCon/Train")
 focus_previous = NodePath("../../Compete/Compete")
 focus_mode = 0
 toggle_mode = true

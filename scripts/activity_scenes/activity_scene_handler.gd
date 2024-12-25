@@ -48,7 +48,6 @@ func apply_activity_deltas() -> void:
 	var deltas: Dictionary = ActivityXP.roll_exercise(queue[index])
 	for stat: StringName in deltas.keys():
 		pet.stats.add_experience(stat, deltas[stat])
-	
 
 
 func remove_current_scene() -> void:
@@ -65,5 +64,10 @@ func _on_next_week_pressed() -> void:
 	advance_week()
 
 func _on_overlay_opened() -> void:
-	apply_activity_deltas()
+	const STAT_CHANGE_DELAY: float = 0.5
+	const BUTTON_ACTIVIATION_DELAY: float = 1.0
+	var tw: Tween = create_tween()
+	tw.tween_interval(STAT_CHANGE_DELAY)
+	tw.tween_callback(apply_activity_deltas)
+	tw.tween_interval(BUTTON_ACTIVIATION_DELAY + STAT_CHANGE_DELAY)
 	overlay.set_button_active(true)
