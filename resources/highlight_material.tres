@@ -1,7 +1,7 @@
 [gd_resource type="StandardMaterial3D" format=3 uid="uid://cj52sut2j38yc"]
 
 [resource]
-resource_local_to_scene = true
+resource_name = "HighlightMaterial"
 transparency = 4
 albedo_color = Color(1, 1, 1, 0)
 emission_enabled = true

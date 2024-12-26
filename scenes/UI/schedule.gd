@@ -76,14 +76,24 @@ func set_slots_visible(slot_visible: bool, delay_sec: float = 0.0) -> void:
 			tween_container.open(delay_sec)
 		else:
 			tween_container.close()
-	
-	
+
+
 func _on_schedule_activity(activity: Exercise) -> void:
 	add_activity(activity)
-	
+
+
 func _on_start_week_pressed() -> void:
 	pass
 
+func _on_start_week_closing(start_week_button: BaseButton) -> void:
+	start_week_button.disabled = true
+	if start_week_button.has_focus(): 
+		start_week_button.release_focus()
+	start_week_button.focus_mode = Control.FOCUS_NONE
+	
+func _on_start_week_opened(start_week_button: BaseButton) -> void:
+	start_week_button.disabled = false
+	start_week_button.focus_mode = Control.FOCUS_ALL
 
 func get_activities() -> Array[Activity]:
 	var result: Array[Activity]
@@ -108,8 +118,8 @@ func _notification(what: int) -> void:
 			var start_week_button: BaseButton = start_week_tweak.get_child(0)
 			start_week_button.pressed.connect(_on_start_week_pressed)
 			start_week_tweak.close()
-			start_week_tweak.opened.connect(start_week_button.set_disabled.bind(false))
-			start_week_tweak.closing.connect(start_week_button.set_disabled.bind(true))
+			start_week_tweak.opened.connect(_on_start_week_opened.bind(start_week_button))
+			start_week_tweak.closing.connect(_on_start_week_closing.bind(start_week_button))
 			for slot: ScheduleSlot in slots:
 				slot.activity_changed.connect(update_start_button)
 			

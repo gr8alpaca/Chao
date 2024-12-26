@@ -1,5 +1,5 @@
 @tool
-extends PetState
+class_name PetStateIdle extends PetState
 
 @export_range(0.0, 10.0, 0.25, "suffix:secs")
 var wait_time_sec_min: float = 1.0

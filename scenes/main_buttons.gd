@@ -20,7 +20,9 @@ func _ready() -> void:
 		buttons[i].focus_previous = buttons[i].focus_neighbor_top
 		buttons[i].focus_neighbor_bottom = buttons[i].get_path_to(buttons[(i+1) % buttons.size()])
 		buttons[i].focus_next = buttons[i].focus_neighbor_bottom
-		
+		buttons[i].material = preload("res://resources/materials/float_material.tres").duplicate()
+		buttons[i].material.set_shader_parameter(&"time_offset", randf() * TAU )
+		buttons[i].material.set_shader_parameter(&"max_distance", Vector2(16.0, 8.0) )
 
 func open(delay_sec: float = 0.0) -> void:
 	var cons:= get_cons()

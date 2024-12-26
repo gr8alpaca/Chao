@@ -1,6 +1,6 @@
 # 
 @tool
-extends PetState
+class_name PetStateTPose extends PetState
 
 # This state does nothing except stop movement.
 

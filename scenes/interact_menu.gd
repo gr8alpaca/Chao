@@ -52,14 +52,15 @@ func hide_main_menu() -> void:
 	main_buttons.close()
 	submenu.close()
 
-
+#
 func release_current_focus() -> void:
+	if not is_inside_tree(): return
 	var focus_owner:= get_window().gui_get_focus_owner()
 	if focus_owner: focus_owner.release_focus()
 
 
 func focus_button(control: Control) -> void:
-	if control and control.focus_mode and control.visible and not control.has_focus(): 
+	if control and control.focus_mode and control.visible and control.is_inside_tree() and not control.has_focus(): 
 		control.grab_focus()
 
 

@@ -1,6 +1,6 @@
 # 
 @tool
-extends PetState
+class_name PetStateInteraction extends PetState
 
 
 @export_range(0.1, 2.0, 0.1, "suffix:secs")
@@ -43,4 +43,3 @@ func set_pet(val: Pet) -> void:
 	super(val)
 	pet.connect(Interactable.SIGNAL_INTERACTION_STARTED, _on_interaction_started)
 	pet.connect(Interactable.SIGNAL_INTERACTION_ENDED, _on_interaction_ended)
-

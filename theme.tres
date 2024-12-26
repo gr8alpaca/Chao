@@ -1,9 +1,8 @@
-[gd_resource type="Theme" load_steps=10 format=3 uid="uid://d4ixlnscgkmi8"]
+[gd_resource type="Theme" load_steps=9 format=3 uid="uid://d4ixlnscgkmi8"]
 
 [ext_resource type="StyleBox" uid="uid://dgvkljulenyi" path="res://assets/styleboxes/glass_stylebox.tres" id="1_htnmm"]
 [ext_resource type="FontVariation" uid="uid://cd52j3vtw37yc" path="res://assets/BabyGemoyVariation.tres" id="2_10hku"]
 [ext_resource type="Script" path="res://scripts/UI/stylebox_pointer.gd" id="2_spswq"]
-[ext_resource type="StyleBox" uid="uid://dgcsntx08vwt1" path="res://assets/styleboxes/panel.tres" id="3_ai7s4"]
 [ext_resource type="StyleBox" uid="uid://df7erurwmvuu2" path="res://assets/styleboxes/glass_stylebox_bright.tres" id="3_v8s6q"]
 
 [sub_resource type="StyleBox" id="StyleBox_vtpsw"]
@@ -66,7 +65,7 @@ MarginContainer/constants/margin_left = 4
 MarginContainer/constants/margin_right = 4
 MarginContainer/constants/margin_top = 4
 Panel/styles/panel = ExtResource("1_htnmm")
-PanelContainer/styles/panel = ExtResource("3_ai7s4")
+PanelContainer/styles/panel = ExtResource("1_htnmm")
 SchedulePanel/base_type = &"Panel"
 SchedulePanel/styles/panel = ExtResource("1_htnmm")
 StatChangeLabel/base_type = &"Label"

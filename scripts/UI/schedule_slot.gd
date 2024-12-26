@@ -21,6 +21,7 @@ func _init() -> void:
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	label.text = "Week 1"
 	
+	
 	add_child(label, false, INTERNAL_MODE_FRONT)
 	label.resized.connect(position_label, CONNECT_DEFERRED)
 	
@@ -33,13 +34,17 @@ func _init() -> void:
 	button.flat = true
 	button.pressed.connect(set_activity.bind(null))
 	button.focus_mode = Control.FOCUS_NONE
+	button.position = -button.get_combined_minimum_size()/2.0
 
+	for item: CanvasItem in [label, button, self]:
+		item.material = preload("res://resources/materials/float_material.tres").duplicate()
+		item.material.set_shader_parameter(&"time_offset", randf() * TAU )
 
 
 func _process(delta: float) -> void:
 	const MAX_FLOAT_DISTANCE: float = 4.0
 	const CYCLE_TIME_SECS: float = 5.0
-	
+	return
 	var time:= Time.get_ticks_msec() / 1000.0 * TAU / CYCLE_TIME_SECS + time_offset * CYCLE_TIME_SECS
 	button.modulate.a += delta
 	button.position = Vector2(sin(time), cos(1.2*time)) * MAX_FLOAT_DISTANCE - button.size/2.0

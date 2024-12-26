@@ -10,7 +10,6 @@ signal closed
 
 @export var next_week_button: BaseButton
 
-
 @export var button_active: bool = false: set = set_button_active 
 
 
@@ -20,7 +19,9 @@ func _ready() -> void:
 	%NextWeekButton.pressed.connect(_on_pressed.bind(%NextWeekButton))
 	$NextWeekTweak.opened.connect(%NextWeekButton.grab_focus, CONNECT_DEFERRED)
 	color_rect.visible = !Engine.is_editor_hint()
-
+	
+	for child: Node in get_children():
+		if child is Tweak: child.close()
 
 func open(activity: Activity, stats: Stats, week_index: int) -> void:
 	const OPEN_DELAY: float = 0.4

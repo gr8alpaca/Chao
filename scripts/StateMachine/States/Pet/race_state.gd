@@ -1,6 +1,6 @@
 # 
 @tool
-extends PetState
+class_name PetStateRace extends PetState
 
 
 var path_points: PackedVector3Array

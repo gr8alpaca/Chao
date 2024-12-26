@@ -13,4 +13,3 @@ class_name Model extends Node3D
 		for child in get_children():
 			if child is MeshInstance3D: return child.get_indexed(^"mesh:material")
 		return null
-	

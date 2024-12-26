@@ -73,17 +73,17 @@ func set_stats(val: Stats) -> void:
 
 func _on_level_up() -> void:
 	level_label.text = "LV. %2.0d" % (value_label.text.to_int() / Stats.EXPERIENCE_PER_LEVEL)
-	const VELOCITY: Vector2 = Vector2(8, -32)
+	const VELOCITY: Vector2 = Vector2(-8, -32)
 	const DURATION_SEC: float = 1.3
-	var text_pop := TextPop.new().set_fade(TextPop.FADE_NORMAL | TextPop.FADE_COLOR).set_fs(level_up_font_size).set_alt_col(POSITIVE_COLOR) \
-	.set_pos(Vector2(size.x + 8, (size.y - get_theme_default_font().get_height(level_up_font_size))/2.0)).set_txt("Level Up").set_vel(VELOCITY)
+	
+	var ss:= Vector2(- get_theme_default_font().get_string_size("Level Up",0,-1,level_up_font_size).x - 8 , (size.y - get_theme_default_font().get_height(level_up_font_size))/2.0)
+	var text_pop := TextPop.new().set_fade(TextPop.FADE_NORMAL | TextPop.FADE_COLOR).set_fs(level_up_font_size).set_alt_col(POSITIVE_COLOR).set_pos(ss).set_txt("Level Up").set_vel(VELOCITY)
 	add_child(text_pop)
 	text_pop.start(DURATION_SEC)
 
 
 func display_xp_change(delta: int) -> void:
 	const MODULATE_TWEEN_DURATION_SEC: float = 0.67
-	
 	const PRE_ANIMATION_DELAY: float = 1.0
 	
 	
@@ -101,12 +101,16 @@ func display_xp_change(delta: int) -> void:
 	# TEXT SPEED HERE
 	tw.tween_method(set_value_delta_text, delta, 0, abs(delta) / maxf(bar.fill_speed, 1.0)) 
 	
-	tw.tween_property(value_delta_label, ^"modulate:a", 0.0, MODULATE_TWEEN_DURATION_SEC)
+	#tw.tween_property(value_delta_label, ^"modulate:a", 0.0, MODULATE_TWEEN_DURATION_SEC)
 	
 
 func set_value_delta_text(delta: int) -> void:
-	value_delta_label.text = ("+" if delta > 0 else "-") + " %2.0d" % abs(delta)
 	value_label.text = "%04.0f" % (experience - delta)
+	if delta:
+		value_delta_label.text = ("+" if delta > 0 else "-") + " %2.0d" % abs(delta)
+	else:
+		#value_delta_label.text = ""
+		value_delta_label.modulate.a = 0.0
 
 
 func get_experience() -> int:

@@ -19,9 +19,11 @@ func _ready() -> void:
 		info_display.stat_name = prop
 		vbox.add_child(info_display)
 	
-	if Engine.is_editor_hint(): return
-	
 	Event.interaction_started.connect(_on_interaction_started)
+	
+	propagate_call(&"set_use_parent_material", [true])
+	use_parent_material = false
+	material.set_shader_parameter(&"time_offset", randf() * TAU)
 
 
 func _on_interaction_started(pet: Pet) -> void:

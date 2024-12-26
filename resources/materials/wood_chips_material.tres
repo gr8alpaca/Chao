@@ -1,0 +1,22 @@
+[gd_resource type="StandardMaterial3D" load_steps=6 format=3 uid="uid://cpjrr022f3oyn"]
+
+[ext_resource type="Texture2D" uid="uid://fitq1ohewxfp" path="res://assets/WoodChips001_1K-PNG/WoodChips001_1K-PNG_Color.png" id="1_by8ab"]
+[ext_resource type="Texture2D" uid="uid://lfmw5pwwf4uy" path="res://assets/WoodChips001_1K-PNG/WoodChips001_1K-PNG_AmbientOcclusion.png" id="2_37fce"]
+[ext_resource type="Texture2D" uid="uid://cdajqvyf82to7" path="res://assets/WoodChips001_1K-PNG/WoodChips001_1K-PNG_Displacement.png" id="3_4qcgq"]
+[ext_resource type="Texture2D" uid="uid://ditlyeyssfpoe" path="res://assets/WoodChips001_1K-PNG/WoodChips001_1K-PNG_NormalGL.png" id="4_pm65n"]
+[ext_resource type="Texture2D" uid="uid://bwqytrnq0iu3u" path="res://assets/WoodChips001_1K-PNG/WoodChips001_1K-PNG_Roughness.png" id="5_8l2ix"]
+
+[resource]
+albedo_texture = ExtResource("1_by8ab")
+metallic_specular = 0.25
+roughness_texture = ExtResource("5_8l2ix")
+normal_enabled = true
+normal_texture = ExtResource("4_pm65n")
+ao_enabled = true
+ao_texture = ExtResource("2_37fce")
+heightmap_scale = 3.0
+heightmap_texture = ExtResource("3_4qcgq")
+uv1_scale = Vector3(0.1, 0.1, 0.1)
+uv1_triplanar = true
+uv1_triplanar_sharpness = 15.2297
+uv1_world_triplanar = true

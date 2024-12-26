@@ -1,6 +1,6 @@
 # 
 @tool
-extends PetState
+class_name PetStateSleep extends PetState
 
 var text_particles: TextParticles
 

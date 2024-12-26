@@ -9,17 +9,6 @@ signal state_changed(old_state: State, new_state: State)
 
 @export_category("States")
 @export var state_resources: Array[State]
-@export var add_resource_by_script: Script:
-	set(val):
-		if val and val.can_instantiate():
-			var instance: Object = val.new()
-			if not instance is State:
-				printerr("You can only add scripts that extend 'State' to State Machine.")
-				return
-			state_resources += [instance as State]
-			notify_property_list_changed()
-
-
 @export var initial_state_name: String
 
 @export_category("State References")
@@ -59,7 +48,10 @@ func _set_current_state(new_state: State) -> void:
 		state_changed.emit(old_state, current_state)
 
 func _ready() -> void:
-	if Engine.is_editor_hint(): return
+	if Engine.is_editor_hint(): 
+		set_process_input(false)
+		return
+		
 	var parent: Node = get_parent()
 	
 	if not parent.is_node_ready():
@@ -113,15 +105,14 @@ func _on_parallel_ended(state: State) -> void:
 
 #endregion Signals
 
-
 #region Updates
 
+# Needs to be updated by host manually...
+func update_physics_process(delta: float) -> void:
+	if current_state: current_state.update_physics_process(delta)
 
 func _process(delta: float) -> void:
 	if current_state: current_state.update_process(delta)
-
-func _physics_process(delta: float) -> void:
-	if current_state: current_state.update_physics_process(delta)
 
 func on_input(event: InputEvent) -> void:
 	if current_state: current_state.on_input(event)
@@ -144,15 +135,14 @@ func on_focus_entered() -> void:
 func on_focus_exited() -> void:
 	if current_state: current_state.on_focus_exited()
 
-
 #endregion
 
 func _notification(what: int) -> void:
 	match what:
-		NOTIFICATION_PARENTED:
+		NOTIFICATION_PARENTED when not Engine.is_editor_hint():
 			add_to_group(GROUP)
 			get_parent().set_meta(GROUP, self)
-		NOTIFICATION_EXIT_TREE:
+		NOTIFICATION_EXIT_TREE when get_parent().has_meta(GROUP):
 			get_parent().remove_meta(GROUP)
 
 

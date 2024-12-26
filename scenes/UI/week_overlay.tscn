@@ -123,6 +123,7 @@ active = false
 side = 2
 target_scale = Vector2(0.3, 1)
 debug_rect_visible = false
+metadata/_edit_lock_ = true
 
 [node name="ActivityFloater" type="Container" parent="ActivityTweak"]
 layout_mode = 2
@@ -145,8 +146,8 @@ anchors_preset = -1
 anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -556.0
-offset_right = -320.0
+offset_left = -332.0
+offset_right = -96.0
 grow_horizontal = 0
 grow_vertical = 2
 script = ExtResource("2_see5u")
@@ -169,8 +170,8 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -496.0
-offset_top = -184.0
+offset_left = -304.0
+offset_top = -154.0
 offset_right = -92.0
 offset_bottom = -92.0
 grow_horizontal = 0
@@ -180,12 +181,14 @@ active = false
 side = 2
 target_scale = Vector2(0.3, 1)
 debug_rect_visible = false
+metadata/_edit_lock_ = true
 
 [node name="NextWeekButton" type="Button" parent="NextWeekTweak"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"ButtonLeft"
-text = "Next Week"
+text = "Next"
+metadata/_edit_lock_ = true
 
 [node name="ColorRect" type="ColorRect" parent="."]
 visible = false

@@ -36,6 +36,10 @@ func close() -> void:
 
 
 func _ready() -> void:
+	%TrainingLabel.material = preload("res://resources/materials/float_material.tres").duplicate()
+	%TrainingLabel.material.set_shader_parameter(&"time_offset", randf() * TAU )
+	%TrainingLabel.material.set_shader_parameter(&"max_distance", Vector2(16.0, 8.0))
+	
 	if skill_changes_hbox:
 		for i: int in skill_changes_hbox.get_child_count():
 			if i == 0 or not skill_changes_hbox.get_child(i) is HBoxContainer: continue
@@ -50,7 +54,6 @@ func _ready() -> void:
 	
 	for exercise: Exercise in exercises:
 		var button: Button = Button.new()
-		button.set_meta(EXERCISE_META, exercise)
 		
 		button.theme_type_variation = &"ButtonLeft"
 		

@@ -1,12 +1,16 @@
 @tool
 class_name Garden extends Node3D
-@export var activity_scene: PackedScene
+
+@export var interact_menu_scene: PackedScene = preload("res://scenes/interact_menu.tscn")
 
 func _ready() -> void:
-	return
-	#Event.garden_entered.emit(self)
+	#
+	if not Engine.is_editor_hint():
+		var interact_menu: InteractMenu = interact_menu_scene.instantiate()
+		add_child(interact_menu)
 
-#func _on_start_week()
+		for pet: Pet in get_pets():
+			pet.connect(Interactable.SIGNAL_INTERACTION_STARTED, interact_menu.set_pet.bind(pet))
 
 
 func get_pets() -> Array[Pet]:
