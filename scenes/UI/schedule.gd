@@ -71,6 +71,7 @@ func set_mini_visible(val: bool) -> void:
 
 
 func set_slots_visible(slot_visible: bool, delay_sec: float = 0.0) -> void:
+	set_process_unhandled_input(slot_visible)
 	for tween_container: Tweak in tweeners:
 		if slot_visible: 
 			tween_container.open(delay_sec)

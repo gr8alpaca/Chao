@@ -13,7 +13,7 @@ func _init() -> void:
 
 func enter() -> void:
 	pet.is_moving = false
-	look_camera()
+	pet.rotate_towards_position(pet.get_viewport().get_camera_3d().global_position, look_time)
 
 
 func _on_enable_input(is_enabled: bool) -> void:
@@ -26,10 +26,6 @@ func exit() -> void:
 		pet.create_tween().tween_property(pet, ^"rotation:x", 0.0, look_time / 1.5)
 	if pet.rotation.z != 0.0:
 		pet.create_tween().tween_property(pet, ^"rotation:z", 0.0, look_time / 1.5)
-	
-
-func look_camera() -> void:
-	pet.rotate_towards_position(pet.get_viewport().get_camera_3d().global_position, look_time)
 
 
 func _on_interaction_started() -> void:

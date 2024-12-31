@@ -1,7 +1,7 @@
-[gd_scene load_steps=28 format=3 uid="uid://cp1lbtskoh1sx"]
+[gd_scene load_steps=26 format=3 uid="uid://cp1lbtskoh1sx"]
 
 [ext_resource type="Script" path="res://scenes/pet.gd" id="1_t3pu5"]
-[ext_resource type="Script" path="res://scripts/stats.gd" id="2_apet3"]
+[ext_resource type="Script" path="res://scripts/stats.gd" id="2_0kyj0"]
 [ext_resource type="Script" path="res://scripts/interactable.gd" id="3_dwkxt"]
 [ext_resource type="Material" uid="uid://cj52sut2j38yc" path="res://resources/highlight_material.tres" id="3_uymjs"]
 [ext_resource type="Material" uid="uid://df0i6cc61sysj" path="res://resources/pet.tres" id="4_oph6j"]
@@ -13,8 +13,8 @@
 [ext_resource type="Script" path="res://scripts/StateMachine/States/Pet/race_state.gd" id="11_2cmky"]
 [ext_resource type="Script" path="res://scripts/StateMachine/States/Pet/sleep_state.gd" id="12_015lu"]
 
-[sub_resource type="Resource" id="Resource_vouog"]
-script = ExtResource("2_apet3")
+[sub_resource type="Resource" id="Resource_daiye"]
+script = ExtResource("2_0kyj0")
 name = &"Garfield"
 fur_color = Color(1, 1, 1, 1)
 life = 100.0
@@ -26,12 +26,18 @@ run = 0.0
 fly = 0.0
 swim = 0.0
 power = 0.0
-ranks = {}
-rank_stamina = 0
-rank_run = 0
-rank_swim = 0
-rank_fly = 0
-rank_power = 0
+ranks = {
+"fly": 14.0035,
+"power": 17.7722,
+"run": 16.9529,
+"stamina": 11.7539,
+"swim": 18.6004
+}
+rank_stamina = 11.7539
+rank_run = 16.9529
+rank_swim = 18.6004
+rank_fly = 14.0035
+rank_power = 17.7722
 experience_stamina = 0
 experience_run = 0
 experience_swim = 0
@@ -45,23 +51,13 @@ height = 0.5
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wge4m"]
 
-[sub_resource type="SphereMesh" id="SphereMesh_b34ri"]
+[sub_resource type="SphereMesh" id="SphereMesh_ojkyj"]
 material = SubResource("StandardMaterial3D_wge4m")
 radius = 0.025
 height = 0.05
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ue3q8"]
 albedo_color = Color(0, 0, 0, 1)
-
-[sub_resource type="SphereMesh" id="SphereMesh_d8i0f"]
-material = SubResource("StandardMaterial3D_ue3q8")
-radius = 0.04
-height = 0.1
-
-[sub_resource type="SphereMesh" id="SphereMesh_ojkyj"]
-material = SubResource("StandardMaterial3D_wge4m")
-radius = 0.025
-height = 0.05
 
 [sub_resource type="SphereMesh" id="SphereMesh_mwqtk"]
 material = SubResource("StandardMaterial3D_ue3q8")
@@ -76,14 +72,14 @@ height = 0.5
 radius = 0.1
 height = 0.5
 
-[sub_resource type="Resource" id="Resource_h8tjl"]
+[sub_resource type="Resource" id="Resource_xqhde"]
 resource_local_to_scene = true
 resource_name = "idle"
 script = ExtResource("8_fdymg")
 wait_time_sec_min = 1.0
-wait_time_sec_max = 5.0
-max_wander_distance = 5.0
-speed_modifier_percent = 100
+wait_time_sec_max = 1.0
+max_wander_distance = 1.75
+speed_modifier_percent = 10
 name = &"idle"
 
 [sub_resource type="Resource" id="Resource_xl5jh"]
@@ -92,7 +88,7 @@ script = ExtResource("9_nnr34")
 look_time = 0.5
 name = &"interaction"
 
-[sub_resource type="Resource" id="Resource_iogl6"]
+[sub_resource type="Resource" id="Resource_0youm"]
 resource_local_to_scene = true
 resource_name = "tpose"
 script = ExtResource("10_fvavy")
@@ -103,7 +99,7 @@ resource_name = "race"
 script = ExtResource("11_2cmky")
 name = &"race"
 
-[sub_resource type="Resource" id="Resource_axvwt"]
+[sub_resource type="Resource" id="Resource_tpiwi"]
 resource_local_to_scene = true
 resource_name = "sleep"
 script = ExtResource("12_015lu")
@@ -114,7 +110,8 @@ collision_layer = 7
 input_capture_on_drag = true
 velocity = Vector3(0, -16.3333, 0)
 script = ExtResource("1_t3pu5")
-stats = SubResource("Resource_vouog")
+stats = SubResource("Resource_daiye")
+speed = 2.0
 
 [node name="BodyMesh" type="MeshInstance3D" parent="."]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0.2, 0)
@@ -124,12 +121,12 @@ mesh = SubResource("CapsuleMesh_0uynd")
 [node name="EyeWhiteR" type="MeshInstance3D" parent="BodyMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.037779, 0.2, 0.0677326)
 material_overlay = ExtResource("3_uymjs")
-mesh = SubResource("SphereMesh_b34ri")
+mesh = SubResource("SphereMesh_ojkyj")
 skeleton = NodePath("../..")
 
 [node name="PupilRight" type="MeshInstance3D" parent="BodyMesh/EyeWhiteR"]
 transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -0.00391132, 0, 0.0179674)
-mesh = SubResource("SphereMesh_d8i0f")
+mesh = SubResource("SphereMesh_mwqtk")
 skeleton = NodePath("../../..")
 
 [node name="EyeWhiteL" type="MeshInstance3D" parent="BodyMesh"]
@@ -157,9 +154,18 @@ modulate_material = ExtResource("3_uymjs")
 [node name="BodyCollisionShape" type="CollisionShape3D" parent="Interactable"]
 shape = SubResource("CapsuleShape3D_ense1")
 
-[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("reference_variable_values")]
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("reference_variable_values", "debug_label")]
 script = ExtResource("6_b7k50")
-state_resources = Array[ExtResource("7_crvk2")]([SubResource("Resource_h8tjl"), SubResource("Resource_xl5jh"), SubResource("Resource_iogl6"), SubResource("Resource_5x848"), SubResource("Resource_axvwt")])
-initial_state_name = "tpose"
+state_resources = Array[ExtResource("7_crvk2")]([SubResource("Resource_xqhde"), SubResource("Resource_xl5jh"), SubResource("Resource_0youm"), SubResource("Resource_5x848"), SubResource("Resource_tpiwi")])
+initial_state_name = "idle"
 reference_variable_names = Array[StringName]([&"pet"])
 reference_variable_values = [NodePath("..")]
+debug_label = NodePath("../StateDebug")
+
+[node name="StateDebug" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+pixel_size = 0.002
+billboard = 1
+font_size = 24
+outline_size = 4
+metadata/_edit_lock_ = true

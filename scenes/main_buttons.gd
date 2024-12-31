@@ -3,6 +3,8 @@ class_name MainButtons extends VBoxContainer
 
 const MAIN_BUTTON_GROUP : ButtonGroup = preload("res://resources/UI/main_button_group.tres")
 
+signal closed
+
 @export_range(0.0, 1.2, 0.05, "suffix:sec")
 var interval_sec: float = 0.35:
 	set(val): interval_sec = maxf(val, 0.0)
@@ -11,6 +13,8 @@ var interval_sec: float = 0.35:
 func _ready() -> void:
 	var cons:= get_cons()
 	cons[-1].opened.connect(focus_button.bind(cons[0].get_child(0)))
+	cons[-1].closed.connect(emit_signal.bind(&"closed"))
+	
 	MAIN_BUTTON_GROUP.pressed.connect(_on_button_pressed)
 	var buttons:= MAIN_BUTTON_GROUP.get_buttons()
 	
@@ -23,6 +27,7 @@ func _ready() -> void:
 		buttons[i].material = preload("res://resources/materials/float_material.tres").duplicate()
 		buttons[i].material.set_shader_parameter(&"time_offset", randf() * TAU )
 		buttons[i].material.set_shader_parameter(&"max_distance", Vector2(16.0, 8.0) )
+
 
 func open(delay_sec: float = 0.0) -> void:
 	var cons:= get_cons()

@@ -14,25 +14,26 @@ var active_menu: Control : set = set_active_menu
 
 
 func _ready() -> void:
-	
 	var buttons:= MainButtons.MAIN_BUTTON_GROUP.get_buttons()
 	for i: int in mini(buttons.size(), get_child_count()):
 		if not get_child(i) is Tweak: continue
 		get_child(i).opened.connect(_on_tweak_opened)
 		buttons[i].toggled.connect(_on_main_button_toggled.bind(buttons[i], get_child(i), get_child(i).get_child(0)))
-	# MainButtons.MAIN_BUTTON_GROUP.pressed.connect(_on_menu_button_pressed)
 
 
 func open(menu: Control) -> void:
 	active_menu = menu
 
-func set_active_menu(control: Control) -> void:
-	active_menu = control
 
 func close() -> void:
 	if MainButtons.MAIN_BUTTON_GROUP.get_pressed_button():
 		MainButtons.MAIN_BUTTON_GROUP.get_pressed_button().set_pressed(false)
 
+func is_active() -> bool:
+	return active_menu != null
+
+func set_active_menu(control: Control) -> void:
+	active_menu = control
 
 func _on_menu_button_pressed(but: BaseButton) -> void:
 	var pressed_button: BaseButton = MainButtons.MAIN_BUTTON_GROUP.get_pressed_button()

@@ -11,8 +11,7 @@ signal move_ended
 
 @onready var state_machine: StateMachine = $StateMachine
 
-@export var stats: Stats: set = set_stats
-
+@export var stats: Stats = Stats.new(): set = set_stats
 
 @export_range(0.5, 3.0, 0.1, "suffix:m/s")
 var speed: float = 0.5
@@ -33,7 +32,9 @@ var is_moving: bool:
 		if is_moving == val: return
 		is_moving = val
 		emit_signal(&"move_started" if val else &"move_ended")
-
+		if debug_mesh: 
+			debug_mesh.visible = is_moving
+		print("PET MOVING: ", is_moving, "\tTarget: %1.02v" % target_position)
 
 var target_position: Vector3: set = set_target_position
 var target_direction: Vector3: set = set_target_direction
@@ -48,45 +49,52 @@ func _ready() -> void:
 	if not Engine.is_editor_hint():
 		debug_mesh = FlagSprite3D.new()
 		add_child(debug_mesh, false, Node.INTERNAL_MODE_FRONT)
-	
+		debug_mesh.top_level = true
+		debug_mesh.visible = true
+
 
 func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint(): return
 	
+	if not is_on_floor():
+		velocity += get_gravity() * delta
+		
 	state_machine.update_physics_process(delta)
-	return
 	
-	#if not is_on_floor():
-		#velocity += get_gravity() * delta
-	#
-	#
-	#var xz_dir: Vector3 = Vector3.ZERO
-	#var real_velocity := get_real_velocity()
-#
-	#if is_moving:
-		#rotation = rotation.move_toward(Vector3(0.0, rotation.y, 0.0), delta)
-		#
-		#xz_dir = Vector3(global_position.x, 0, global_position.z).direction_to(Vector3(target_position.x, 0, target_position.z))
-		#var xz_vel := xz_dir * speed * speed_modifier
-		#
-		#velocity.x = move_toward(real_velocity.x, xz_vel.x, acceleration * delta)
-		#velocity.z = move_toward(real_velocity.z, xz_vel.z, acceleration * delta)
-		#
-		#if global_position.distance_to(target_position) > TARGET_DISTANCE_THRESHOLD:
-			#global_rotation.y = lerp_angle(global_rotation.y, Vector2(-xz_dir.z, -xz_dir.x).angle(), delta * turn_speed)
-		#else:
-			#is_moving = false
-#
-	#else:
-		#velocity.x = move_toward(real_velocity.x, 0, speed)
-		#velocity.z = move_toward(real_velocity.z, 0, speed)
-
-	# print("Floor: %s\t%01.02v\t%01.02v" % [is_on_floor(), velocity, xz_dir])
 	move_and_slide()
+	
 
-#
-#func _process(delta: float) -> void:
-	#state_machine.update_process(delta)
+
+func move_towards_target_and_rotate(delta: float, max_speed: float = speed) -> void:
+	move_towards_target(delta, max_speed)
+	rotate_towards_velocity(delta)
+	is_moving = (not is_at_target())
+	
+
+func move_towards_target(delta: float, max_speed: float = speed) -> void:
+	if not is_at_target():
+		var real_velocity:= get_real_velocity()
+		var target_velocity:= position.direction_to(target_position) * minf(max_speed, position.distance_to(target_position))
+		if target_velocity:
+			velocity.x = move_toward(real_velocity.x, target_velocity.x, acceleration * delta)
+			velocity.z = move_toward(real_velocity.z, target_velocity.z, acceleration * delta)
+			
+	elif velocity:
+		velocity.x = move_toward(velocity.x, 0.0, max_speed)
+		velocity.x = move_toward(velocity.z, 0.0, max_speed)
+
+	# print("Floor: %s\t%01.02v" % [is_on_floor(), velocity])
+
+
+func rotate_towards_velocity(delta: float) -> void:
+	if not velocity.x and not velocity.z: return
+	#
+	#if not velocity.z:
+		#rotation.y = lerp_angle(rotation.y, -PI/2.0, delta * turn_speed)
+		#return
+
+	rotation.y = lerp_angle(rotation.y, atan(-velocity.x / maxf(velocity.z, 0.001)), delta * turn_speed)
+	#rotation = rotation.slerp(Vector3(0.0, atan(velocity.y / minf(velocity.x, 0.001)), 0.0).normalized(), delta * turn_speed)
 
 
 func rotate_towards_position(global_pos: Vector3, duration: float = 1.0) -> void:
@@ -95,13 +103,14 @@ func rotate_towards_position(global_pos: Vector3, duration: float = 1.0) -> void
 
 func move_to_point(pos: Vector3) -> void:
 	target_position = pos
-	is_moving = true
+
 
 
 func set_target_position(pos: Vector3) -> void:
 	target_position = pos
-	if debug_mesh and is_inside_tree():
-		debug_mesh.global_position = target_position
+	is_moving = !is_at_target()
+	if debug_mesh and is_moving:
+		debug_mesh.position = target_position
 
 
 # TODO: implement...
@@ -133,13 +142,17 @@ func set_stats(val: Stats) -> void:
 	stats = val
 	if stats and not stats.changed.is_connected(_on_stats_changed):
 		stats.changed.connect(_on_stats_changed)
-		
+	
 	if is_node_ready():
 		_on_stats_changed()
 
+func is_at_position(pos: Vector3, ignore_y: bool = true) -> bool:
+	return ((position - target_position) * Vector3(1.0, 0.0, 1.0)).length() <= TARGET_DISTANCE_THRESHOLD if ignore_y else position.distance_to(pos) <= TARGET_DISTANCE_THRESHOLD
+
+func is_at_target(ignore_y: bool = true) -> bool:
+	return is_at_position(target_position)
 
 func _on_stats_changed() -> void:
-	speed = 0.1 if not stats else lerpf(RUN_SPEED_MIN, RUN_SPEED_MAX, inverse_lerp(0, Stats.MAX_STAT_VALUE, stats.run))
 	update_mesh()
 
 func _to_string() -> String:

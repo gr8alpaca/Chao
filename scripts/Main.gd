@@ -24,6 +24,7 @@ func _ready() -> void:
 	
 	Event.change_scene.connect(change_scene)
 
+
 func change_scene(node: Node) -> void:
 	if (get_child_count() and get_child(0) == node) or Engine.is_editor_hint(): 
 		return
@@ -62,8 +63,16 @@ func set_scenes(val: Array[PackedScene]) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_pressed() and not event.is_echo() and Input.is_key_pressed(KEY_9):
-		focus_label.visible = !focus_label.visible
+	if event.is_pressed() and not event.is_echo():
+		if Input.is_key_pressed(KEY_9):
+			focus_label.visible = !focus_label.visible
+		elif Input.is_key_pressed(KEY_PERIOD):
+			Engine.time_scale *= 2.0
+			print("Time Scale -> 3.0d" % (Engine.time_scale * 100.0))
+		elif Input.is_key_pressed(KEY_COMMA):
+			Engine.time_scale /= 2.0
+			print("Time Scale -> 3.0d" % (Engine.time_scale * 100.0))
+
 
 func create_canvas() -> void:
 	var canvas: CanvasLayer = CanvasLayer.new()

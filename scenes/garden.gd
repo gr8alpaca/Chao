@@ -4,7 +4,6 @@ class_name Garden extends Node3D
 @export var interact_menu_scene: PackedScene = preload("res://scenes/interact_menu.tscn")
 
 func _ready() -> void:
-	#
 	if not Engine.is_editor_hint():
 		var interact_menu: InteractMenu = interact_menu_scene.instantiate()
 		add_child(interact_menu)

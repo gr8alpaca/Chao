@@ -16,7 +16,7 @@ signal state_changed(old_state: State, new_state: State)
 @export var reference_variable_values: Array[Node]
 
 @export_category("Debug")
-@export var debug_label: Label
+@export var debug_label: Node
 @export var debug_mode: bool
 
 ## StateName -> State
@@ -80,12 +80,13 @@ func get_state(state_name: String) -> State:
 func _set_state_locked(set_locked: bool) -> void:
 	state_locked = set_locked
 
-#region Signals 
+
+#region Signals
 
 ## Sets state regardless of [state_locked].
 func _on_force_state(state_name: String) -> void:
-	if states.has(state_name): current_state = get_state(state_name)
-	else: print("Tried to force non-existent state: %s" %str(state_name))
+	assert(states.has(state_name), "State '%s' not found " % str(state_name))
+	current_state = get_state(state_name)
 
 ## If not [state_locked], will set current state = get_state(state_name)
 func _on_transition_requested(state_name: String) -> void:

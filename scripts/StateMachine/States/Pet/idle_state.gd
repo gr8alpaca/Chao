@@ -24,52 +24,22 @@ func _init() -> void:
 
 
 func enter() -> void:
-	pet.speed_modifier = speed_modifier_percent / 100.0
-	wander_random()
-
+	current_timer = randf_range(wait_time_sec_min, wait_time_sec_max)
 
 func exit() -> void:
-	if pet.move_ended.is_connected(start_delay_timer):
-		pet.move_ended.disconnect(start_delay_timer)
-
 	pet.speed_modifier = 1.0
-	current_timer = 0.0
-
-
-func start_delay_timer() -> void:
-	current_timer = randf_range(wait_time_sec_min, wait_time_sec_max)
-	is_timer_active = true
-
 
 func wander_random() -> void:
-	pet.move_to_point(get_random_point())
+	current_timer = randf_range(wait_time_sec_min, wait_time_sec_max)
+	pet.target_position = get_random_point()
+	#pet.is_moving = true
 
-	if not pet.move_ended.is_connected(start_delay_timer):
-		pet.move_ended.connect(start_delay_timer, CONNECT_ONE_SHOT)
-
-
-func update_process(delta: float) -> void:
-	if not is_timer_active: return
-	current_timer -= delta
-	if current_timer <= 0.0:
-		is_timer_active = false
-		wander_random()
-
-
-func _on_move_ended() -> void:
-	if pet.target_position == pet.global_position:
-		start_delay_timer()
-	else:
-		pet.move_ended.connect(start_delay_timer, CONNECT_ONE_SHOT)
-
+func update_physics_process(delta: float) -> void:
+	pet.move_towards_target_and_rotate(delta, pet.speed * speed_modifier_percent/100.0 )
+	if not pet.is_moving:
+		current_timer -= delta
+		if current_timer <= 0.0:
+			wander_random()
 
 func get_random_point(max_dist: float = max_wander_distance, origin:=Vector3.ZERO) -> Vector3:
 	return Vector3(randf_range(-max_wander_distance, max_wander_distance) + origin.x, pet.position.y, randf_range(-max_wander_distance, max_wander_distance) + origin.z)
-
-
-func set_pet(val: Pet) -> void:
-	super(val)
-	Event.garden_entered.connect(_on_garden_entered)
-
-func _on_garden_entered(garden: Garden) -> void:
-	transition_requested.emit(name)

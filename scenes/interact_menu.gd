@@ -21,7 +21,7 @@ var main_menu_active: bool:
 @export var info_panel_container: Tweak
 @export var stat_panel: InfoPanel
 @export var schedule_ui: ScheduleUI
-@export var submenu: Control
+@export var submenu: SubMenuUI
 
 func _init() -> void:
 	modulate.a = 0.0
@@ -46,12 +46,13 @@ func show_main_menu() -> void:
 
 func hide_main_menu() -> void:
 	release_current_focus()
+	
+	submenu.close()
 	name_label_container.close()
 	info_panel_container.close()
 	schedule_ui.close()
 	main_buttons.close()
-	submenu.close()
-
+	
 #
 func release_current_focus() -> void:
 	if not is_inside_tree(): return
@@ -87,7 +88,7 @@ func set_pet(val: Pet):
 
 func _on_start_week_pressed() -> void:
 	main_menu_active = false
-	pet.get_parent().remove_child(pet)
+	main_buttons.closed.connect(pet.get_parent().remove_child.bind(pet), CONNECT_ONE_SHOT)
 	var activity_handler: ActivitySceneHandler = ActivitySceneHandler.new()
 	activity_handler.open(pet, schedule_ui.get_activities())
 	activity_handler.ready.connect(activity_handler.advance_week, CONNECT_DEFERRED)

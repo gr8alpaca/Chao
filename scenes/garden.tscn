@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://c770nfk4mfj0s"]
+[gd_scene load_steps=10 format=3 uid="uid://c770nfk4mfj0s"]
 
 [ext_resource type="Script" path="res://scenes/garden.gd" id="1_y2d6v"]
 [ext_resource type="Script" path="res://models/floor_model.gd" id="3_t8pvy"]
 [ext_resource type="Material" uid="uid://bi4su0loiqr6w" path="res://resources/wood_material.tres" id="4_1iuqp"]
 [ext_resource type="PackedScene" uid="uid://cp1lbtskoh1sx" path="res://scenes/pet.tscn" id="4_drwvd"]
+[ext_resource type="Script" path="res://scripts/stats.gd" id="5_1l8wm"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_doq1q"]
 sky_top_color = Color(0, 0, 0, 1)
@@ -24,6 +25,37 @@ reflected_light_source = 2
 tonemap_mode = 2
 tonemap_exposure = 1.55
 tonemap_white = 3.61
+
+[sub_resource type="Resource" id="Resource_qmwxs"]
+script = ExtResource("5_1l8wm")
+name = &"Garfield"
+fur_color = Color(1, 1, 1, 1)
+life = 100.0
+hunger = 0.0
+fatigue = 0.0
+stress = 0.0
+stamina = 0.0
+run = 0.0
+fly = 0.0
+swim = 0.0
+power = 0.0
+ranks = {
+"fly": 21.3035,
+"power": 13.1098,
+"run": 15.3544,
+"stamina": 18.6063,
+"swim": 21.3367
+}
+rank_stamina = 18.6063
+rank_run = 15.3544
+rank_swim = 21.3367
+rank_fly = 21.3035
+rank_power = 13.1098
+experience_stamina = 0
+experience_run = 0
+experience_swim = 0
+experience_fly = 0
+experience_power = 0
 
 [node name="Garden" type="Node3D"]
 script = ExtResource("1_y2d6v")
@@ -54,3 +86,5 @@ spot_angle_attenuation = 3.86374
 metadata/_edit_lock_ = true
 
 [node name="Pet" parent="." instance=ExtResource("4_drwvd")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0.05, 0)
+stats = SubResource("Resource_qmwxs")

@@ -1,7 +1,6 @@
 @tool
 class_name ActivitySceneHandler extends Node3D
 
-
 const OVERLAY_SCENE: PackedScene = preload("res://scenes/UI/week_overlay.tscn")
 
 var overlay: WeekOverlay
@@ -69,5 +68,5 @@ func _on_overlay_opened() -> void:
 	var tw: Tween = create_tween()
 	tw.tween_interval(STAT_CHANGE_DELAY)
 	tw.tween_callback(apply_activity_deltas)
-	tw.tween_interval(BUTTON_ACTIVIATION_DELAY + STAT_CHANGE_DELAY)
-	overlay.set_button_active(true)
+	tw.tween_interval(BUTTON_ACTIVIATION_DELAY )
+	tw.tween_callback(overlay.set_button_active.bind(true))

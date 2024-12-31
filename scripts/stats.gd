@@ -18,10 +18,9 @@ const MAX_LEVEL: int = 99
 const EXPERIENCE_PER_LEVEL: int = 8
 const MAX_EXPERIENCE: int = MAX_LEVEL * EXPERIENCE_PER_LEVEL
 
-signal level_changed(stat_name: StringName, )
 
 
-@export var name: StringName = &""
+@export var name: StringName = &"Garfield"
 @export var fur_color: Color = Color.WHITE:
 	set(val):
 		fur_color = val
@@ -65,35 +64,35 @@ var stress: float = 0.00:
 
 
 @export_range(0.0, 999.9, 5.0, "hide_slider")
-var stamina: float = 10.0:
+var stamina: float = 0.0:
 	set(val):
 		stamina = val
 		changed.emit()
 
 
 @export_range(0.0, 999.9, 5.0, "hide_slider")
-var run: float = 10.0:
+var run: float = 0.0:
 	set(val):
 		run = val
 		changed.emit()
 
 
 @export_range(0.0, 999.9, 5.0, "hide_slider")
-var fly: float = 10.0:
+var fly: float = 0.0:
 	set(val):
 		fly = val
 		changed.emit()
 
 
 @export_range(0.0, 999.9, 5.0, "hide_slider")
-var swim: float = 10.0:
+var swim: float = 0.0:
 	set(val):
 		swim = val
 		changed.emit()
 
 
 @export_range(0.0, 999.9, 5.0, "hide_slider")
-var power: float = 10.0:
+var power: float = 0.0:
 	set(val):
 		power = val
 		changed.emit()
