@@ -54,7 +54,7 @@ func advance_path_point() -> void:
 		return
 
 	print("Moving to point: %1.0v" % path_points[0])
-	pet.move_to_point(path_points[0])
+	pet.set_target_position(path_points[0])
 	path_points.remove_at(0)
 
 

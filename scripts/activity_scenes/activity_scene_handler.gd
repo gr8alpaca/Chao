@@ -3,10 +3,13 @@ class_name ActivitySceneHandler extends Node3D
 
 const OVERLAY_SCENE: PackedScene = preload("res://scenes/UI/week_overlay.tscn")
 
+signal resume(pet: Pet)
+
 var overlay: WeekOverlay
-var pet: Pet
+var stats: Stats
 var queue: Array[Activity]
 var index: int = -1
+
 
 func _init() -> void:
 	overlay = preload("res://scenes/UI/week_overlay.tscn").instantiate()
@@ -14,39 +17,48 @@ func _init() -> void:
 	overlay.opened.connect(_on_overlay_opened)
 
 
-func open(pet: Pet, queue: Array[Activity]) -> void:
-	self.pet = pet
+func open(stats: Stats, queue: Array[Activity]) -> void:
+	self.stats = stats
 	self.queue = queue
-	overlay.init(pet.stats)
+	overlay.init(stats)
 	overlay.get_node(^"%NextWeekButton").pressed.connect(_on_next_week_pressed)
 
 func close() -> void:
 	print_rich("[color=pink]Closing activity scene handler...[/color]")
+	
+	await remove_current_scene()
+	
+	var garden : Garden = load(Main.PATH.GARDEN).instantiate()
+	garden.pet_stats.push_back(stats)
+	emit_signal(Main.SIGNAL_CHANGE, garden)
+	
+
 
 func advance_week() -> void:
 	index += 1
 	
 	await remove_current_scene()
 	
-	if index < queue.size():
-		var activity_scene: ActivityScene = queue[index].get_scene().instantiate()
-		add_child(activity_scene, true)
-		if not activity_scene.is_node_ready():
-			await activity_scene.ready
-			
-		activity_scene.open(pet, queue[index])
-		activity_scene.play()
-		overlay.open(queue[index], pet.stats, index + 1)
-	
-	else:
+	if index >= queue.size():
 		close()
+		return
+		
+	var activity_scene: ActivityScene = queue[index].get_scene().instantiate()
+	add_child(activity_scene, true)
+	if not activity_scene.is_node_ready():
+		await activity_scene.ready
+	
+	activity_scene.open(stats, queue[index])
+	activity_scene.play()
+	overlay.open(queue[index], stats, index + 1)
 
 
 func apply_activity_deltas() -> void:
 	assert(-1 < index and index < queue.size(), "Index is OOB" )
+	if not queue[index] is Exercise: return
 	var deltas: Dictionary = ActivityXP.roll_exercise(queue[index])
 	for stat: StringName in deltas.keys():
-		pet.stats.add_experience(stat, deltas[stat])
+		stats.add_experience(stat, deltas[stat])
 
 
 func remove_current_scene() -> void:
@@ -54,8 +66,6 @@ func remove_current_scene() -> void:
 	var current_scene: ActivityScene = get_child(0)
 	overlay.close()
 	await overlay.closed
-	if pet.is_inside_tree():
-		pet.get_parent().remove_child(pet)
 	remove_child(current_scene)
 	current_scene.free()
 

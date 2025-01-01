@@ -11,47 +11,66 @@ const SIGNAL_INTERACTION_STARTED: StringName = &"interaction_started"
 
 ## _on_interaction_ended()
 const SIGNAL_INTERACTION_ENDED: StringName = &"interaction_ended"
+#
+#const SIGNAL_HOVER_STARTED: StringName = &"hover_started"
+#const SIGNAL_HOVER_ENDED: StringName = &"hover_ended"
+#
 
-signal interacted
 
-
-const ALPHA_MODULATE: float = 0.30
-const TWEEN_INTERVAL: float = 0.25
-
-@export_custom(0, "", PROPERTY_USAGE_EDITOR)
 var is_hovered: bool:
 	set(val):
 		is_hovered = val
-
-		if is_hovered and modulate_material and (not highlight_tween or not highlight_tween.is_valid()):
-			highlight_tween = create_tween().set_loops(0).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_QUART)
+		
+		const ALPHA_MODULATE: float = 0.30
+		const TWEEN_INTERVAL: float = 0.25
+		
+		if is_hovered:
+			var highlight_tween: Tween = create_tween().set_loops(0).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_QUART)
 			highlight_tween.tween_property(modulate_material, ^"albedo_color:a", ALPHA_MODULATE, TWEEN_INTERVAL)
 			highlight_tween.tween_property(modulate_material, ^"albedo_color:a", 0.0, TWEEN_INTERVAL)
-		
-		elif highlight_tween:
-			highlight_tween.kill()
-			modulate_material.albedo_color.a = 0.0
+			
+			mouse_exited.connect(highlight_tween.kill)
+			
+			
+		#if is_hovered and modulate_material and (not highlight_tween or not highlight_tween.is_valid()):
+			#highlight_tween = create_tween().set_loops(0).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_QUART)
+			#highlight_tween.tween_property(modulate_material, ^"albedo_color:a", ALPHA_MODULATE, TWEEN_INTERVAL)
+			#highlight_tween.tween_property(modulate_material, ^"albedo_color:a", 0.0, TWEEN_INTERVAL)
+		#
+		#elif highlight_tween:
+			#highlight_tween.kill()
+			#modulate_material.albedo_color.a = 0.0
 
 
-@export var modulate_material: StandardMaterial3D
-@export var hover_modulate: Color = Color.WHITE
-
+var modulate_material: StandardMaterial3D
 
 @export var enabled: bool = true: set = set_enabled
+@export var hover_modulate: bool = true
 
-var highlight_tween: Tween
-
+@export var hover_animation_nodes: Array[GeometryInstance3D] : set = set_hover_animation_nodes
 
 func _init() -> void:
 	collision_layer = 2
 	collision_mask = 0
+	modulate_material = StandardMaterial3D.new()
+	modulate_material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	modulate_material.albedo_color = Color(1, 1, 1, 0.0)
+	modulate_material.emission_enabled = true
+	mouse_exited.connect(modulate_material.set_indexed.bind(^"albedo_color:a", 0.0), CONNECT_DEFERRED)
+	
+	
+func set_hover_animation_nodes(nodes: Array[GeometryInstance3D]) -> void:
+	hover_animation_nodes = nodes
+	
+	if Engine.is_editor_hint(): return
+	for node: GeometryInstance3D in nodes:
+		node.material_overlay = modulate_material
+
 
 
 func _input_event(camera: Camera3D, event: InputEvent, event_position: Vector3, normal: Vector3, shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.is_pressed() and event.button_mask & MOUSE_BUTTON_LEFT:
 		get_parent().emit_signal(SIGNAL_INTERACTION_STARTED,)
-		if get_parent() is Pet:
-			Event.interaction_started.emit(get_parent())
 
 func _mouse_enter() -> void:
 	is_hovered = true
@@ -71,13 +90,6 @@ func set_enabled(val: bool) -> void:
 	enabled = val
 	input_ray_pickable = val
 	input_capture_on_drag = val
-
-
-func _get_property_list() -> Array[Dictionary]:
-	var props: Array[Dictionary]
-	if modulate_material:
-		props.append({name=&"hover_modulate", type=TYPE_COLOR, })
-	return props
 
 
 #region Component

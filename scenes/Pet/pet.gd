@@ -11,7 +11,7 @@ signal move_ended
 
 @onready var state_machine: StateMachine = $StateMachine
 
-@export var stats: Stats = Stats.new(): set = set_stats
+@export var stats: Stats: set = set_stats
 
 @export_range(0.5, 3.0, 0.1, "suffix:m/s")
 var speed: float = 0.5
@@ -34,7 +34,7 @@ var is_moving: bool:
 		emit_signal(&"move_started" if val else &"move_ended")
 		if debug_mesh: 
 			debug_mesh.visible = is_moving
-		print("PET MOVING: ", is_moving, "\tTarget: %1.02v" % target_position)
+		#print("PET MOVING: ", is_moving, "\tTarget: %1.02v" % target_position)
 
 var target_position: Vector3: set = set_target_position
 var target_direction: Vector3: set = set_target_direction
@@ -42,15 +42,15 @@ var target_direction: Vector3: set = set_target_direction
 var debug_mesh: Sprite3D
 
 func _ready() -> void:
+	$BodyMesh.mesh = $BodyMesh.mesh.duplicate(true)
 	$BodyMesh.mesh.changed.connect(update_mesh)
-	
 	update_mesh()
 	
 	if not Engine.is_editor_hint():
 		debug_mesh = FlagSprite3D.new()
 		add_child(debug_mesh, false, Node.INTERNAL_MODE_FRONT)
 		debug_mesh.top_level = true
-		debug_mesh.visible = true
+		debug_mesh.visible = false
 
 
 func _physics_process(delta: float) -> void:
@@ -58,8 +58,11 @@ func _physics_process(delta: float) -> void:
 	
 	if not is_on_floor():
 		velocity += get_gravity() * delta
-		
+	
 	state_machine.update_physics_process(delta)
+	
+	if not is_moving:
+		velocity = velocity.move_toward(Vector3(0.0, velocity.y, 0.0), acceleration)
 	
 	move_and_slide()
 	
@@ -74,36 +77,19 @@ func move_towards_target_and_rotate(delta: float, max_speed: float = speed) -> v
 func move_towards_target(delta: float, max_speed: float = speed) -> void:
 	if not is_at_target():
 		var real_velocity:= get_real_velocity()
-		var target_velocity:= position.direction_to(target_position) * minf(max_speed, position.distance_to(target_position))
+		var target_velocity:= position.direction_to(target_position) * max_speed#minf(max_speed, position.distance_to(target_position) * max_speed)
 		if target_velocity:
 			velocity.x = move_toward(real_velocity.x, target_velocity.x, acceleration * delta)
 			velocity.z = move_toward(real_velocity.z, target_velocity.z, acceleration * delta)
-			
-	elif velocity:
-		velocity.x = move_toward(velocity.x, 0.0, max_speed)
-		velocity.x = move_toward(velocity.z, 0.0, max_speed)
-
-	# print("Floor: %s\t%01.02v" % [is_on_floor(), velocity])
 
 
 func rotate_towards_velocity(delta: float) -> void:
-	if not velocity.x and not velocity.z: return
-	#
-	#if not velocity.z:
-		#rotation.y = lerp_angle(rotation.y, -PI/2.0, delta * turn_speed)
-		#return
-
-	rotation.y = lerp_angle(rotation.y, atan(-velocity.x / maxf(velocity.z, 0.001)), delta * turn_speed)
-	#rotation = rotation.slerp(Vector3(0.0, atan(velocity.y / minf(velocity.x, 0.001)), 0.0).normalized(), delta * turn_speed)
+	if abs(velocity.x) + abs(velocity.z) > 0.05:
+		rotation.y = lerp_angle(rotation.y, atan2(-velocity.x, -velocity.z), delta * turn_speed)
 
 
 func rotate_towards_position(global_pos: Vector3, duration: float = 1.0) -> void:
 	create_tween().set_trans(Tween.TRANS_SPRING).set_ease(Tween.EASE_OUT).tween_property(self, ^"global_transform", global_transform.looking_at(global_pos), duration)
-
-
-func move_to_point(pos: Vector3) -> void:
-	target_position = pos
-
 
 
 func set_target_position(pos: Vector3) -> void:
@@ -113,16 +99,26 @@ func set_target_position(pos: Vector3) -> void:
 		debug_mesh.position = target_position
 
 
+func stop() -> void:
+	target_position = position
+	is_moving = false
+
 # TODO: implement...
 func set_target_direction(vel: Vector3) -> void:
 	target_direction = vel
 
+func is_at_position(pos: Vector3, ignore_y: bool = true) -> bool:
+	return ((position - target_position) * Vector3(1.0, 0.0, 1.0)).length() <= TARGET_DISTANCE_THRESHOLD if ignore_y else position.distance_to(pos) <= TARGET_DISTANCE_THRESHOLD
+
+func is_at_target(ignore_y: bool = true) -> bool:
+	return is_at_position(target_position)
+
+func update_mesh() -> void:
+	return
+	$BodyMesh.mesh.material.albedo_color = stats.fur_color if stats else Color.WHITE
+
 
 func get_speed() -> float:
-	# if not stats: return speed
-	# var speed_value: float = stats.speed if stats else speed
-	# var t: float = inverse_lerp(Stats.MIN_STAT_VALUE, Stats.MAX_STAT_VALUE, get_stat_value(&"run")) 
-	# lerpf(RUN_SPEED_MIN, RUN_SPEED_MAX, )
 	return speed
 
 
@@ -134,23 +130,18 @@ func get_run_speed() -> float:
 func get_stat_value(stat: StringName, default: float = 0.0) -> float:
 	return stats.get(stat) if stat in stats else default
 
-func update_mesh() -> void:
-	$BodyMesh.mesh.material.albedo_color = stats.fur_color if stats else Color.WHITE
-
 
 func set_stats(val: Stats) -> void:
+	if stats and stats.changed.is_connected(_on_stats_changed):
+		stats.changed.disconnect(_on_stats_changed)
+		
 	stats = val
+	
 	if stats and not stats.changed.is_connected(_on_stats_changed):
 		stats.changed.connect(_on_stats_changed)
 	
 	if is_node_ready():
 		_on_stats_changed()
-
-func is_at_position(pos: Vector3, ignore_y: bool = true) -> bool:
-	return ((position - target_position) * Vector3(1.0, 0.0, 1.0)).length() <= TARGET_DISTANCE_THRESHOLD if ignore_y else position.distance_to(pos) <= TARGET_DISTANCE_THRESHOLD
-
-func is_at_target(ignore_y: bool = true) -> bool:
-	return is_at_position(target_position)
 
 func _on_stats_changed() -> void:
 	update_mesh()
@@ -163,3 +154,16 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	if event.is_pressed() and not event.is_echo() and Input.is_key_pressed(KEY_PAGEUP):
 		if debug_mesh: debug_mesh.visible = !debug_mesh.visible
 		get_viewport().set_input_as_handled()
+
+func _get_property_list() -> Array[Dictionary]:
+	return [{name = &"mesh", type = TYPE_OBJECT, hint = PROPERTY_HINT_RESOURCE_TYPE, hint_string = &"Mesh", usage = PROPERTY_USAGE_EDITOR}]
+	
+func _get(property: StringName) -> Variant:
+	return $BodyMesh.mesh if is_node_ready() and property == &"mesh" else null
+
+func _set(property: StringName, value: Variant) -> bool:
+	if is_node_ready() and property == &"mesh" and value != $BodyMesh.mesh:
+		$BodyMesh.mesh = value
+		notify_property_list_changed()
+		return true
+	return false

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="Exercise" load_steps=2 format=3 uid="uid://cfbp7gk0x0f7d"]
+
+[ext_resource type="Script" path="res://scripts/misc/exercise.gd" id="1_4joom"]
+
+[resource]
+resource_name = "Lift"
+script = ExtResource("1_4joom")
+fatigue = -1
+run = 0
+swim = 0
+fly = 0
+power = 1
+name = &"Lift"
+drag_unicode_code = 127947
+symbol = "🏋"

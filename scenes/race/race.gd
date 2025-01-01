@@ -8,6 +8,8 @@ class_name Race extends Node3D
 var racer_distances: Dictionary
 var placings: Array[Pet]
 
+#TODO => CONVERT TO ACTIVITY SCENE!
+
 func _ready() -> void:
 	assert(waypoints, "No waypoints node set")
 	

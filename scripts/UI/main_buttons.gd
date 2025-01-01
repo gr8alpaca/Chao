@@ -8,7 +8,9 @@ signal closed
 @export_range(0.0, 1.2, 0.05, "suffix:sec")
 var interval_sec: float = 0.35:
 	set(val): interval_sec = maxf(val, 0.0)
-
+	
+@export var compete_activity: Activity
+@export var rest_activity: Activity
 
 func _ready() -> void:
 	var cons:= get_cons()
@@ -26,8 +28,14 @@ func _ready() -> void:
 		buttons[i].focus_next = buttons[i].focus_neighbor_bottom
 		buttons[i].material = preload("res://resources/materials/float_material.tres").duplicate()
 		buttons[i].material.set_shader_parameter(&"time_offset", randf() * TAU )
-		buttons[i].material.set_shader_parameter(&"max_distance", Vector2(16.0, 8.0) )
-
+		buttons[i].material.set_shader_parameter(&"max_distance", Vector2(8.0, 8.0) )
+		
+		match buttons[i].name:
+			&"Compete":
+				buttons[i].gui_input.connect(_on_button_gui_input.bind(compete_activity))
+			&"Rest":
+				buttons[i].gui_input.connect(_on_button_gui_input.bind(rest_activity))
+				
 
 func open(delay_sec: float = 0.0) -> void:
 	var cons:= get_cons()
@@ -43,13 +51,21 @@ func close() -> void:
 	for con: Tweak in get_cons():
 		con.close()
 
+
 func _on_button_pressed(but: BaseButton) -> void:
 	var pressed_button: BaseButton = MAIN_BUTTON_GROUP.get_pressed_button()
+
 	if pressed_button and pressed_button.has_focus():
 		pressed_button.release_focus()
 	
 	else:
 		focus_button(but)
+
+
+func _on_button_gui_input(event: InputEvent, activity: Activity) -> void:
+	if event is InputEventMouseButton and event.button_mask & MOUSE_BUTTON_LEFT:
+		Event.schedule_activity.emit(activity)
+		accept_event()
 
 
 func focus_button(but: BaseButton) -> void:

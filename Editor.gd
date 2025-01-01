@@ -5,4 +5,5 @@ extends EditorScript
 func _run() -> void:
 	print("Running...")
 	var scene: Node = get_scene()
-	print(scene.start_scene)
+	printt(Main.PATH.keys())
+	#print(scene.start_scene)

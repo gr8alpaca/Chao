@@ -6,8 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://bafa3cib3hmhh" path="res://assets/fabric_0034_1k_7FUKzQ/fabric_0034_roughness_1k.jpg" id="4_58rbp"]
 
 [resource]
-diffuse_mode = 3
-specular_mode = 1
 albedo_texture = ExtResource("1_40m2q")
 metallic_specular = 0.1
 roughness = 0.5

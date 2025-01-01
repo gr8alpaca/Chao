@@ -7,7 +7,9 @@ var text_particles: TextParticles
 func _init() -> void:
 	super(&"sleep")
 
+
 func enter() -> void:
+	pet.stop()
 	pet.rotation_degrees = Vector3(90.0, 0.0 , 0.0)
 	assert(not text_particles, "Text particles is not null!")
 	text_particles = TextParticles.new()
@@ -21,13 +23,12 @@ func exit() -> void:
 	pet.rotation_degrees = Vector3(0.0, 0.0 , 0.0)
 	pet.remove_child(text_particles)
 	text_particles.free()
-	text_particles = null
 
 func update_process(delta: float) -> void:
 	pet.rotation_degrees = Vector3(90.0, 0.0 , 0.0)
 
 func update_physics_process(delta: float) -> void:
-	pass
+	pet.velocity = Vector3()
 	
 #
 #func on_mouse_entered() -> void:

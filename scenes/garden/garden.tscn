@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://c770nfk4mfj0s"]
+[gd_scene load_steps=11 format=3 uid="uid://c770nfk4mfj0s"]
 
-[ext_resource type="Script" path="res://scenes/garden.gd" id="1_y2d6v"]
+[ext_resource type="Script" path="res://scenes/garden/garden.gd" id="1_y2d6v"]
+[ext_resource type="PackedScene" uid="uid://cfgka3j007de2" path="res://scenes/UI/interact_menu.tscn" id="2_blt0m"]
 [ext_resource type="Script" path="res://models/floor_model.gd" id="3_t8pvy"]
 [ext_resource type="Material" uid="uid://bi4su0loiqr6w" path="res://resources/wood_material.tres" id="4_1iuqp"]
-[ext_resource type="PackedScene" uid="uid://cp1lbtskoh1sx" path="res://scenes/pet.tscn" id="4_drwvd"]
+[ext_resource type="PackedScene" uid="uid://cp1lbtskoh1sx" path="res://scenes/Pet/pet.tscn" id="4_drwvd"]
 [ext_resource type="Script" path="res://scripts/stats.gd" id="5_1l8wm"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_doq1q"]
@@ -59,6 +60,8 @@ experience_power = 0
 
 [node name="Garden" type="Node3D"]
 script = ExtResource("1_y2d6v")
+pet_scene = ExtResource("4_drwvd")
+interact_menu_scene = ExtResource("2_blt0m")
 
 [node name="Environment" type="Node3D" parent="."]
 
@@ -74,15 +77,15 @@ environment = SubResource("Environment_ypsnm")
 fov = 80.0
 
 [node name="SpotLight3D" type="SpotLight3D" parent="Camera3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
-light_energy = 7.849
-light_specular = 1.635
+transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, 0, -0.8, 0)
+light_energy = 7.539
+light_specular = 1.125
 shadow_enabled = true
 shadow_opacity = 0.45
-spot_range = 4096.0
+spot_range = 7.0
 spot_attenuation = 0.86
-spot_angle = 35.0
-spot_angle_attenuation = 3.86374
+spot_angle = 61.3
+spot_angle_attenuation = 5.27802
 metadata/_edit_lock_ = true
 
 [node name="Pet" parent="." instance=ExtResource("4_drwvd")]

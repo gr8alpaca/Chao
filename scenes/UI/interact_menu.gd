@@ -1,7 +1,7 @@
 @tool
 class_name InteractMenu extends Control
 
-static var vp_size: Vector2 = Vector2(ProjectSettings["display/window/size/viewport_width"], ProjectSettings["display/window/size/viewport_height"])
+signal start_week_pressed(activity_handler: Node)
 
 @export var pet: Pet: set = set_pet
 
@@ -29,6 +29,7 @@ func _init() -> void:
 
 func _ready() -> void:
 	main_menu_active = false
+	set_process_input(false)
 	create_tween().tween_callback(set_modulate.bind(Color.WHITE)).set_delay(0.5)
 	for but: BaseButton in find_children("*", "BaseButton", true, false):
 		but.mouse_entered.connect(focus_button.bind(but))
@@ -69,10 +70,12 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	if Input.is_key_pressed(KEY_ESCAPE):
 		self.pet = null
 		accept_event()
-	if Input.is_key_pressed(KEY_P):
+	if Input.is_key_pressed(KEY_M):
 		main_menu_active = !main_menu_active
 		accept_event()
 
+func _input(event: InputEvent) -> void:
+	accept_event()
 
 func set_pet(val: Pet):
 		if pet == val: return
@@ -81,15 +84,30 @@ func set_pet(val: Pet):
 		pet = val
 		if pet:
 			pet.emit_signal(Interactable.SIGNAL_INTERACTION_STARTED)
+			%InfoPanel.set_stats(pet.stats)
 			if name_label_container.get_child_count():
 				name_label_container.get_child(0).text = pet.stats.name
 		
 		main_menu_active = (pet != null)
+	
 
 func _on_start_week_pressed() -> void:
+	set_process_input(true)
+	assert(schedule_ui.slots.all(func(slot: ScheduleSlot) -> bool: return slot.activity != null), "Schedule slots not full!!")
+	
 	main_menu_active = false
-	main_buttons.closed.connect(pet.get_parent().remove_child.bind(pet), CONNECT_ONE_SHOT)
+	
+	#TODO Remove 
+	main_buttons.closed.connect(pet.get_parent().remove_child.bind(pet), CONNECT_ONE_SHOT) 
+	
 	var activity_handler: ActivitySceneHandler = ActivitySceneHandler.new()
-	activity_handler.open(pet, schedule_ui.get_activities())
+	activity_handler.open(pet.stats, schedule_ui.get_activities())
 	activity_handler.ready.connect(activity_handler.advance_week, CONNECT_DEFERRED)
-	Event.change_scene.emit(activity_handler)
+	
+	start_week_pressed.emit(activity_handler)
+	
+	#var garden: Node = load(get_parent().scene_file_path).instantiate()
+	#garden.tree_entered.connect(garden.add_child.bind(pet))
+	#Event.queue_scene.emit(garden)
+	#
+	#Event.change_scene.emit(activity_handler)

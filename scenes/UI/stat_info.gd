@@ -52,10 +52,9 @@ func set_stat_name(sname: StringName = &"") -> void:
 		name_label.text = sname.capitalize()
 	experience = stats.get_experience(stat_name, 0) if stats else 0
 
+
 func _on_stats_changed() -> void:
 	if experience == stats.get_experience(stat_name): return
-	
-	
 	var delta: int = stats.get_experience(stat_name) - experience
 	experience += delta
 	display_xp_change(delta)

@@ -1,12 +1,10 @@
 @tool
 extends Node
 
-signal change_scene(node: Node)
-
-# Interaction Events
-
-signal interaction_started(pet: Pet)
-signal interaction_ended
+signal change_scene(scene: Node)
+signal queue_scene(scene: Node)
+signal advance_scene_queue
+#signal add_data(key: StringName, value: Variant)
 
 # Area Events
 
@@ -15,7 +13,7 @@ signal race_entered(race: Race, first_waypoint: Waypoint)
 
 #region Schedule
 
-signal schedule_activity(activity: Exercise)
+signal schedule_activity(activity: Activity)
 
 #endregion Schedule
 

@@ -1,76 +1,20 @@
-[gd_scene load_steps=11 format=3 uid="uid://cipgok3b55loo"]
+[gd_scene load_steps=10 format=3 uid="uid://cipgok3b55loo"]
 
 [ext_resource type="Script" path="res://scenes/UI/training_menu.gd" id="1_0oqrm"]
 [ext_resource type="Script" path="res://scripts/misc/exercise.gd" id="2_s5xrk"]
 [ext_resource type="StyleBox" uid="uid://dgvkljulenyi" path="res://assets/styleboxes/glass_stylebox.tres" id="3_3h1uk"]
 [ext_resource type="Shader" path="res://scripts/shaders/float.gdshader" id="3_748eg"]
+[ext_resource type="Resource" uid="uid://beyby2d1l24ow" path="res://resources/activities/jog.tres" id="3_wqvxc"]
+[ext_resource type="Resource" uid="uid://biy0se4thneor" path="res://resources/activities/paddle.tres" id="4_h8tq1"]
+[ext_resource type="Resource" uid="uid://cscuycdixjxoh" path="res://resources/activities/jump.tres" id="5_eon55"]
+[ext_resource type="Resource" uid="uid://cfbp7gk0x0f7d" path="res://resources/activities/lift.tres" id="6_3c3o5"]
 
-[sub_resource type="Resource" id="Resource_7obey"]
-resource_name = "Jog"
-script = ExtResource("2_s5xrk")
-fatigue = -1
-run = 1
-swim = 0
-fly = 0
-power = 0
-name = &"Jog"
-drag_unicode_code = 127939
-symbol = "🏃"
-
-[sub_resource type="Resource" id="Resource_bx3rk"]
-resource_name = "Paddle"
-script = ExtResource("2_s5xrk")
-fatigue = -1
-run = 0
-swim = 1
-fly = 0
-power = 0
-name = &"Paddle"
-drag_unicode_code = 128675
-symbol = "🚣"
-
-[sub_resource type="Resource" id="Resource_73t7h"]
-resource_name = "Jump"
-script = ExtResource("2_s5xrk")
-fatigue = -1
-run = 0
-swim = 0
-fly = 1
-power = 0
-name = &"Jump"
-drag_unicode_code = 129461
-symbol = "🦵"
-
-[sub_resource type="Resource" id="Resource_a13ir"]
-resource_name = "Lift"
-script = ExtResource("2_s5xrk")
-fatigue = -1
-run = 0
-swim = 0
-fly = 0
-power = 1
-name = &"Lift"
-drag_unicode_code = 127947
-symbol = "🏋"
-
-[sub_resource type="Resource" id="Resource_xxbc8"]
-resource_name = "Rest"
-script = ExtResource("2_s5xrk")
-fatigue = 2
-run = 0
-swim = 0
-fly = 0
-power = 0
-name = &"Rest"
-drag_unicode_code = 128164
-symbol = "💤"
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_lj5ps"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sqold"]
 shader = ExtResource("3_748eg")
 shader_parameter/cycle_time_sec = 7.0
 shader_parameter/max_distance = Vector2(16, 8)
 shader_parameter/volatility = 1.3
-shader_parameter/time_offset = 5.16094
+shader_parameter/time_offset = 5.36829
 shader_parameter/disabled = false
 
 [node name="TrainingMenu" type="Control" node_paths=PackedStringArray("exercise_grid", "display_name_label", "fatigue_arrow", "main_stat_vbox", "skill_changes_hbox")]
@@ -80,7 +24,7 @@ offset_right = 1000.0
 offset_bottom = 273.0
 size_flags_vertical = 4
 script = ExtResource("1_0oqrm")
-exercises = Array[ExtResource("2_s5xrk")]([SubResource("Resource_7obey"), SubResource("Resource_bx3rk"), SubResource("Resource_73t7h"), SubResource("Resource_a13ir"), SubResource("Resource_xxbc8")])
+exercises = Array[ExtResource("2_s5xrk")]([ExtResource("3_wqvxc"), ExtResource("4_h8tq1"), ExtResource("5_eon55"), ExtResource("6_3c3o5")])
 exercise_grid = NodePath("MainVBox/Exercises/ExerciseGrid")
 display_name_label = NodePath("MainVBox/Exercises/ExerciseInfo/StatVBox/ExerciseName")
 fatigue_arrow = NodePath("MainVBox/Exercises/ExerciseInfo/StatVBox/SkillChanges/Fatigue/FatigueArrow")
@@ -96,7 +40,7 @@ theme_override_constants/separation = 48
 
 [node name="TrainingLabel" type="Label" parent="MainVBox"]
 unique_name_in_owner = true
-material = SubResource("ShaderMaterial_lj5ps")
+material = SubResource("ShaderMaterial_sqold")
 layout_mode = 2
 theme_type_variation = &"DisplayMedium"
 text = "Schedule training"
@@ -119,7 +63,6 @@ size_flags_horizontal = 3
 theme_type_variation = &"ButtonLeft"
 disabled = true
 text = "Jog"
-metadata/Exercise = SubResource("Resource_7obey")
 
 [node name="Paddle" type="Button" parent="MainVBox/Exercises/ExerciseGrid"]
 layout_mode = 2
@@ -127,7 +70,6 @@ size_flags_horizontal = 3
 theme_type_variation = &"ButtonLeft"
 disabled = true
 text = "Paddle"
-metadata/Exercise = SubResource("Resource_bx3rk")
 
 [node name="Jump" type="Button" parent="MainVBox/Exercises/ExerciseGrid"]
 layout_mode = 2
@@ -135,7 +77,6 @@ size_flags_horizontal = 3
 theme_type_variation = &"ButtonLeft"
 disabled = true
 text = "Jump"
-metadata/Exercise = SubResource("Resource_73t7h")
 
 [node name="Lift" type="Button" parent="MainVBox/Exercises/ExerciseGrid"]
 layout_mode = 2
@@ -143,7 +84,6 @@ size_flags_horizontal = 3
 theme_type_variation = &"ButtonLeft"
 disabled = true
 text = "Lift"
-metadata/Exercise = SubResource("Resource_a13ir")
 
 [node name="Rest" type="Button" parent="MainVBox/Exercises/ExerciseGrid"]
 layout_mode = 2
@@ -151,7 +91,6 @@ size_flags_horizontal = 3
 theme_type_variation = &"ButtonLeft"
 disabled = true
 text = "Rest"
-metadata/Exercise = SubResource("Resource_xxbc8")
 
 [node name="ExerciseInfo" type="PanelContainer" parent="MainVBox/Exercises"]
 custom_minimum_size = Vector2(400, 150)

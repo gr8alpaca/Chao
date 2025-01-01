@@ -4,7 +4,7 @@ class_name WeekOverlay extends Control
 signal opened
 signal closed
 
-@export var stat_info_display_scene: PackedScene = preload("res://scenes/stat_info.tscn")
+@export var stat_info_display_scene: PackedScene = preload("res://scenes/UI/stat_info.tscn")
 
 @export var color_rect: ColorRect
 

@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://c2j5335dvfv8o"]
 
-[ext_resource type="Script" path="res://scenes/stat_info.gd" id="1_p1ri4"]
+[ext_resource type="Script" path="res://scenes/UI/stat_info.gd" id="1_p1ri4"]
 [ext_resource type="Script" path="res://scripts/UI/floater.gd" id="3_uvx0j"]
 [ext_resource type="Script" path="res://scripts/UI/level_progress_bar.gd" id="3_xil7a"]
 

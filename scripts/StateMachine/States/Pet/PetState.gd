@@ -14,3 +14,7 @@ func set_pet(val: Pet) -> void:
 
 func set_stats(val: Stats) -> void:
 	stats = val
+
+
+func update_physics_process(delta: float) -> void:
+	pet.velocity = pet.velocity.move_toward(Vector3(0.0, pet.velocity.y, 0.0), pet.acceleration * delta)

@@ -2,9 +2,8 @@
 
 [resource]
 resource_name = "HighlightMaterial"
-transparency = 4
+transparency = 1
 albedo_color = Color(1, 1, 1, 0)
 emission_enabled = true
 emission = Color(1, 1, 1, 1)
 normal_scale = -16.0
-texture_repeat = false

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Activity" load_steps=2 format=3 uid="uid://bed7p3m8hf1sq"]
+
+[ext_resource type="Script" path="res://scripts/misc/activity.gd" id="1_ymjpj"]
+
+[resource]
+resource_name = "Race"
+script = ExtResource("1_ymjpj")
+name = &"Race"
+drag_unicode_code = 127937
+symbol = "🏁"

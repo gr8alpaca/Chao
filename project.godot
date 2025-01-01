@@ -18,6 +18,7 @@ boot_splash/show_image=false
 [autoload]
 
 Event="*res://autoload/Event.gd"
+Global="res://autoload/Global.gd"
 
 [debug]
 

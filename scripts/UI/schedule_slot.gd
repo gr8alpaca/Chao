@@ -3,13 +3,13 @@ class_name ScheduleSlot extends Panel
 
 const LABEL_Y_OFFSET: int = 16
 
+
 signal activity_changed
 
 var label: Label = Label.new()
 var button: Button = Button.new()
 
-@export var activity: Exercise: set = set_activity
-var time_offset: float = 0.0
+@export var activity: Activity: set = set_activity
 
 func _init() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
@@ -25,40 +25,28 @@ func _init() -> void:
 	add_child(label, false, INTERNAL_MODE_FRONT)
 	label.resized.connect(position_label, CONNECT_DEFERRED)
 	
-	
-	time_offset = randf() 
-	
-	
 	add_child(button, false, Node.INTERNAL_MODE_FRONT)
 	button.text = "✗"
 	button.flat = true
 	button.pressed.connect(set_activity.bind(null))
 	button.focus_mode = Control.FOCUS_NONE
 	button.position = -button.get_combined_minimum_size()/2.0
-
+	button.modulate.a = float(activity != null)
+	
 	for item: CanvasItem in [label, button, self]:
 		item.material = preload("res://resources/materials/float_material.tres").duplicate()
 		item.material.set_shader_parameter(&"time_offset", randf() * TAU )
 
-
-func _process(delta: float) -> void:
-	const MAX_FLOAT_DISTANCE: float = 4.0
-	const CYCLE_TIME_SECS: float = 5.0
-	return
-	var time:= Time.get_ticks_msec() / 1000.0 * TAU / CYCLE_TIME_SECS + time_offset * CYCLE_TIME_SECS
-	button.modulate.a += delta
-	button.position = Vector2(sin(time), cos(1.2*time)) * MAX_FLOAT_DISTANCE - button.size/2.0
-	
 
 func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
 	return data is Dictionary and "activity" in data
 
 
 func _drop_data(at_position: Vector2, data: Variant) -> void:
-	if data.get("source"):
+	if data.get("source") and not (Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT) or Input.is_key_pressed(KEY_CTRL) or Input.is_key_pressed(KEY_SHIFT)):
 		data.source.activity = activity
 	activity = data.activity
-	
+
 
 func _get_drag_data(at_position: Vector2) -> Variant:
 	if activity:
@@ -67,7 +55,7 @@ func _get_drag_data(at_position: Vector2) -> Variant:
 		set_drag_preview(lbl)
 	return {
 		activity = activity,
-		source = self
+		source = self,
 		}
 
 func _draw() -> void:
@@ -87,14 +75,17 @@ func _draw() -> void:
 	var draw_pos: Vector2 = (size - string_size)/Vector2(2.0, 2.0)  + Vector2(0.0, font.get_ascent(font_size))
 	draw_string_outline(font, draw_pos, activity_string, 0, -1, font_size, FONT_OUTLINE_SIZE, Color.BLACK)
 	draw_string(font, draw_pos, activity_string, 0, -1, font_size)
-	
 
-func set_activity(val: Exercise) -> void:
+
+func set_activity(val: Activity) -> void:
 	activity = val
-	set_process(activity != null)
-	button.visible = activity != null
-	button.modulate.a = 0.0 if not activity else button.modulate.a
-	button.disabled = activity == null
+	
+	const BUTTON_FADE_SEC: float = 0.25
+	create_tween().tween_property(button, ^"modulate:a", float(activity != null), BUTTON_FADE_SEC)
+	
+	if activity != null and button.has_focus():
+		button.release_focus()
+	
 	queue_redraw()
 	activity_changed.emit()
 
@@ -114,12 +105,5 @@ func _gui_input(event: InputEvent) -> void:
 
 func _notification(what: int) -> void:
 	match what:
-		NOTIFICATION_READY when not activity and not Engine.is_editor_hint():
-			button.modulate.a = 0.0
-			set_process(false)
-		
 		NOTIFICATION_RESIZED:
 			position_label()
-		
-		NOTIFICATION_PARENTED:
-			label.text = "Week %d" % (get_index() + 1)

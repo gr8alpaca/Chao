@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="Exercise" load_steps=2 format=3 uid="uid://cscuycdixjxoh"]
+
+[ext_resource type="Script" path="res://scripts/misc/exercise.gd" id="1_t1hxv"]
+
+[resource]
+resource_name = "Jump"
+script = ExtResource("1_t1hxv")
+fatigue = -1
+run = 0
+swim = 0
+fly = 1
+power = 0
+name = &"Jump"
+drag_unicode_code = 129461
+symbol = "🦵"

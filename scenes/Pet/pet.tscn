@@ -1,10 +1,9 @@
-[gd_scene load_steps=26 format=3 uid="uid://cp1lbtskoh1sx"]
+[gd_scene load_steps=30 format=3 uid="uid://cp1lbtskoh1sx"]
 
-[ext_resource type="Script" path="res://scenes/pet.gd" id="1_t3pu5"]
+[ext_resource type="Script" path="res://scenes/Pet/pet.gd" id="1_t3pu5"]
 [ext_resource type="Script" path="res://scripts/stats.gd" id="2_0kyj0"]
 [ext_resource type="Script" path="res://scripts/interactable.gd" id="3_dwkxt"]
 [ext_resource type="Material" uid="uid://cj52sut2j38yc" path="res://resources/highlight_material.tres" id="3_uymjs"]
-[ext_resource type="Material" uid="uid://df0i6cc61sysj" path="res://resources/pet.tres" id="4_oph6j"]
 [ext_resource type="Script" path="res://scripts/StateMachine/StateMachine.gd" id="6_b7k50"]
 [ext_resource type="Script" path="res://scripts/StateMachine/State.gd" id="7_crvk2"]
 [ext_resource type="Script" path="res://scripts/StateMachine/States/Pet/idle_state.gd" id="8_fdymg"]
@@ -44,8 +43,31 @@ experience_swim = 0
 experience_fly = 0
 experience_power = 0
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_0uynd"]
-material = ExtResource("4_oph6j")
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_n63yy"]
+load_path = "res://.godot/imported/fabric_0034_color_1k.jpg-0106fc4b6c0caf80cd1c3273babc7397.s3tc.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_em418"]
+load_path = "res://.godot/imported/fabric_0034_height_1k.png-f1520aab52bc276da43d940723a4fb4c.s3tc.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_eyc8h"]
+load_path = "res://.godot/imported/fabric_0034_normal_opengl_1k.png-29f3e83723e6984e3f2c4dd93ac9d291.s3tc.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_x1a4o"]
+load_path = "res://.godot/imported/fabric_0034_roughness_1k.jpg-32eeb83bc82f5da82a4c68847046d285.s3tc.ctex"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5rfne"]
+albedo_texture = SubResource("CompressedTexture2D_n63yy")
+metallic_specular = 0.1
+roughness = 0.5
+roughness_texture = SubResource("CompressedTexture2D_x1a4o")
+normal_enabled = true
+normal_texture = SubResource("CompressedTexture2D_eyc8h")
+heightmap_enabled = true
+heightmap_scale = 4.0
+heightmap_texture = SubResource("CompressedTexture2D_em418")
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_sco5p"]
+material = SubResource("StandardMaterial3D_5rfne")
 radius = 0.1
 height = 0.5
 
@@ -72,7 +94,7 @@ height = 0.5
 radius = 0.1
 height = 0.5
 
-[sub_resource type="Resource" id="Resource_xqhde"]
+[sub_resource type="Resource" id="Resource_l5v0v"]
 resource_local_to_scene = true
 resource_name = "idle"
 script = ExtResource("8_fdymg")
@@ -88,7 +110,7 @@ script = ExtResource("9_nnr34")
 look_time = 0.5
 name = &"interaction"
 
-[sub_resource type="Resource" id="Resource_0youm"]
+[sub_resource type="Resource" id="Resource_smq2x"]
 resource_local_to_scene = true
 resource_name = "tpose"
 script = ExtResource("10_fvavy")
@@ -99,7 +121,7 @@ resource_name = "race"
 script = ExtResource("11_2cmky")
 name = &"race"
 
-[sub_resource type="Resource" id="Resource_tpiwi"]
+[sub_resource type="Resource" id="Resource_4ovbv"]
 resource_local_to_scene = true
 resource_name = "sleep"
 script = ExtResource("12_015lu")
@@ -109,14 +131,15 @@ name = &"sleep"
 collision_layer = 7
 input_capture_on_drag = true
 velocity = Vector3(0, -16.3333, 0)
+floor_snap_length = 0.0
 script = ExtResource("1_t3pu5")
 stats = SubResource("Resource_daiye")
 speed = 2.0
 
 [node name="BodyMesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0.2, 0)
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0.25, 0)
 material_overlay = ExtResource("3_uymjs")
-mesh = SubResource("CapsuleMesh_0uynd")
+mesh = SubResource("CapsuleMesh_sco5p")
 
 [node name="EyeWhiteR" type="MeshInstance3D" parent="BodyMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.037779, 0.2, 0.0677326)
@@ -141,29 +164,29 @@ mesh = SubResource("SphereMesh_mwqtk")
 skeleton = NodePath("../../..")
 
 [node name="BodyCollisionShape" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
 shape = SubResource("CapsuleShape3D_8j3t2")
 
-[node name="Interactable" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+[node name="Interactable" type="StaticBody3D" parent="." node_paths=PackedStringArray("hover_animation_nodes")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("3_dwkxt")
-modulate_material = ExtResource("3_uymjs")
+hover_animation_nodes = [NodePath("../BodyMesh")]
 
 [node name="BodyCollisionShape" type="CollisionShape3D" parent="Interactable"]
 shape = SubResource("CapsuleShape3D_ense1")
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("reference_variable_values", "debug_label")]
 script = ExtResource("6_b7k50")
-state_resources = Array[ExtResource("7_crvk2")]([SubResource("Resource_xqhde"), SubResource("Resource_xl5jh"), SubResource("Resource_0youm"), SubResource("Resource_5x848"), SubResource("Resource_tpiwi")])
+state_resources = Array[ExtResource("7_crvk2")]([SubResource("Resource_l5v0v"), SubResource("Resource_xl5jh"), SubResource("Resource_smq2x"), SubResource("Resource_5x848"), SubResource("Resource_4ovbv")])
 initial_state_name = "idle"
 reference_variable_names = Array[StringName]([&"pet"])
 reference_variable_values = [NodePath("..")]
 debug_label = NodePath("../StateDebug")
 
 [node name="StateDebug" type="Label3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
 pixel_size = 0.002
 billboard = 1
 font_size = 24

@@ -32,7 +32,7 @@ func close() -> void:
 	set_mini_visible(false)
 	update_start_button()
 
-func add_activity(activity: Exercise) -> void:
+func add_activity(activity: Activity) -> void:
 	for slot: ScheduleSlot in slots:
 		if slot.activity==null or slots[-1] == slot:
 			slot.activity = activity
@@ -79,7 +79,7 @@ func set_slots_visible(slot_visible: bool, delay_sec: float = 0.0) -> void:
 			tween_container.close()
 
 
-func _on_schedule_activity(activity: Exercise) -> void:
+func _on_schedule_activity(activity: Activity) -> void:
 	add_activity(activity)
 
 
