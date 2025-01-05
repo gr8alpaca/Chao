@@ -7,7 +7,7 @@
 [ext_resource type="Script" path="res://scripts/stats.gd" id="3_wexte"]
 [ext_resource type="Script" path="res://scripts/waypoint.gd" id="4_ieb84"]
 
-[sub_resource type="Resource" id="Resource_iqrfk"]
+[sub_resource type="Resource" id="Resource_uwxvo"]
 resource_local_to_scene = true
 script = ExtResource("3_wexte")
 name = &"Ethan"
@@ -33,7 +33,7 @@ experience_swim = 0
 experience_fly = 0
 experience_power = 0
 
-[sub_resource type="Resource" id="Resource_bhe7w"]
+[sub_resource type="Resource" id="Resource_jah7k"]
 resource_local_to_scene = true
 script = ExtResource("3_wexte")
 name = &"Drew"
@@ -59,7 +59,7 @@ experience_swim = 0
 experience_fly = 0
 experience_power = 0
 
-[sub_resource type="Resource" id="Resource_2habs"]
+[sub_resource type="Resource" id="Resource_publ5"]
 resource_local_to_scene = true
 script = ExtResource("3_wexte")
 name = &"Hugo"
@@ -85,7 +85,7 @@ experience_swim = 0
 experience_fly = 0
 experience_power = 0
 
-[sub_resource type="Resource" id="Resource_28hon"]
+[sub_resource type="Resource" id="Resource_ats8o"]
 resource_local_to_scene = true
 script = ExtResource("3_wexte")
 name = &"James"
@@ -111,7 +111,7 @@ experience_swim = 0
 experience_fly = 0
 experience_power = 0
 
-[sub_resource type="Resource" id="Resource_kltab"]
+[sub_resource type="Resource" id="Resource_cnpcg"]
 resource_local_to_scene = true
 script = ExtResource("3_wexte")
 name = &"Stephen"
@@ -137,7 +137,7 @@ experience_swim = 0
 experience_fly = 0
 experience_power = 0
 
-[sub_resource type="Resource" id="Resource_vwg6r"]
+[sub_resource type="Resource" id="Resource_wxc8n"]
 resource_local_to_scene = true
 script = ExtResource("3_wexte")
 name = &"Rachel"
@@ -163,7 +163,7 @@ experience_swim = 0
 experience_fly = 0
 experience_power = 0
 
-[sub_resource type="Resource" id="Resource_44x45"]
+[sub_resource type="Resource" id="Resource_fdg3q"]
 resource_local_to_scene = true
 script = ExtResource("3_wexte")
 name = &"Garfield"
@@ -189,9 +189,10 @@ experience_swim = 0
 experience_fly = 0
 experience_power = 0
 
-[node name="Race" type="Node3D" node_paths=PackedStringArray("waypoints")]
+[node name="Race" type="Node3D" node_paths=PackedStringArray("waypoints", "racers")]
 script = ExtResource("1_ccd51")
 waypoints = NodePath("Waypoints")
+racers = []
 
 [node name="Lights" type="Node3D" parent="."]
 metadata/_edit_lock_ = true
@@ -355,7 +356,7 @@ dimensions = Vector3(1, 0.5, 4)
 [node name="Racers" type="Node3D" parent="."]
 
 [node name="Ethan" parent="Racers" instance=ExtResource("2_cbkiy")]
-stats = SubResource("Resource_iqrfk")
+stats = SubResource("Resource_uwxvo")
 
 [node name="RemoteTransform3D" type="RemoteTransform3D" parent="Racers/Ethan"]
 remote_path = NodePath("../../../CameraOffset")
@@ -363,26 +364,24 @@ update_rotation = false
 update_scale = false
 
 [node name="Drew" parent="Racers" instance=ExtResource("2_cbkiy")]
-stats = SubResource("Resource_bhe7w")
+stats = SubResource("Resource_jah7k")
 
 [node name="Hugo" parent="Racers" instance=ExtResource("2_cbkiy")]
-stats = SubResource("Resource_2habs")
+stats = SubResource("Resource_publ5")
 
 [node name="James" parent="Racers" instance=ExtResource("2_cbkiy")]
-stats = SubResource("Resource_28hon")
+stats = SubResource("Resource_ats8o")
 
 [node name="Stephen" parent="Racers" instance=ExtResource("2_cbkiy")]
-stats = SubResource("Resource_kltab")
+stats = SubResource("Resource_cnpcg")
 
 [node name="Rachel" parent="Racers" instance=ExtResource("2_cbkiy")]
-stats = SubResource("Resource_vwg6r")
+stats = SubResource("Resource_wxc8n")
 
 [node name="Brennan" parent="Racers" instance=ExtResource("2_cbkiy")]
-stats = SubResource("Resource_44x45")
+stats = SubResource("Resource_fdg3q")
 
 [node name="CameraOffset" type="Node3D" parent="."]
 
 [node name="FollowCamera" type="Camera3D" parent="CameraOffset"]
 transform = Transform3D(-4.37114e-08, 0.642788, -0.766044, 0, 0.766044, 0.642788, 1, 2.80971e-08, -3.34849e-08, -1, 2.275, 4.37114e-08)
-
-[node name="OpponentGenerator" type="Node" parent="."]

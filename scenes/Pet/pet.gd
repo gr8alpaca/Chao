@@ -26,7 +26,6 @@ var turn_speed: float = 3.0
 
 var turn_modifier: float = 1.0
 
-
 var is_moving: bool:
 	set(val):
 		if is_moving == val: return
@@ -34,7 +33,6 @@ var is_moving: bool:
 		emit_signal(&"move_started" if val else &"move_ended")
 		if debug_mesh: 
 			debug_mesh.visible = is_moving
-		#print("PET MOVING: ", is_moving, "\tTarget: %1.02v" % target_position)
 
 var target_position: Vector3: set = set_target_position
 var target_direction: Vector3: set = set_target_direction

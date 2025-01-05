@@ -21,44 +21,44 @@ shader_parameter/volatility = 1.3
 shader_parameter/time_offset = 0.0
 shader_parameter/disabled = false
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_q01go"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xlgev"]
 shader = ExtResource("12_ajibj")
 shader_parameter/cycle_time_sec = 7.0
-shader_parameter/max_distance = Vector2(16, 8)
+shader_parameter/max_distance = Vector2(8, 8)
 shader_parameter/volatility = 1.3
-shader_parameter/time_offset = 0.625662
+shader_parameter/time_offset = 0.873919
 shader_parameter/disabled = false
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_15ihs"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0lj7j"]
 shader = ExtResource("12_ajibj")
 shader_parameter/cycle_time_sec = 7.0
-shader_parameter/max_distance = Vector2(16, 8)
+shader_parameter/max_distance = Vector2(8, 8)
 shader_parameter/volatility = 1.3
-shader_parameter/time_offset = 3.48607
+shader_parameter/time_offset = 2.91438
 shader_parameter/disabled = false
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_xwffc"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sl7ph"]
 shader = ExtResource("12_ajibj")
 shader_parameter/cycle_time_sec = 7.0
-shader_parameter/max_distance = Vector2(16, 8)
+shader_parameter/max_distance = Vector2(8, 8)
 shader_parameter/volatility = 1.3
-shader_parameter/time_offset = 5.61204
+shader_parameter/time_offset = 2.2818
 shader_parameter/disabled = false
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_6by7m"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6a0an"]
 shader = ExtResource("12_ajibj")
 shader_parameter/cycle_time_sec = 7.0
-shader_parameter/max_distance = Vector2(16, 8)
+shader_parameter/max_distance = Vector2(8, 8)
 shader_parameter/volatility = 1.3
-shader_parameter/time_offset = 1.55331
+shader_parameter/time_offset = 2.56611
 shader_parameter/disabled = false
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_dga8s"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_amwnv"]
 shader = ExtResource("12_ajibj")
 shader_parameter/cycle_time_sec = 7.0
-shader_parameter/max_distance = Vector2(16, 8)
+shader_parameter/max_distance = Vector2(8, 8)
 shader_parameter/volatility = 1.3
-shader_parameter/time_offset = 5.30484
+shader_parameter/time_offset = 3.07152
 shader_parameter/disabled = false
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_o7k7w"]
@@ -66,39 +66,39 @@ shader = ExtResource("12_ajibj")
 shader_parameter/cycle_time_sec = 10.0
 shader_parameter/max_distance = Vector2(8, 6)
 shader_parameter/volatility = 1.3
-shader_parameter/time_offset = 1.91106
+shader_parameter/time_offset = 2.84715
 shader_parameter/disabled = false
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_0gyfp"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_extso"]
 shader = ExtResource("12_ajibj")
 shader_parameter/cycle_time_sec = 7.0
 shader_parameter/max_distance = Vector2(4, 4)
 shader_parameter/volatility = 1.3
-shader_parameter/time_offset = 1.84443
+shader_parameter/time_offset = 4.88286
 shader_parameter/disabled = false
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_a6mv2"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_v3rbg"]
 shader = ExtResource("12_ajibj")
 shader_parameter/cycle_time_sec = 7.0
 shader_parameter/max_distance = Vector2(4, 4)
 shader_parameter/volatility = 1.3
-shader_parameter/time_offset = 4.65784
+shader_parameter/time_offset = 2.24492
 shader_parameter/disabled = false
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_kqj78"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_372xe"]
 shader = ExtResource("12_ajibj")
 shader_parameter/cycle_time_sec = 7.0
 shader_parameter/max_distance = Vector2(4, 4)
 shader_parameter/volatility = 1.3
-shader_parameter/time_offset = 1.46161
+shader_parameter/time_offset = 1.68584
 shader_parameter/disabled = false
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_oq7k7"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_q2mua"]
 shader = ExtResource("12_ajibj")
 shader_parameter/cycle_time_sec = 7.0
 shader_parameter/max_distance = Vector2(4, 4)
 shader_parameter/volatility = 1.3
-shader_parameter/time_offset = 2.78385
+shader_parameter/time_offset = 3.06517
 shader_parameter/disabled = false
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ykhxp"]
@@ -110,6 +110,7 @@ shader_parameter/time_offset = 0.0
 shader_parameter/disabled = false
 
 [node name="InteractMenu" type="Control" node_paths=PackedStringArray("name_label_container", "main_buttons", "info_panel_container", "stat_panel", "schedule_ui", "submenu")]
+modulate = Color(1, 1, 1, 0)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -193,7 +194,7 @@ active = false
 target_scale = Vector2(0.3, 1)
 
 [node name="Train" type="Button" parent="MainMenu/MainMenuMargin/MainMenuVBox/MainHBox/MainButtons/TrainCon"]
-material = SubResource("ShaderMaterial_q01go")
+material = SubResource("ShaderMaterial_xlgev")
 custom_minimum_size = Vector2(256, 64)
 layout_mode = 2
 size_flags_vertical = 6
@@ -217,7 +218,7 @@ active = false
 target_scale = Vector2(0.3, 1)
 
 [node name="Feed" type="Button" parent="MainMenu/MainMenuMargin/MainMenuVBox/MainHBox/MainButtons/FeedCon"]
-material = SubResource("ShaderMaterial_15ihs")
+material = SubResource("ShaderMaterial_0lj7j")
 custom_minimum_size = Vector2(256, 64)
 layout_mode = 2
 size_flags_vertical = 6
@@ -240,7 +241,7 @@ active = false
 target_scale = Vector2(0.3, 1)
 
 [node name="Rest" type="Button" parent="MainMenu/MainMenuMargin/MainMenuVBox/MainHBox/MainButtons/Rest"]
-material = SubResource("ShaderMaterial_xwffc")
+material = SubResource("ShaderMaterial_sl7ph")
 custom_minimum_size = Vector2(256, 64)
 layout_mode = 2
 size_flags_vertical = 6
@@ -263,7 +264,7 @@ active = false
 target_scale = Vector2(0.3, 1)
 
 [node name="Compete" type="Button" parent="MainMenu/MainMenuMargin/MainMenuVBox/MainHBox/MainButtons/Compete"]
-material = SubResource("ShaderMaterial_6by7m")
+material = SubResource("ShaderMaterial_6a0an")
 custom_minimum_size = Vector2(256, 64)
 layout_mode = 2
 size_flags_vertical = 6
@@ -286,7 +287,7 @@ active = false
 target_scale = Vector2(0.3, 1)
 
 [node name="Praise" type="Button" parent="MainMenu/MainMenuMargin/MainMenuVBox/MainHBox/MainButtons/Praise"]
-material = SubResource("ShaderMaterial_dga8s")
+material = SubResource("ShaderMaterial_amwnv")
 custom_minimum_size = Vector2(256, 64)
 layout_mode = 2
 size_flags_vertical = 6
@@ -395,7 +396,7 @@ target = NodePath("../../TargetsContainer/HBoxTargets/SlotRect1")
 side = 3
 
 [node name="Slot1" type="Panel" parent="MainMenu/MainMenuMargin/MainMenuVBox/ScheduleUI/ScheduleSlotsHBox/SlotCon1"]
-material = SubResource("ShaderMaterial_0gyfp")
+material = SubResource("ShaderMaterial_extso")
 custom_minimum_size = Vector2(200, 100)
 layout_mode = 2
 theme_type_variation = &"SchedulePanel"
@@ -409,7 +410,7 @@ target = NodePath("../../TargetsContainer/HBoxTargets/SlotRect2")
 side = 3
 
 [node name="Slot2" type="Panel" parent="MainMenu/MainMenuMargin/MainMenuVBox/ScheduleUI/ScheduleSlotsHBox/SlotCon2"]
-material = SubResource("ShaderMaterial_a6mv2")
+material = SubResource("ShaderMaterial_v3rbg")
 custom_minimum_size = Vector2(200, 100)
 layout_mode = 2
 theme_type_variation = &"SchedulePanel"
@@ -423,7 +424,7 @@ target = NodePath("../../TargetsContainer/HBoxTargets/SlotRect3")
 side = 3
 
 [node name="Slot3" type="Panel" parent="MainMenu/MainMenuMargin/MainMenuVBox/ScheduleUI/ScheduleSlotsHBox/SlotCon3"]
-material = SubResource("ShaderMaterial_kqj78")
+material = SubResource("ShaderMaterial_372xe")
 custom_minimum_size = Vector2(200, 100)
 layout_mode = 2
 theme_type_variation = &"SchedulePanel"
@@ -437,7 +438,7 @@ target = NodePath("../../TargetsContainer/HBoxTargets/SlotRect4")
 side = 3
 
 [node name="Slot4" type="Panel" parent="MainMenu/MainMenuMargin/MainMenuVBox/ScheduleUI/ScheduleSlotsHBox/SlotCon4"]
-material = SubResource("ShaderMaterial_oq7k7")
+material = SubResource("ShaderMaterial_q2mua")
 custom_minimum_size = Vector2(200, 100)
 layout_mode = 2
 theme_type_variation = &"SchedulePanel"
@@ -497,11 +498,14 @@ border_width = 0.0
 [node name="StartWeekTweak" type="Container" parent="MainMenu"]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
-offset_left = 1543.91
-offset_top = 849.975
-offset_right = 1820.91
-offset_bottom = 973.975
-rotation = -0.0085675
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -376.0
+offset_top = -230.0
+offset_right = -99.0
+offset_bottom = -106.0
 size_flags_horizontal = 8
 size_flags_vertical = 4
 script = ExtResource("10_hsmpm")
@@ -509,7 +513,6 @@ active = false
 side = 2
 hide_mode = 2
 target_scale = Vector2(0.3, 1)
-debug_rect_visible = false
 metadata/_edit_lock_ = true
 
 [node name="StartWeek" type="Button" parent="MainMenu/StartWeekTweak"]

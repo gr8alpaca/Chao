@@ -23,6 +23,7 @@ func open(stats: Stats, queue: Array[Activity]) -> void:
 	overlay.init(stats)
 	overlay.get_node(^"%NextWeekButton").pressed.connect(_on_next_week_pressed)
 
+
 func close() -> void:
 	print_rich("[color=pink]Closing activity scene handler...[/color]")
 	
@@ -31,7 +32,6 @@ func close() -> void:
 	var garden : Garden = load(Main.PATH.GARDEN).instantiate()
 	garden.pet_stats.push_back(stats)
 	emit_signal(Main.SIGNAL_CHANGE, garden)
-	
 
 
 func advance_week() -> void:
