@@ -8,7 +8,8 @@ signal closed
 @export_range(0.0, 1.2, 0.05, "suffix:sec")
 var interval_sec: float = 0.35:
 	set(val): interval_sec = maxf(val, 0.0)
-	
+
+@export var schedule_ui: ScheduleUI
 @export var compete_activity: Activity
 @export var rest_activity: Activity
 
@@ -43,7 +44,6 @@ func open(delay_sec: float = 0.0) -> void:
 		cons[i].open(i * interval_sec + delay_sec)
 	for but: BaseButton in get_buttons():
 		but.focus_mode = Control.FOCUS_ALL
-	
 
 func close() -> void:
 	for but: BaseButton in get_buttons():
@@ -64,7 +64,7 @@ func _on_button_pressed(but: BaseButton) -> void:
 
 func _on_button_gui_input(event: InputEvent, activity: Activity) -> void:
 	if event is InputEventMouseButton and event.button_mask & MOUSE_BUTTON_LEFT:
-		Event.schedule_activity.emit(activity)
+		schedule_ui.add_activity(activity)
 		accept_event()
 
 

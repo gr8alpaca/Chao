@@ -5,6 +5,8 @@ const EXERCISE_META: StringName = &"Exercise"
 const UP_ARROW_TEXTURE: Texture2D = preload("res://assets/UI/ArrowUp.svg")
 const DOWN_ARROW_TEXTURE: Texture2D = preload("res://assets/UI/ArrowUp.svg")
 
+
+signal add_activity(activity: Activity)
 # const UP_ARROW_UNICODE: int = 11014
 # const DOWN_ARROW_UNICODE: int = 11015
 
@@ -18,6 +20,7 @@ const DOWN_ARROW_TEXTURE: Texture2D = preload("res://assets/UI/ArrowUp.svg")
 
 @export var main_stat_vbox: VBoxContainer
 @export var skill_changes_hbox: HBoxContainer
+@export var schedule_ui: ScheduleUI
 
 @onready var exercise_label: Label = %ExerciseName
 
@@ -74,8 +77,6 @@ func _ready() -> void:
 	main_stat_vbox.modulate.a = 0.0
 
 
-
-
 func _get_exercise_drag_data(at_position: Vector2, exercise: Exercise) -> Variant:
 	var lbl := Label.new()
 	lbl.text = exercise.get_drag_preview()
@@ -88,13 +89,12 @@ func display_exercise(exercise: Exercise) -> void:
 	var set_stat_arrow: Callable = func(label: Label, value: int = 0, ) -> void:
 		label.text = char(11014 if value > 0 else 11015).repeat(abs(value))
 		label.modulate = Color(0.15, 0.4, 0.0, 1.0) if value > 0 else Color(0.45, 0.0, 0.0, 1.0)
-
+	
 	exercise_label.text = exercise.name
 	set_stat_arrow.call(fatigue_arrow, exercise.fatigue)
-
 	
 	var stats: PackedStringArray = exercise.get_stat_changes()
-
+	
 	for i: int in stat_change_displays.size():
 		if i < stats.size():
 			set_stat_arrow.call(stat_change_displays[i].get_node(^"Arrow"), exercise.get(stats[i]))
@@ -102,7 +102,7 @@ func display_exercise(exercise: Exercise) -> void:
 			stat_change_displays[i].show()
 			continue
 		stat_change_displays[i].hide()
-		
+	
 	main_stat_vbox.modulate.a = 1.0
 
 
@@ -112,8 +112,8 @@ func focus_button(but: BaseButton) -> void:
 
 
 func _on_exercise_pressed(exercise: Exercise) -> void:
-	Event.schedule_activity.emit(exercise)
-
+	if schedule_ui: 
+		schedule_ui.add_activity(exercise)
 
 func _on_exercise_focus_enter(exercise: Exercise) -> void:
 	display_exercise(exercise)

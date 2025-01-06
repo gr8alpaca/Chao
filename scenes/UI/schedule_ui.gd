@@ -52,6 +52,7 @@ func remove_last_activity() -> void:
 			remove_activity((i))
 			break
 
+
 func clear_slots() -> void:
 	for slot: ScheduleSlot in slots:
 		slot.clear()
@@ -112,7 +113,6 @@ func _unhandled_input(event: InputEvent) -> void:
 func _notification(what: int) -> void:
 	match what:
 		NOTIFICATION_READY:
-			Event.schedule_activity.connect(_on_schedule_activity)
 			if Engine.is_editor_hint():
 				return
 			assert(start_week_tweak != null, "No start week tweak set!")

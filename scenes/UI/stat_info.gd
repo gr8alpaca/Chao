@@ -34,7 +34,8 @@ func _ready() -> void:
 	value_delta_label.material.set_shader_parameter(&"time_offset", randf() * TAU)
 	value_delta_label.material.set_shader_parameter(&"max_distance", Vector2(5.0, 3.0))
 	value_delta_label.material.set_shader_parameter(&"volatility", 1.3)
-
+	
+	#bar.speed_modifier = speed_modifier
 
 func set_font_sizes(main_fs: int = 28, level_fs : int = 10, level_up_fs: int = level_up_font_size) -> void:
 	name_label.add_theme_font_size_override("font_size", main_fs)
@@ -99,20 +100,19 @@ func display_xp_change(delta: int) -> void:
 	value_delta_label.add_theme_color_override("font_color", POSITIVE_COLOR if delta > 0 else NEGATIVE_COLOR)
 	
 	var tw: Tween = create_tween()
-	tw.tween_property(value_delta_label, ^"modulate:a", 1.0, MODULATE_TWEEN_DURATION_SEC * speed_modifier)
+	tw.tween_property(value_delta_label, ^"modulate:a", 1.0, MODULATE_TWEEN_DURATION_SEC / speed_modifier)
 	
-	tw.tween_interval(PRE_ANIMATION_DELAY * speed_modifier)
+	tw.tween_interval(PRE_ANIMATION_DELAY / speed_modifier)
 	
 	tw.tween_callback(bar.add_value.bind(delta))
 	
 	# TEXT SPEED HERE
-	tw.tween_method(set_value_delta_text, delta, 0, abs(delta) * speed_modifier / maxf(bar.fill_speed, 1.0)) 
+	tw.tween_method(set_value_delta_text, delta, 0, abs(delta) / maxf(bar.fill_speed, 1.0)) 
 	
 	#tw.tween_property(value_delta_label, ^"modulate:a", 0.0, MODULATE_TWEEN_DURATION_SEC)
-	
 
 func set_value_delta_text(delta: int) -> void:
-	value_label.text = "%04.0f" % (experience - delta * speed_modifier)
+	value_label.text = "%04.0f" % (experience - delta)
 	if delta:
 		value_delta_label.text = ("+" if delta > 0 else "-") + " %2.0d" % abs(delta)
 	else:
