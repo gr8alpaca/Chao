@@ -9,7 +9,6 @@ const TARGET_DISTANCE_THRESHOLD: float = 0.04
 signal move_started
 signal move_ended
 
-@onready var state_machine: StateMachine = $StateMachine
 
 @export var stats: Stats: set = set_stats
 
@@ -23,6 +22,9 @@ var acceleration: float = 10.0
 
 @export_range(0.5, 5.0, 0.25)
 var turn_speed: float = 3.0
+
+@export_group("NodeRefs")
+@export var state_machine: StateMachine
 
 var turn_modifier: float = 1.0
 

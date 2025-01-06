@@ -41,7 +41,7 @@ func add_activity(activity: Activity) -> void:
 
 
 func remove_activity(index: int) -> void:
-	slots[index].activity = null
+	slots[index].clear()
 	schedule_changed.emit()
 
 
@@ -51,6 +51,10 @@ func remove_last_activity() -> void:
 		if slots[i].activity != null:
 			remove_activity((i))
 			break
+
+func clear_slots() -> void:
+	for slot: ScheduleSlot in slots:
+		slot.clear()
 
 
 func update_start_button() -> void:
@@ -81,10 +85,6 @@ func set_slots_visible(slot_visible: bool, delay_sec: float = 0.0) -> void:
 
 func _on_schedule_activity(activity: Activity) -> void:
 	add_activity(activity)
-
-
-func _on_start_week_pressed() -> void:
-	pass
 
 func _on_start_week_closing(start_week_button: BaseButton) -> void:
 	start_week_button.disabled = true
@@ -117,7 +117,6 @@ func _notification(what: int) -> void:
 				return
 			assert(start_week_tweak != null, "No start week tweak set!")
 			var start_week_button: BaseButton = start_week_tweak.get_child(0)
-			start_week_button.pressed.connect(_on_start_week_pressed)
 			start_week_tweak.close()
 			start_week_tweak.opened.connect(_on_start_week_opened.bind(start_week_button))
 			start_week_tweak.closing.connect(_on_start_week_closing.bind(start_week_button))

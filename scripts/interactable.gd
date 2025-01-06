@@ -28,24 +28,29 @@ func _init() -> void:
 	modulate_material.emission_enabled = true
 	
 	const ALPHA_MODULATE: float = 0.30
-	const TWEEN_INTERVAL: float = 0.25
+	const TWEEN_INTERVAL: float = 0.35
 	highlight_tween = create_tween().set_loops(0).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_QUART)
-	highlight_tween.tween_property(modulate_material, ^"albedo_color:a", ALPHA_MODULATE, TWEEN_INTERVAL)
-	highlight_tween.tween_property(modulate_material, ^"albedo_color:a", 0.0, TWEEN_INTERVAL)
+	#highlight_tween.tween_property(modulate_material, ^"albedo_color:a", ALPHA_MODULATE, TWEEN_INTERVAL)
+	highlight_tween.tween_property(modulate_material, ^"albedo_color:a", 0.0, TWEEN_INTERVAL).from(ALPHA_MODULATE)
+	highlight_tween.finished
+	reset_highlight()
+
+
+func _notification(what: int) -> void:
+	match what:
+		NOTIFICATION_PARENTED when not Engine.is_editor_hint(): 
+			assert(get_parent() is CollisionObject3D, "Interactable parent is not of type 'CollisionObject3D'.")
+			var parent: CollisionObject3D = get_parent()
+			parent.input_event.connect(_on_input_event)
+			parent.mouse_entered.connect(_on_mouse_entered)
+			parent.mouse_exited.connect(_on_mouse_exited)
+			add_and_connect(parent, SIGNAL_ENABLED, [ {name=&"is_enabled", type=TYPE_BOOL}], set_enabled)
+			add_and_connect(parent, SIGNAL_INTERACTION_STARTED, [], _on_interaction_started)
+			add_and_connect(parent, SIGNAL_INTERACTION_ENDED, [], _on_interaction_ended)
+
+func reset_highlight() -> void:
 	highlight_tween.stop()
-
-func _enter_tree() -> void:
-	if Engine.is_editor_hint(): return
-	assert(get_parent() is CollisionObject3D, "Interactable parent is not of type 'CollisionObject3D'.")
-	
-	var parent: CollisionObject3D = get_parent()
-	parent.input_event.connect(_on_input_event)
-	parent.mouse_entered.connect(_on_mouse_entered)
-	parent.mouse_exited.connect(_on_mouse_exited)
-	add_and_connect(parent, SIGNAL_ENABLED, [ {name=&"is_enabled", type=TYPE_BOOL}], set_enabled)
-	add_and_connect(parent, SIGNAL_INTERACTION_STARTED, [], _on_interaction_started)
-	add_and_connect(parent, SIGNAL_INTERACTION_ENDED, [], _on_interaction_ended)
-
+	modulate_material.albedo_color.a = 0.0
 
 func add_and_connect(node: Node, signal_name: StringName, arguments: Array[Dictionary]=[], callable: Callable = Callable()) -> void:
 	if not node.has_user_signal(signal_name):
@@ -72,19 +77,16 @@ func _on_mouse_exited() -> void:
 	highlight_tween.stop()
 	modulate_material.albedo_color.a = 0.0
 
-
 func _on_interaction_started() -> void:
 	set_enabled(false)
 
 func _on_interaction_ended() -> void:
 	set_enabled(true)
 
-
 func set_enabled(val: bool) -> void:
 	enabled = val
 	if not enabled:
 		_on_mouse_exited()
-
 
 func set_hover_animation_nodes(nodes: Array[GeometryInstance3D]) -> void:
 	hover_animation_nodes = nodes

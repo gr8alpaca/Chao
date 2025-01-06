@@ -3,6 +3,7 @@
 [ext_resource type="Shader" path="res://scripts/shaders/float.gdshader" id="1_kuv27"]
 
 [resource]
+resource_local_to_scene = true
 shader = ExtResource("1_kuv27")
 shader_parameter/cycle_time_sec = 7.0
 shader_parameter/max_distance = Vector2(4, 4)

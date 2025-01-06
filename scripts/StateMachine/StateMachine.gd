@@ -42,7 +42,7 @@ func _set_current_state(new_state: State) -> void:
 		
 		if debug_label:
 			debug_label.text = current_state.name if current_state else ""
-
+		
 		current_state.enter()
 		
 		state_changed.emit(old_state, current_state)

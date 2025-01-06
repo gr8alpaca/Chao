@@ -20,7 +20,7 @@ func _init() -> void:
 func open(stats: Stats, queue: Array[Activity]) -> void:
 	self.stats = stats
 	self.queue = queue
-	overlay.init(stats)
+	#overlay.init(stats)
 	overlay.get_node(^"%NextWeekButton").pressed.connect(_on_next_week_pressed)
 
 
@@ -42,7 +42,7 @@ func advance_week() -> void:
 	if index >= queue.size():
 		close()
 		return
-		
+	
 	var activity_scene: ActivityScene = queue[index].get_scene().instantiate()
 	add_child(activity_scene, true)
 	if not activity_scene.is_node_ready():
@@ -50,7 +50,7 @@ func advance_week() -> void:
 	
 	activity_scene.open(stats, queue[index])
 	activity_scene.play()
-	overlay.open(queue[index], stats, index + 1)
+	#overlay.open(queue[index], stats, index + 1)
 
 
 func apply_activity_deltas() -> void:

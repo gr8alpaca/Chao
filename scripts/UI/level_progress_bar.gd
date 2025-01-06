@@ -62,8 +62,6 @@ var fill_speed: float = 1.0
 @export_range(1.0, 5.0, 0.2, "suffix:sec") 
 var text_duration: float = 2.5
 
-
-
 func _process(delta: float) -> void:
 	if value == drawn_value:
 		if value == MAX_VALUE:
@@ -128,10 +126,4 @@ func draw_bar() -> void:
 
 
 func _draw() -> void:
-	# draw_level_text(get_theme_default_font())
-
 	draw_bar()
-
-	
-# func create_textpop(font: Font) -> TextPop:
-# 	if not font or not text_alpha: return

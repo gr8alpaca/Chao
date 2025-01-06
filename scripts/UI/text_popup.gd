@@ -2,19 +2,13 @@
 class_name TextPop extends Label
 
 enum {FADE_NONE, FADE_NORMAL, FADE_COLOR}
-@export var fade: int = FADE_NONE
+var fade: int = FADE_NONE
+var velocity: Vector2
 
-@export var velocity: Vector2:
-	set(val):
-		velocity = val
-		
+var is_started: bool
 
-var is_started: bool:
-	set(val):
-		is_started = val
-
-var time: float = 1.5:
-	get: return maxf(time, 0.5)
+var duration_sec: float = 1.5:
+	set(val): duration_sec = maxf(duration_sec, 0.4)
 
 var alternate_color: Color = Color.WHITE_SMOKE
 
@@ -27,8 +21,8 @@ func _init() -> void:
 	visible_characters_behavior = TextServer.VC_CHARS_AFTER_SHAPING
 
 
-func set_time(time: float) -> TextPop:
-	self.time = time
+func set_time(duration_sec: float) -> TextPop:
+	self.duration_sec = duration_sec
 	return self
 
 func _process(delta: float) -> void:
@@ -37,30 +31,33 @@ func _process(delta: float) -> void:
 	
 	position += velocity*delta
 
-func start(time: float = self.time, is_one_shot: bool = true) -> void:
-	const ALPHA_SECONDS: float = 0.4
+func start(duration_sec: float = self.duration_sec, is_one_shot: bool = true) -> void:
+	const TRANSITION_TIME_RATIO: float = 0.15
 	const COLOR_TWEEN_SECONDS: float = 0.8
-
-	self.time = time
+	
+	var alpha_tween_time_sec: float = minf(TRANSITION_TIME_RATIO * duration_sec, 1.0)
+	var color_tween_time_sec: float = minf(COLOR_TWEEN_SECONDS * duration_sec, 1.8)
+	
+	self.duration_sec = duration_sec
 	
 	set_process(velocity != Vector2())
 	
 	if fade & FADE_NORMAL:
 		var tw: Tween = create_tween().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_SINE)
-		tw.tween_property(self, ^"modulate:a", 1.0, ALPHA_SECONDS).from(0.0)
-		tw.tween_interval(time)
-		tw.tween_property(self, ^"modulate:a", 0.0, ALPHA_SECONDS).from(1.0)
-
+		tw.tween_property(self, ^"modulate:a", 1.0, alpha_tween_time_sec).from(0.0)
+		tw.tween_interval(duration_sec)
+		tw.tween_property(self, ^"modulate:a", 0.0, alpha_tween_time_sec).from(1.0)
+	
 	if fade & FADE_COLOR:
 		for p: String in ["r", "g", "b"]:
 			var tw: Tween = create_tween().set_loops(0).set_trans(Tween.TRANS_SPRING).set_ease(Tween.EASE_OUT_IN)
-			tw.tween_property(self, "modulate:" + p, alternate_color[p], COLOR_TWEEN_SECONDS).from(modulate[p])
-			tw.tween_property(self, "modulate:" + p, modulate[p], COLOR_TWEEN_SECONDS).from(alternate_color[p])
-
+			tw.tween_property(self, "modulate:" + p, alternate_color[p], color_tween_time_sec).from(modulate[p])
+			tw.tween_property(self, "modulate:" + p, modulate[p], color_tween_time_sec).from(alternate_color[p])
+	
 	visible = true
-
+	
 	if is_one_shot:
-		create_tween().tween_callback(queue_free).set_delay(time + (ALPHA_SECONDS * 2.0 if fade & FADE_NORMAL else 0.0))
+		create_tween().tween_callback(queue_free).set_delay(duration_sec)
 
 
 func set_txt(text_val: String) -> TextPop:

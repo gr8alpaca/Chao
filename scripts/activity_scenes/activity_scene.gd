@@ -2,17 +2,58 @@
 class_name ActivityScene extends Node3D
 
 @export var initial_pet_state: StringName = &"sleep"
-#var activity: Activity
 
-func open(stats: Stats, activity: Activity) -> void:
+var auto_continue: bool = true
+
+var stats: Stats
+var activity: Activity
+var week_index: int
+var overlay: WeekOverlay
+
+func init(stats: Stats, activity: Activity, week_index: int) -> void:
+	self.stats = stats
+	self.activity = activity
+	self.week_index = week_index
+	overlay = preload("res://scenes/UI/week_overlay.tscn").instantiate()
+	add_child(overlay, true, INTERNAL_MODE_FRONT)
+	overlay.get_node(^"%NextWeekButton").pressed.connect(emit_signal.bind(Main.SIGNAL_QUEUE_ADVANCE), CONNECT_ONE_SHOT)
+	
 	var pet: Pet = %Pet
-	assert(stats and pet and activity)
 	pet.stats = stats
-	if initial_pet_state: 
-		pet.emit_signal(StateMachine.SIGNAL_STATE, initial_pet_state)
+	if pet.has_meta(StateMachine.GROUP):
+		pet.get_meta(StateMachine.GROUP).initial_state_name = initial_pet_state
 
 
-func play() -> void:
+func _ready() -> void:
+	overlay.init(activity, stats, week_index)
+	overlay.opened.connect(_on_overlay_opened)
+	flicker_light()
+	create_tween().tween_callback(_play)#.set_delay(0.5)
+
+
+## Override for custom behavior
+func _play() -> void:
+	overlay.open()
+
+
+func apply_activity_deltas() -> void:
+	var deltas: Dictionary = ActivityXP.roll_exercise(activity)
+	for stat: StringName in deltas.keys():
+		stats.add_experience(stat, deltas[stat])
+
+
+func _on_overlay_opened() -> void:
+	const STAT_CHANGE_DELAY: float = 0.5
+	const BUTTON_ACTIVIATION_DELAY_DEFAULT: float = 0.5
+	const BUTTON_ACTIVIATION_DELAY_AUTO_CONTINUE: float = 2.0
+	var tw: Tween = create_tween()
+	tw.tween_interval(STAT_CHANGE_DELAY)
+	tw.tween_callback(apply_activity_deltas)
+	tw.tween_interval(BUTTON_ACTIVIATION_DELAY_AUTO_CONTINUE if auto_continue else BUTTON_ACTIVIATION_DELAY_DEFAULT)
+	tw.tween_callback(overlay.next_week_button.emit_signal.bind(&"pressed") if auto_continue else overlay.set_button_active.bind(true))
+
+
+func flicker_light() -> void:
 	if not has_node(^"%SpotLight3D"): return
 	const MIN_ENERGY: float = 6.0
 	const MAX_ENERGY: float = 10.0

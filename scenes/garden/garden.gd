@@ -2,47 +2,61 @@
 class_name Garden extends Node3D
 
 const MAX_DISTANCE: float = 3.0
-@export var pet_scene: PackedScene
-@export var interact_menu_scene: PackedScene
 
-var pet_stats: Array[Stats]
+#@export var interact_menu_scene: PackedScene
 
+var pet_stats: Stats
+var interact_menu: InteractMenu
 
-func _ready() -> void:
+func _init() -> void:
 	if Engine.is_editor_hint(): return
-	
-	var interact_menu: InteractMenu = interact_menu_scene.instantiate()
+	interact_menu = load("res://scenes/UI/interact_menu.tscn").instantiate()
+	interact_menu.name = &"InteractMenu"
 	add_child(interact_menu, true)
 	interact_menu.start_week_pressed.connect(_on_start_week_pressed)
+
+func _enter_tree() -> void:
+	if Engine.is_editor_hint(): return
+	if not pet_stats:
+		set_stats(Stats.new())
+
+
+func set_stats(stats: Stats) -> void:
+	pet_stats = stats
 	
-	if pet_stats.is_empty():
-		pet_stats.append(Stats.new())
+	var pet: Pet = get_pet()
+	pet.connect(Interactable.SIGNAL_INTERACTION_STARTED, interact_menu.set_pet.bind(pet))
+	pet.stats = stats
+
+
+func _on_start_week_pressed(schedule: Array[Activity]) -> void:
+
+	get_pet().emit_signal(StateMachine.SIGNAL_STATE, &"idle")
+	emit_signal(Main.SIGNAL_EXIT)
 	
-	populate_pets()
-
-
-func populate_pets() -> void:
-	assert(has_node(^"InteractMenu"))
-	var interact_menu: InteractMenu = get_node(^"InteractMenu")
+	for i: int in schedule.size():
+		var act: Activity = schedule[i]
+		var scene: ActivityScene = act.get_scene().instantiate()
+		scene.init(pet_stats, act, i+1)
+		emit_signal(Main.SIGNAL_QUEUE_ADD, scene)
 	
-	for pet: Pet in get_pets():
-		remove_child(pet)
-		pet.free()
+	emit_signal(Main.SIGNAL_QUEUE_ADD, self)
 	
-	for s: Stats in pet_stats:
-		var pet: Pet = pet_scene.instantiate()
-		add_child(pet)
-		pet.rotation.y = PI # To face camera
-		pet.connect(Interactable.SIGNAL_INTERACTION_STARTED, interact_menu.set_pet.bind(pet))
-		pet.stats = s
+	if is_inside_tree():
+		await tree_exited
+		
+	emit_signal(Main.SIGNAL_QUEUE_ADVANCE)
 
 
-func _on_start_week_pressed(activity_scene: Node) -> void:
-	emit_signal(Main.SIGNAL_CHANGE, activity_scene)
+func _notification(what: int) -> void:
+	match what:
+		
+		NOTIFICATION_PREDELETE when not Engine.is_editor_hint():
+			cancel_free()
 
 
-func get_pets() -> Array[Pet]:
-	var pets: Array[Pet]
+
+func get_pet() -> Pet:
 	for child: Node in get_children():
-		if child is Pet: pets.push_back(child as Pet)
-	return pets
+		if child is Pet: return child
+	return null

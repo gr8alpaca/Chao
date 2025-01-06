@@ -16,7 +16,7 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(1, 1)
 
-[node name="WeekOverlay" type="Control" node_paths=PackedStringArray("color_rect", "next_week_button")]
+[node name="WeekOverlay" type="Control" node_paths=PackedStringArray("next_week_button")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -24,7 +24,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_wxd8j")
-color_rect = NodePath("ColorRect")
 next_week_button = NodePath("NextWeekTweak/NextWeekButton")
 metadata/_edit_lock_ = true
 
@@ -189,14 +188,3 @@ layout_mode = 2
 theme_type_variation = &"ButtonLeft"
 text = "Next"
 metadata/_edit_lock_ = true
-
-[node name="ColorRect" type="ColorRect" parent="."]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-color = Color(0, 0, 0, 1)

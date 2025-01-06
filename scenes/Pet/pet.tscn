@@ -43,31 +43,31 @@ experience_swim = 0
 experience_fly = 0
 experience_power = 0
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_i8efl"]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_l6p8f"]
 load_path = "res://.godot/imported/fabric_0034_color_1k.jpg-0106fc4b6c0caf80cd1c3273babc7397.s3tc.ctex"
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_tt1nn"]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_f22bi"]
 load_path = "res://.godot/imported/fabric_0034_height_1k.png-f1520aab52bc276da43d940723a4fb4c.s3tc.ctex"
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_pxjcw"]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_abykg"]
 load_path = "res://.godot/imported/fabric_0034_normal_opengl_1k.png-29f3e83723e6984e3f2c4dd93ac9d291.s3tc.ctex"
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_bk5gg"]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_tb304"]
 load_path = "res://.godot/imported/fabric_0034_roughness_1k.jpg-32eeb83bc82f5da82a4c68847046d285.s3tc.ctex"
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k5f7v"]
-albedo_texture = SubResource("CompressedTexture2D_i8efl")
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s7nn3"]
+albedo_texture = SubResource("CompressedTexture2D_l6p8f")
 metallic_specular = 0.1
 roughness = 0.5
-roughness_texture = SubResource("CompressedTexture2D_bk5gg")
+roughness_texture = SubResource("CompressedTexture2D_tb304")
 normal_enabled = true
-normal_texture = SubResource("CompressedTexture2D_pxjcw")
+normal_texture = SubResource("CompressedTexture2D_abykg")
 heightmap_enabled = true
 heightmap_scale = 4.0
-heightmap_texture = SubResource("CompressedTexture2D_tt1nn")
+heightmap_texture = SubResource("CompressedTexture2D_f22bi")
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_5pnl5"]
-material = SubResource("StandardMaterial3D_k5f7v")
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_hce2o"]
+material = SubResource("StandardMaterial3D_s7nn3")
 radius = 0.1
 height = 0.5
 
@@ -90,7 +90,7 @@ height = 0.1
 radius = 0.1
 height = 0.5
 
-[sub_resource type="Resource" id="Resource_giqak"]
+[sub_resource type="Resource" id="Resource_nlsrb"]
 resource_local_to_scene = true
 resource_name = "idle"
 script = ExtResource("8_fdymg")
@@ -106,7 +106,7 @@ script = ExtResource("9_nnr34")
 look_time = 0.5
 name = &"interaction"
 
-[sub_resource type="Resource" id="Resource_5k73y"]
+[sub_resource type="Resource" id="Resource_kc2ph"]
 resource_local_to_scene = true
 resource_name = "tpose"
 script = ExtResource("10_fvavy")
@@ -117,13 +117,13 @@ resource_name = "race"
 script = ExtResource("11_2cmky")
 name = &"race"
 
-[sub_resource type="Resource" id="Resource_gndy7"]
+[sub_resource type="Resource" id="Resource_xb8xs"]
 resource_local_to_scene = true
 resource_name = "sleep"
 script = ExtResource("12_015lu")
 name = &"sleep"
 
-[node name="Pet" type="CharacterBody3D"]
+[node name="Pet" type="CharacterBody3D" node_paths=PackedStringArray("state_machine")]
 collision_layer = 7
 input_capture_on_drag = true
 velocity = Vector3(0, -16.3333, 0)
@@ -131,11 +131,12 @@ floor_snap_length = 0.0
 script = ExtResource("1_t3pu5")
 stats = SubResource("Resource_daiye")
 speed = 2.0
+state_machine = NodePath("StateMachine")
 
 [node name="BodyMesh" type="MeshInstance3D" parent="."]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0.25, 0)
 material_overlay = ExtResource("3_uymjs")
-mesh = SubResource("CapsuleMesh_5pnl5")
+mesh = SubResource("CapsuleMesh_hce2o")
 
 [node name="EyeWhiteR" type="MeshInstance3D" parent="BodyMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.037779, 0.2, 0.0677326)
@@ -169,7 +170,7 @@ hover_animation_nodes = [NodePath("../BodyMesh")]
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("reference_variable_values", "debug_label")]
 script = ExtResource("6_b7k50")
-state_resources = Array[ExtResource("7_crvk2")]([SubResource("Resource_giqak"), SubResource("Resource_xl5jh"), SubResource("Resource_5k73y"), SubResource("Resource_5x848"), SubResource("Resource_gndy7")])
+state_resources = Array[ExtResource("7_crvk2")]([SubResource("Resource_nlsrb"), SubResource("Resource_xl5jh"), SubResource("Resource_kc2ph"), SubResource("Resource_5x848"), SubResource("Resource_xb8xs")])
 initial_state_name = "idle"
 reference_variable_names = Array[StringName]([&"pet"])
 reference_variable_values = [NodePath("..")]

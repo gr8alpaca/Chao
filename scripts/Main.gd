@@ -1,15 +1,6 @@
 @tool
 class_name Main extends Node3D
 
-
-const SIGNAL_CHANGE: StringName = &"main_change"
-#const SIGNAL_ENTER: StringName = &"main_enter"
-#const SIGNAL_EXIT: StringName = &"main_exit"
-
-const TRANSITION_TIME_SEC: float = 1.5
-
-#const DEFAULT_SCENE_PATH: String = "res://scenes/garden/garden.tscn"
-
 const PATH:={
 	PET = "res://scenes/Pet/pet.tscn",
 	GARDEN = "res://scenes/garden/garden.tscn",
@@ -18,12 +9,21 @@ const PATH:={
 	DEFAULT = "res://scenes/garden/garden.tscn",
 }
 
+const SIGNAL_CHANGE: StringName = &"main_change"
+## Allows current scene to exit without being freed.
+const SIGNAL_EXIT: StringName = &"main_exit"
+const SIGNAL_QUEUE_ADD: StringName = &"main_queue_add"
+const SIGNAL_QUEUE_ADVANCE: StringName = &"main_queue_advance"
+
+const TRANSITION_TIME_SEC: float = 1.3
+
 var rect: ColorRect
 var focus_label: Label 
 
 var queue: Array[Node]
 
 func _ready() -> void:
+	process_mode = PROCESS_MODE_ALWAYS
 	create_canvas()
 	
 	if Engine.is_editor_hint():
@@ -31,61 +31,63 @@ func _ready() -> void:
 		return
 	
 	enter_scene(load(PATH.GARDEN).instantiate())
-	
-	Event.change_scene.connect(change_scene)
-	Event.queue_scene.connect(add_scene_to_queue)
-	Event.advance_scene_queue.connect(advance_queue)
+
 
 func change_scene(node: Node) -> void:
-	if (get_child_count() and get_child(0) == node) or Engine.is_editor_hint(): 
-		return
+	if (get_child_count() and get_child(0) == node) or Engine.is_editor_hint(): return
 	
-	if get_child_count():
-		exit_scene()
-		await get_child(0).tree_exited
-	
+	await exit_scene()
 	enter_scene(node)
 
 
 func enter_scene(node: Node) -> void:
-	
+	#print_debug("Entering Scene (%s)..." % node.name)
 	if not node.has_user_signal(SIGNAL_CHANGE):
 		node.add_user_signal(SIGNAL_CHANGE, [{name = "node", type = TYPE_OBJECT}])
 	if not node.is_connected(SIGNAL_CHANGE, change_scene):
 		node.connect(SIGNAL_CHANGE, change_scene)
 	
-	#if not node.has_user_signal(SIGNAL_ENTER):
-		#node.add_user_signal(SIGNAL_ENTER, [{name = "node", type = TYPE_OBJECT}])
-	#if not node.is_connected(SIGNAL_ENTER, enter_scene):
-		#node.connect(SIGNAL_ENTER, change_scene)
+	if not node.has_user_signal(SIGNAL_EXIT):
+		node.add_user_signal(SIGNAL_EXIT)
+	if not node.is_connected(SIGNAL_EXIT, exit_scene):
+		node.connect(SIGNAL_EXIT, exit_scene.bind(false))
+	
+	if not node.has_user_signal(SIGNAL_QUEUE_ADD):
+		node.add_user_signal(SIGNAL_QUEUE_ADD, [{name = "node", type = TYPE_OBJECT}])
+	if not node.is_connected(SIGNAL_QUEUE_ADD, add_scene_to_queue):
+		node.connect(SIGNAL_QUEUE_ADD, add_scene_to_queue)
+	
+	if not node.has_user_signal(SIGNAL_QUEUE_ADVANCE):
+		node.add_user_signal(SIGNAL_QUEUE_ADVANCE)
+	if not node.is_connected(SIGNAL_QUEUE_ADVANCE, advance_queue):
+		node.connect(SIGNAL_QUEUE_ADVANCE, advance_queue)
 	
 	add_child(node, true)
-	var tw: Tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
-	tw.tween_interval(0.1)
-	tw.tween_property(rect, ^"modulate:a", 0.0, rect.modulate.a * TRANSITION_TIME_SEC)
-	tw.tween_callback(rect.hide)
+	tween_modulate(false)
 
 
-func exit_scene() -> void:
-	if not get_child_count(): return
-	var tw: Tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
-	tw.tween_callback(rect.show)
-	tw.tween_property(rect, ^"modulate:a", 1.0, (1.0 - rect.modulate.a) * TRANSITION_TIME_SEC)
-	tw.tween_callback(remove_child.bind(get_child(0)))
-	tw.tween_callback(get_child(0).free)
+func exit_scene(free_scene: bool = true) -> void:
+	#print_debug("Exiting Scene (%s)..." % (get_child(0).name if get_child_count() else ""))
+	await tween_modulate(true).finished
+	if get_child_count():
+		var child: Node = get_child(0)
+		remove_child(child)
+		if free_scene: 
+			child.free()
+	
+	#print_debug("Scene Exited")
 
 func add_scene_to_queue(node: Node) -> void:
-	if not node in queue:
-		queue.push_back(node)
-
+	queue.push_back(node)
 
 func advance_queue() -> void:
-	if queue.is_empty():
-		change_scene(load(PATH.DEFAULT).instantiate())
-	else:
-		change_scene(queue.pop_front())
+	change_scene(load(PATH.DEFAULT).instantiate() if queue.is_empty() else queue.pop_front())
 
-
+func tween_modulate(hide_scene: bool, tween_speed: float = TRANSITION_TIME_SEC) -> Tween:
+	var tw: Tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
+	tw.tween_interval(0.1)
+	tw.tween_property(rect, ^"modulate:a", 1.0 if hide_scene else 0.0, tween_speed)
+	return tw
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_pressed() and not event.is_echo():

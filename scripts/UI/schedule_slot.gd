@@ -77,6 +77,10 @@ func _draw() -> void:
 	draw_string(font, draw_pos, activity_string, 0, -1, font_size)
 
 
+func clear() -> void:
+	if activity: set_activity(null)
+
+
 func set_activity(val: Activity) -> void:
 	activity = val
 	

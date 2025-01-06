@@ -4,6 +4,9 @@ class_name StatInfo extends Control
 @export var stat_name: StringName: set = set_stat_name
 @export var stats: Stats: set = set_stats
 
+@export_range(0.1, 3.0, 0.05, "suffix:/1.0") 
+var speed_modifier: float = 1.0
+
 @export_group("Level Up Text")
 @export var level_up_font_size: int = 40
 
@@ -20,12 +23,18 @@ const NEGATIVE_COLOR: Color = Color(1.0, 0.70, 0.70, 1.0)
 
 var experience: int = 0
 
+
 func _ready() -> void:
 	value_delta_label.modulate.a = 0.0
 	value_delta_label.set_deferred(&"size", value_label.size)
 	bar.level_hit.connect(_on_level_up)
 	update_display()
 	
+	if Engine.is_editor_hint(): return
+	value_delta_label.material.set_shader_parameter(&"time_offset", randf() * TAU)
+	value_delta_label.material.set_shader_parameter(&"max_distance", Vector2(5.0, 3.0))
+	value_delta_label.material.set_shader_parameter(&"volatility", 1.3)
+
 
 func set_font_sizes(main_fs: int = 28, level_fs : int = 10, level_up_fs: int = level_up_font_size) -> void:
 	name_label.add_theme_font_size_override("font_size", main_fs)
@@ -76,39 +85,37 @@ func _on_level_up() -> void:
 	const DURATION_SEC: float = 1.3
 	
 	var ss:= Vector2(- get_theme_default_font().get_string_size("Level Up",0,-1,level_up_font_size).x - 8 , (size.y - get_theme_default_font().get_height(level_up_font_size))/2.0)
-	var text_pop := TextPop.new().set_fade(TextPop.FADE_NORMAL | TextPop.FADE_COLOR).set_fs(level_up_font_size).set_alt_col(POSITIVE_COLOR).set_pos(ss).set_txt("Level Up").set_vel(VELOCITY)
+	var text_pop := TextPop.new().set_fade(TextPop.FADE_NORMAL | TextPop.FADE_COLOR).set_fs(level_up_font_size)\
+	.set_alt_col(POSITIVE_COLOR).set_pos(ss).set_txt("Level Up").set_vel(VELOCITY)
 	add_child(text_pop)
-	text_pop.start(DURATION_SEC)
+	text_pop.start(DURATION_SEC / speed_modifier)
 
 
 func display_xp_change(delta: int) -> void:
 	const MODULATE_TWEEN_DURATION_SEC: float = 0.67
 	const PRE_ANIMATION_DELAY: float = 1.0
 	
-	
 	set_value_delta_text(delta)
 	value_delta_label.add_theme_color_override("font_color", POSITIVE_COLOR if delta > 0 else NEGATIVE_COLOR)
 	
-	
 	var tw: Tween = create_tween()
-	tw.tween_property(value_delta_label, ^"modulate:a", 1.0, MODULATE_TWEEN_DURATION_SEC)
+	tw.tween_property(value_delta_label, ^"modulate:a", 1.0, MODULATE_TWEEN_DURATION_SEC * speed_modifier)
 	
-	tw.tween_interval(PRE_ANIMATION_DELAY)
+	tw.tween_interval(PRE_ANIMATION_DELAY * speed_modifier)
 	
 	tw.tween_callback(bar.add_value.bind(delta))
 	
 	# TEXT SPEED HERE
-	tw.tween_method(set_value_delta_text, delta, 0, abs(delta) / maxf(bar.fill_speed, 1.0)) 
+	tw.tween_method(set_value_delta_text, delta, 0, abs(delta) * speed_modifier / maxf(bar.fill_speed, 1.0)) 
 	
 	#tw.tween_property(value_delta_label, ^"modulate:a", 0.0, MODULATE_TWEEN_DURATION_SEC)
 	
 
 func set_value_delta_text(delta: int) -> void:
-	value_label.text = "%04.0f" % (experience - delta)
+	value_label.text = "%04.0f" % (experience - delta * speed_modifier)
 	if delta:
 		value_delta_label.text = ("+" if delta > 0 else "-") + " %2.0d" % abs(delta)
 	else:
-		#value_delta_label.text = ""
 		value_delta_label.modulate.a = 0.0
 
 

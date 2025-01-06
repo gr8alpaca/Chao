@@ -21,7 +21,7 @@ func _ready() -> void:
 
 
 func set_stats(stats: Stats) -> void:
-	for panel: StatInfo in get_info_panels():
+	if stats: for panel: StatInfo in get_info_panels():
 		panel.set_stats(stats)
 		panel.update_display()
 
