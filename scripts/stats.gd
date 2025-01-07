@@ -8,12 +8,14 @@ signal experience_changed(stat_name: StringName, new_experience_amount: int)
 const MIN_STAT_VALUE: int = 0
 const MAX_STAT_VALUE: int = 9999
 
+const MAX_POINTS: int = 9999
+#
+#const STATS: PackedStringArray = ["stamina", "run", "swim", "fly", "power"]
 const VISIBLE_STATS: PackedStringArray = ["stamina", "run", "swim", "fly", "power"]
 
 ## Rank affects the growth of skills points on level upon
-enum Rank{E,D,C,B,A}
-
-
+const RANKS:PackedStringArray = ["E","D", "C", "B", "A", "S",]
+#enum Rank{E = 0, D = 1, C = 2, B, A S}
 
 const MIN_LEVEL: int = 0
 const MAX_LEVEL: int = 99
@@ -61,6 +63,9 @@ var stress: float = 0.00:
 
 #endregion Hidden
 
+@export_storage var data: Dictionary ={
+	
+}
 
 #region Skills
 
@@ -111,6 +116,7 @@ const RANK_WEIGHTS: PackedFloat32Array = [
 						0.02,] # S
 
 func _init(_seed: int = randi()) -> void:
+	
 	var rng:= RandomNumberGenerator.new()
 	rng.seed = _seed
 	for s: StringName in VISIBLE_STATS:
@@ -121,14 +127,23 @@ func _init(_seed: int = randi()) -> void:
 @export_storage
 var ranks: Dictionary = {}
 
-func get_rank(stat: StringName, default: float = Rank.E) -> Rank:
+func get_rank(stat: StringName, default: int = 0) -> int:
 	return ranks.get(stat, default)
 
+func set_rank(stat: StringName, value: int) -> void:
+	assert(stat in VISIBLE_STATS, "%s not valid!" % stat)
 
 func get_grade(stat: StringName) -> String:
-	return ["E","D","C","B","A", "S"][ranks[stat]]
+	return RANKS[get_rank(stat)]
 
-#endregion Rank
+
+func get_points(stat: StringName) -> int:
+	return data.get(stat, {points = -1}).points
+
+func set_points(stat: StringName, value: int) -> void:
+	assert(stat in VISIBLE_STATS, "%s not valid!" % stat)
+	data.get_or_add(stat, {}).points = value 
+
 
 func get_experience(stat: StringName, default: int = 0) -> int:
 	return get(stat) if stat in self else default
@@ -136,17 +151,16 @@ func get_experience(stat: StringName, default: int = 0) -> int:
 func set_experience(stat: StringName, value: int = 0) -> void:
 	set(stat, clampi(value, 0, MAX_EXPERIENCE))
 
+func add_experience(stat: StringName, amount: int = 0) -> void:
+	set_experience(stat, get_experience(stat, 0) + amount)
+
+
 func get_level(stat: StringName, default: int = 0) -> int:
 	return get_experience(stat) / EXPERIENCE_PER_LEVEL
 	
 func get_level_progress(stat: StringName, default: int = 0) -> int:
 	return get_experience(stat) % EXPERIENCE_PER_LEVEL
 
-func add_experience(stat: StringName, amount: int = 0) -> void:
-	set_experience(stat, get_experience(stat, 0) + amount)
-
-
-#region Properties
 
 #const SIGNAL_EXPERIENCE: String = "_experience_added"
 #add_user_signal(s + SIGNAL_EXPERIENCE, [{name = "amount", type = TYPE_INT}])
@@ -220,7 +234,6 @@ func _validate_property(property: Dictionary) -> void:
 			property.hint_string = "0.0, 9999, 1.0, hide_slider, suffix: " + get_grade(property.name)
 			# property.usage |= PROPERTY_USAGE_READ_ONLY
 
-#endregion Properties
 
 func _to_string() -> String:
 	return "Stats-%s" % (name if name else get_instance_id())

@@ -12,7 +12,6 @@ signal closed
 
 
 func init(activity: Activity, stats: Stats, week_index: int) -> void:
-
 	var con: Control = get_node(^"%StatsContainer")
 	
 	for child: Node in con.get_children():
