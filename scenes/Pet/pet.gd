@@ -123,12 +123,8 @@ func get_speed() -> float:
 
 
 func get_run_speed() -> float:
-	# var t: float = inverse_lerp(Stats.MIN_STAT_VALUE, Stats.MAX_STAT_VALUE, get_stat_value(&"run")) 
-	return lerpf(RUN_SPEED_MIN, RUN_SPEED_MAX, inverse_lerp(Stats.MIN_STAT_VALUE, Stats.MAX_STAT_VALUE, get_stat_value(&"run")))
-
-
-func get_stat_value(stat: StringName, default: float = 0.0) -> float:
-	return stats.get(stat) if stat in stats else default
+	var t: float = inverse_lerp(0, Stats.MAX_POINTS, stats.get_points(&"run"))
+	return lerpf(RUN_SPEED_MIN, RUN_SPEED_MAX, t)
 
 
 func set_stats(val: Stats) -> void:

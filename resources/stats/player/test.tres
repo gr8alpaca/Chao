@@ -1,9 +1,9 @@
-[gd_resource type="Resource" script_class="Stats" load_steps=2 format=3 uid="uid://bp1wmefgjn56x"]
+[gd_resource type="Resource" script_class="Stats" load_steps=2 format=3 uid="uid://ddfml0qvscdbe"]
 
-[ext_resource type="Script" path="res://scripts/stats.gd" id="1_l370v"]
+[ext_resource type="Script" path="res://scripts/stats.gd" id="1_pmav4"]
 
 [resource]
-script = ExtResource("1_l370v")
+script = ExtResource("1_pmav4")
 name = &"Garfield"
 fur_color = Color(1, 1, 1, 1)
 life = 100.0
@@ -23,7 +23,7 @@ data = {
 },
 "run": {
 "points": 0,
-"rank": 0,
+"rank": 4,
 "xp": 0
 },
 "stamina": {
@@ -33,8 +33,8 @@ data = {
 },
 "swim": {
 "points": 0,
-"rank": 1,
-"xp": 0
+"rank": 4,
+"xp": 14
 }
 }
 stamina = 0.0
@@ -45,11 +45,11 @@ power = 0.0
 stamina/rank = 0
 stamina/xp = 0
 stamina/points = 0
-run/rank = 0
+run/rank = 4
 run/xp = 0
 run/points = 0
-swim/rank = 1
-swim/xp = 0
+swim/rank = 4
+swim/xp = 14
 swim/points = 0
 fly/rank = 2
 fly/xp = 0

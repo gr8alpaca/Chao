@@ -39,7 +39,7 @@ func _play() -> void:
 func apply_activity_deltas() -> void:
 	var deltas: Dictionary = ActivityXP.roll_exercise(activity)
 	for stat: StringName in deltas.keys():
-		stats.add_experience(stat, deltas[stat])
+		stats.add_xp(stat, deltas[stat])
 
 
 func _on_overlay_opened() -> void:

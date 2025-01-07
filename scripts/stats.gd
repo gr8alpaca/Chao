@@ -1,35 +1,72 @@
 @tool
 class_name Stats extends Resource
 
-#TODO signal level_up
-signal experience_changed(stat_name: StringName, new_experience_amount: int)
-
-#TODO convert to point values...
-const MIN_STAT_VALUE: int = 0
-const MAX_STAT_VALUE: int = 9999
-
-const MAX_POINTS: int = 9999
-#
-#const STATS: PackedStringArray = ["stamina", "run", "swim", "fly", "power"]
-const VISIBLE_STATS: PackedStringArray = ["stamina", "run", "swim", "fly", "power"]
-
 ## Rank affects the growth of skills points on level upon
-const RANKS:PackedStringArray = ["E","D", "C", "B", "A", "S",]
-#enum Rank{E = 0, D = 1, C = 2, B, A S}
+const RANKS:PackedStringArray = ["E","D", "C", "B", "A", "S",] 
 
-const MIN_LEVEL: int = 0
-const MAX_LEVEL: int = 99
+#TODO Remove
+const VISIBLE_STATS: PackedStringArray = ["stamina", "run", "swim", "fly", "power"] 
 
-const EXPERIENCE_PER_LEVEL: int = 8
-const MAX_EXPERIENCE: int = MAX_LEVEL * EXPERIENCE_PER_LEVEL
+const STATS: PackedStringArray = [
+	"stamina", 
+	"run", 
+	"swim", 
+	"fly", 
+	"power"
+	]
+
+
+const SUBSTATS: PackedStringArray = [
+	"rank", 
+	"xp", 
+	"points",
+	]
+
+const MAX_RANK: int = 6
+const MAX_LEVEL: int = 99 ; const XP_PER_LEVEL: int = 8
+const MAX_POINTS: int = 9999
+
+#const SUBPROPS:={
+	#rank = {
+	#name = "rank",
+	#type = TYPE_INT,
+	#hint = PROPERTY_HINT_RANGE,
+	#hint_string = "0,%s,1" % MAX_RANK,
+	#usage = PROPERTY_USAGE_DEFAULT
+	#},
+	#{
+	#hint = PROPERTY_HINT_RANGE,
+	#hint_string = "0,%s,1" % (MAX_LEVEL * XP_PER_LEVEL),
+	#usage = PROPERTY_USAGE_DEFAULT
+	#},
+	#{
+	#name = "points",
+	#type = TYPE_INT,
+	#hint = PROPERTY_HINT_RANGE,
+	#hint_string = "0,%s,1" % MAX_POINTS,
+	#usage = PROPERTY_USAGE_DEFAULT
+	#},
+#}
+
+
+
+
+# 											E     D     C     B     A     S
+const RANK_WEIGHTS: PackedFloat32Array = [0.24, 0.37, 0.17, 0.13, 0.07, 0.02,] 
+
+
+#TODO signal level_up
+
+
 
 
 @export var name: StringName = &"Garfield"
+
+#TODO - Change to depend on stats
 @export var fur_color: Color = Color.WHITE:
 	set(val):
 		fur_color = val
 		changed.emit()
-
 
 #region Hidden
 
@@ -63,12 +100,7 @@ var stress: float = 0.00:
 
 #endregion Hidden
 
-@export_storage var data: Dictionary ={
-	
-}
-
-#region Skills
-
+@export_storage var data: Dictionary
 
 @export_range(0.0, 999.9, 5.0, "hide_slider")
 var stamina: float = 0.0:
@@ -104,136 +136,90 @@ var power: float = 0.0:
 		power = val
 		changed.emit()
 
-
-#endregion Skills
-
-const RANK_WEIGHTS: PackedFloat32Array = [
-	0.24, # E
-		0.37, # D
-			0.17, # C
-				0.13, # B
-					0.07, # A
-						0.02,] # S
+#TODO - Add inhereted stats/props
 
 func _init(_seed: int = randi()) -> void:
+	for stat: String in STATS: 
+		data[stat] = {}
+		for substat: String in SUBSTATS:
+			data[stat][substat] = 0
+			add_user_signal(get_signal(stat, substat), [{name = "new_value", type = TYPE_INT}])
 	
 	var rng:= RandomNumberGenerator.new()
 	rng.seed = _seed
-	for s: StringName in VISIBLE_STATS:
-		ranks[s] = rng.rand_weighted(RANK_WEIGHTS)
+	for s: StringName in STATS:
+		set_rank(s, rng.rand_weighted(RANK_WEIGHTS))
 
-#region Rank
+func add_xp(stat: StringName, amount: int = 0) -> void:
+	set_xp(stat, get_xp(stat, 0) + amount)
 
-@export_storage
-var ranks: Dictionary = {}
+func GET(stat: StringName, substat: StringName, default: int) -> int:
+	return data[stat][substat]
+func SET(stat: StringName, substat: StringName, value: int) -> void:
+	data[stat][substat] = value
+	emit_signal(get_signal(stat, substat), value)
 
 func get_rank(stat: StringName, default: int = 0) -> int:
-	return ranks.get(stat, default)
+	return GET(stat, &"rank", default)
+func get_xp(stat: StringName, default: int = 0) -> int:
+	return GET(stat, &"xp", default)
+func get_points(stat: StringName, default: int = 0) -> int:
+	return GET(stat, &"points", default)
 
 func set_rank(stat: StringName, value: int) -> void:
-	assert(stat in VISIBLE_STATS, "%s not valid!" % stat)
+	SET(stat, &"rank", clampi(value, 0, RANKS.size() - 1))
+func set_xp(stat: StringName, value: int = 0) -> void:
+	SET(stat, &"xp", clampi(value, 0, MAX_LEVEL * XP_PER_LEVEL))
+func set_points(stat: StringName, value: int) -> void:
+	SET(stat, &"points", clampi(value, 0, MAX_POINTS))
+
+
+func get_level(stat: StringName, default: int = 0) -> int:
+	return get_xp(stat) / XP_PER_LEVEL
+
+func get_level_progress(stat: StringName, default: int = 0) -> int:
+	return get_xp(stat) % XP_PER_LEVEL
 
 func get_grade(stat: StringName) -> String:
 	return RANKS[get_rank(stat)]
 
 
-func get_points(stat: StringName) -> int:
-	return data.get(stat, {points = -1}).points
 
-func set_points(stat: StringName, value: int) -> void:
-	assert(stat in VISIBLE_STATS, "%s not valid!" % stat)
-	data.get_or_add(stat, {}).points = value 
-
-
-func get_experience(stat: StringName, default: int = 0) -> int:
-	return get(stat) if stat in self else default
-
-func set_experience(stat: StringName, value: int = 0) -> void:
-	set(stat, clampi(value, 0, MAX_EXPERIENCE))
-
-func add_experience(stat: StringName, amount: int = 0) -> void:
-	set_experience(stat, get_experience(stat, 0) + amount)
-
-
-func get_level(stat: StringName, default: int = 0) -> int:
-	return get_experience(stat) / EXPERIENCE_PER_LEVEL
-	
-func get_level_progress(stat: StringName, default: int = 0) -> int:
-	return get_experience(stat) % EXPERIENCE_PER_LEVEL
-
-
-#const SIGNAL_EXPERIENCE: String = "_experience_added"
-#add_user_signal(s + SIGNAL_EXPERIENCE, [{name = "amount", type = TYPE_INT}])
-#TODO - Add inhereted stats/props
-
-		
-
-
-#func _get_property_list() -> Array[Dictionary]:
-	#var props: Array[Dictionary]
-#
-	#props.append({
-		#name="Ranks", type=TYPE_NIL,
-		#hint_string="rank",
-		#usage=PROPERTY_USAGE_CATEGORY
-	#})
-#
-	#for stat: StringName in VISIBLE_STATS:
-		#props.append({
-			#name="rank_" + stat,
-			#type=TYPE_FLOAT,
-			#hint=PROPERTY_HINT_RANGE,
-			#hint_string="{min}, {max}, 1, suffix: {grade} ".format({min=MIN_RANK, max=MAX_RANK, grade=get_grade(stat)}),
-			#usage=PROPERTY_USAGE_DEFAULT,
-		#})
-#
-	#props.append({
-		#name="Experience", type=TYPE_NIL,
-		#hint_string="level",
-		#usage=PROPERTY_USAGE_CATEGORY
-	#})
-#
-	#for stat: StringName in VISIBLE_STATS:
-		## var hs: String = "0, {max}, 1, suffix:LV{lv}({p}/{mp}) ".format({max=MAX_EXPERIENCE, p=get_level_progress(stat), mp=EXPERIENCE_PER_LEVEL})
-		#props.append({
-			#name="experience_" + stat,
-			#type=TYPE_INT,
-			#hint=PROPERTY_HINT_RANGE,
-			#hint_string="0, {max}, 1, suffix:LV{l} ({p}/{mp}) ".format({max=MAX_EXPERIENCE, l=get_level(stat), p=get_level_progress(stat), mp=EXPERIENCE_PER_LEVEL}),
-			#usage=PROPERTY_USAGE_DEFAULT,
-		#})
-#
-#
-	#return props
-#
-#
-#func _get(property: StringName) -> Variant:
-	#
-	#if "experience_" in property:
-		#return get_experience(property.trim_prefix("experience_"), 0)
-	#
-	#if "rank_" in property:
-		#return ranks.get(property.trim_prefix("rank_"), 0)
-	#
-	#return null
-#
-#
-#func _set(property: StringName, value: Variant) -> bool:
-	#if "experience_" in property:
-		#set_experience(property.trim_prefix("experience_"), value)
-		#notify_property_list_changed()
-		#return true
-#
-	#return false
+func get_signal(stat: String, substat: String) -> String:
+	return "%s_%s_changed" % [stat, substat]
+func is_connected_signal(stat: String, substat: String, method: Callable) -> bool:
+	return is_connected(get_signal(stat, substat), method)
+func connect_signal(stat: String, substat: String, method: Callable) -> int:
+	return connect(get_signal(stat, substat), method)
+func disconnect_signal(stat: String, substat: String, method: Callable, flags: ConnectFlags) -> int:
+	return connect(get_signal(stat, substat), method, flags)
 
 
 func _validate_property(property: Dictionary) -> void:
-	match property.name:
-		var p_name when p_name in VISIBLE_STATS:
-			property.hint = PROPERTY_HINT_RANGE
-			property.hint_string = "0.0, 9999, 1.0, hide_slider, suffix: " + get_grade(property.name)
-			# property.usage |= PROPERTY_USAGE_READ_ONLY
+	if not Engine.is_editor_hint() or not property.name.contains("/"): return
+	match property.name.get_slice("/", 1):
+		"rank": property.hint_string = "0,%s,1,suffix:%s"%[RANKS.size()-1,get_grade(property.name.get_slice("/", 0))]
+		"xp": property.hint_string = "0,%s" % (MAX_LEVEL * XP_PER_LEVEL)
+		"points": property.hint_string = "0,%s" % MAX_POINTS
 
+func _get_property_list() -> Array[Dictionary]:
+	if not Engine.is_editor_hint(): return []
+	var props: Array[Dictionary]
+	for stat: String in STATS: for substat : String in SUBSTATS:
+		props.push_back({
+			name = stat + "/" + substat, 
+			type = TYPE_INT, 
+			hint = PROPERTY_HINT_RANGE, 
+			hint_string = "0,9999,1,or_less,or_greater", 
+			usage = PROPERTY_USAGE_DEFAULT
+		})
+	return props
 
-func _to_string() -> String:
-	return "Stats-%s" % (name if name else get_instance_id())
+func _set(property: StringName, value: Variant) -> bool:
+	if not property.contains("/"): return false
+	SET(property.get_slice("/", 0), property.get_slice("/", 1), value)
+	notify_property_list_changed()
+	return true
+
+func _get(property: StringName) -> Variant:
+	return data.get(property.get_slice("/", 0), {}).get(property.get_slice("/", 1))
