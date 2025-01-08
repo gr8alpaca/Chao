@@ -81,7 +81,7 @@ func set_stats(val: Stats) -> void:
 
 
 func _on_level_up() -> void:
-	level_label.text = "LV. %2.0d" % (value_label.text.to_int() / Stats.EXPERIENCE_PER_LEVEL)
+	level_label.text = "LV. %2.0d" % (value_label.text.to_int() / Stats.XP_PER_LEVEL)
 	const VELOCITY: Vector2 = Vector2(-8, -32)
 	const DURATION_SEC: float = 1.3
 	

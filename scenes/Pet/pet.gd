@@ -115,7 +115,7 @@ func is_at_target(ignore_y: bool = true) -> bool:
 
 func update_mesh() -> void:
 	return
-	$BodyMesh.mesh.material.albedo_color = stats.fur_color if stats else Color.WHITE
+	#$BodyMesh.mesh.material.albedo_color = Color.WHITE if stats else Color.WHITE
 
 
 func get_speed() -> float:

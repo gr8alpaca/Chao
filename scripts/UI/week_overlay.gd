@@ -18,13 +18,13 @@ func init(activity: Activity, stats: Stats, week_index: int) -> void:
 		con.remove_child(child)
 		child.free()
 	
-	for stat_name: String in Stats.VISIBLE_STATS:
+	for stat: String in Stats.STATS.slice(0, Stats.STAT_VISIBLE_COUNT):
 		const FONT_SIZE_NORMAL: int = 40
 		const FONT_SIZE_LEVEL: int = 20
 		
 		var info: StatInfo = preload("res://scenes/UI/stat_info.tscn").instantiate()
 		info.set_font_sizes(FONT_SIZE_NORMAL, FONT_SIZE_LEVEL, 40)
-		info.stat_name = stat_name
+		info.stat_name = stat
 		info.stats = stats
 		con.add_child(info)
 	

@@ -9,10 +9,11 @@ class_name InfoPanel extends Control
 
 func _ready() -> void:
 	var vbox := get_node(^"%StatDisplay")
-	for prop: StringName in Stats.VISIBLE_STATS:
+	for stat: String in Stats.STATS.slice(0, Stats.STAT_VISIBLE_COUNT): 
+		
 		var info_display: StatInfo = info_scene.instantiate()
 		info_display.size_flags_vertical = Control.SIZE_EXPAND | Control.SIZE_SHRINK_CENTER
-		info_display.stat_name = prop
+		info_display.stat_name = stat
 		vbox.add_child(info_display)
 	
 	propagate_call(&"set_use_parent_material", [true])
