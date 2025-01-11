@@ -1,29 +1,38 @@
 [gd_resource type="Resource" script_class="Stats" load_steps=2 format=3 uid="uid://ddfml0qvscdbe"]
 
-[ext_resource type="Script" path="res://scripts/stats.gd" id="1_pmav4"]
+[ext_resource type="Script" path="res://scripts/stats/stats.gd" id="1_pmav4"]
 
 [resource]
 script = ExtResource("1_pmav4")
-name = &"Garfield"
-fur_color = Color(1, 1, 1, 1)
-life = 100.0
-hunger = 0.0
-fatigue = 0.0
-stress = 0.0
 data = {
+"fatigue": {
+"points": 0,
+"rank": 0,
+"xp": 0
+},
 "fly": {
 "points": 0,
-"rank": 2,
+"rank": 0,
+"xp": 0
+},
+"hunger": {
+"points": 0,
+"rank": 0,
+"xp": 0
+},
+"life": {
+"points": 0,
+"rank": 0,
 "xp": 0
 },
 "power": {
 "points": 0,
-"rank": 3,
+"rank": 0,
 "xp": 0
 },
 "run": {
 "points": 0,
-"rank": 4,
+"rank": 0,
 "xp": 0
 },
 "stamina": {
@@ -31,29 +40,42 @@ data = {
 "rank": 0,
 "xp": 0
 },
+"stress": {
+"points": 0,
+"rank": 0,
+"xp": 0
+},
 "swim": {
 "points": 0,
-"rank": 4,
+"rank": 0,
 "xp": 14
 }
 }
-stamina = 0.0
-run = 0.0
-fly = 0.0
-swim = 0.0
-power = 0.0
+name = &"Garfield"
 stamina/rank = 0
 stamina/xp = 0
 stamina/points = 0
-run/rank = 4
+run/rank = 0
 run/xp = 0
 run/points = 0
-swim/rank = 4
+swim/rank = 0
 swim/xp = 14
 swim/points = 0
-fly/rank = 2
+fly/rank = 0
 fly/xp = 0
 fly/points = 0
-power/rank = 3
+power/rank = 0
 power/xp = 0
 power/points = 0
+life/rank = 0
+life/xp = 0
+life/points = 0
+hunger/rank = 0
+hunger/xp = 0
+hunger/points = 0
+fatigue/rank = 0
+fatigue/xp = 0
+fatigue/points = 0
+stress/rank = 0
+stress/xp = 0
+stress/points = 0

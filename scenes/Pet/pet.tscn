@@ -1,7 +1,7 @@
 [gd_scene load_steps=29 format=3 uid="uid://cp1lbtskoh1sx"]
 
 [ext_resource type="Script" path="res://scenes/Pet/pet.gd" id="1_t3pu5"]
-[ext_resource type="Script" path="res://scripts/stats.gd" id="2_0kyj0"]
+[ext_resource type="Script" path="res://scripts/stats/stats.gd" id="2_0kyj0"]
 [ext_resource type="Material" uid="uid://cj52sut2j38yc" path="res://resources/highlight_material.tres" id="3_uymjs"]
 [ext_resource type="Script" path="res://scripts/interactable.gd" id="4_6xcdk"]
 [ext_resource type="Script" path="res://scripts/StateMachine/StateMachine.gd" id="6_b7k50"]
@@ -14,60 +14,107 @@
 
 [sub_resource type="Resource" id="Resource_daiye"]
 script = ExtResource("2_0kyj0")
-name = &"Garfield"
-fur_color = Color(1, 1, 1, 1)
-life = 100.0
-hunger = 0.0
-fatigue = 0.0
-stress = 0.0
-stamina = 0.0
-run = 0.0
-fly = 0.0
-swim = 0.0
-power = 0.0
-ranks = {
-"fly": 14.0035,
-"power": 17.7722,
-"run": 16.9529,
-"stamina": 11.7539,
-"swim": 18.6004
+data = {
+"fatigue": {
+"points": 0,
+"rank": 0,
+"xp": 0
+},
+"fly": {
+"points": 0,
+"rank": 1,
+"xp": 0
+},
+"hunger": {
+"points": 0,
+"rank": 0,
+"xp": 0
+},
+"life": {
+"points": 0,
+"rank": 1,
+"xp": 0
+},
+"power": {
+"points": 0,
+"rank": 0,
+"xp": 0
+},
+"run": {
+"points": 0,
+"rank": 2,
+"xp": 0
+},
+"stamina": {
+"points": 0,
+"rank": 2,
+"xp": 0
+},
+"stress": {
+"points": 0,
+"rank": 2,
+"xp": 0
+},
+"swim": {
+"points": 0,
+"rank": 1,
+"xp": 0
 }
-rank_stamina = 11.7539
-rank_run = 16.9529
-rank_swim = 18.6004
-rank_fly = 14.0035
-rank_power = 17.7722
-experience_stamina = 0
-experience_run = 0
-experience_swim = 0
-experience_fly = 0
-experience_power = 0
+}
+name = &"Garfield"
+stamina/rank = 2
+stamina/xp = 0
+stamina/points = 0
+run/rank = 2
+run/xp = 0
+run/points = 0
+swim/rank = 1
+swim/xp = 0
+swim/points = 0
+fly/rank = 1
+fly/xp = 0
+fly/points = 0
+power/rank = 0
+power/xp = 0
+power/points = 0
+life/rank = 1
+life/xp = 0
+life/points = 0
+hunger/rank = 0
+hunger/xp = 0
+hunger/points = 0
+fatigue/rank = 0
+fatigue/xp = 0
+fatigue/points = 0
+stress/rank = 2
+stress/xp = 0
+stress/points = 0
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_l6p8f"]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_isg65"]
 load_path = "res://.godot/imported/fabric_0034_color_1k.jpg-0106fc4b6c0caf80cd1c3273babc7397.s3tc.ctex"
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_f22bi"]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ba7kk"]
 load_path = "res://.godot/imported/fabric_0034_height_1k.png-f1520aab52bc276da43d940723a4fb4c.s3tc.ctex"
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_abykg"]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_j575c"]
 load_path = "res://.godot/imported/fabric_0034_normal_opengl_1k.png-29f3e83723e6984e3f2c4dd93ac9d291.s3tc.ctex"
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_tb304"]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_x5he3"]
 load_path = "res://.godot/imported/fabric_0034_roughness_1k.jpg-32eeb83bc82f5da82a4c68847046d285.s3tc.ctex"
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_s7nn3"]
-albedo_texture = SubResource("CompressedTexture2D_l6p8f")
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5eh0y"]
+albedo_texture = SubResource("CompressedTexture2D_isg65")
 metallic_specular = 0.1
 roughness = 0.5
-roughness_texture = SubResource("CompressedTexture2D_tb304")
+roughness_texture = SubResource("CompressedTexture2D_x5he3")
 normal_enabled = true
-normal_texture = SubResource("CompressedTexture2D_abykg")
+normal_texture = SubResource("CompressedTexture2D_j575c")
 heightmap_enabled = true
 heightmap_scale = 4.0
-heightmap_texture = SubResource("CompressedTexture2D_f22bi")
+heightmap_texture = SubResource("CompressedTexture2D_ba7kk")
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_hce2o"]
-material = SubResource("StandardMaterial3D_s7nn3")
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ga1r4"]
+material = SubResource("StandardMaterial3D_5eh0y")
 radius = 0.1
 height = 0.5
 
@@ -136,7 +183,7 @@ state_machine = NodePath("StateMachine")
 [node name="BodyMesh" type="MeshInstance3D" parent="."]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0.25, 0)
 material_overlay = ExtResource("3_uymjs")
-mesh = SubResource("CapsuleMesh_hce2o")
+mesh = SubResource("CapsuleMesh_ga1r4")
 
 [node name="EyeWhiteR" type="MeshInstance3D" parent="BodyMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.037779, 0.2, 0.0677326)

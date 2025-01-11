@@ -7,6 +7,7 @@ const MAX_DISTANCE: float = 3.0
 
 var pet_stats: Stats
 var interact_menu: InteractMenu
+var block_free: bool = true
 
 func _init() -> void:
 	if Engine.is_editor_hint(): return
@@ -30,7 +31,6 @@ func set_stats(stats: Stats) -> void:
 
 
 func _on_start_week_pressed(schedule: Array[Activity]) -> void:
-
 	get_pet().emit_signal(StateMachine.SIGNAL_STATE, &"idle")
 	emit_signal(Main.SIGNAL_EXIT)
 	
@@ -44,16 +44,14 @@ func _on_start_week_pressed(schedule: Array[Activity]) -> void:
 	
 	if is_inside_tree():
 		await tree_exited
-		
+	
 	emit_signal(Main.SIGNAL_QUEUE_ADVANCE)
 
 
 func _notification(what: int) -> void:
 	match what:
-		
-		NOTIFICATION_PREDELETE when not Engine.is_editor_hint():
+		NOTIFICATION_PREDELETE when not Engine.is_editor_hint() and block_free:
 			cancel_free()
-
 
 
 func get_pet() -> Pet:

@@ -21,7 +21,7 @@ var speed_modifier: float = 1.0
 const POSITIVE_COLOR: Color = Color(0.70, 1.0, 0.70, 1.0)
 const NEGATIVE_COLOR: Color = Color(1.0, 0.70, 0.70, 1.0)
 
-var experience: int = 0
+var xp: int = 0
 
 
 func _ready() -> void:
@@ -37,47 +37,36 @@ func _ready() -> void:
 	
 	#bar.speed_modifier = speed_modifier
 
-func set_font_sizes(main_fs: int = 28, level_fs : int = 10, level_up_fs: int = level_up_font_size) -> void:
-	name_label.add_theme_font_size_override("font_size", main_fs)
-	value_label.add_theme_font_size_override("font_size", main_fs)
-	value_delta_label.add_theme_font_size_override("font_size", main_fs)
-	level_label.add_theme_font_size_override("font_size", level_fs)
-	level_up_font_size = main_fs + level_fs
-	level_up_font_size = level_up_fs
-
 func init(stat_name: StringName, stats: Stats) -> StatInfo:
-	self.stat_name = stat_name
 	self.stats = stats
+	self.stat_name = stat_name
 	return self
 
 func update_display() -> void:
-	value_label.text = "%04.0f" % stats.get_experience(stat_name) if stats and stat_name else "0000"
+	value_label.text = "%04.0f" % stats.get_xp(stat_name) if stats and stat_name else "0000"
 	level_label.text = "LV. %2.0d" % stats.get_level(stat_name) if stats else "LV. 0"
 	bar.value = stats.get_level_progress(stat_name) if stats else 0
 
 
-func set_stat_name(sname: StringName = &"") -> void:
-	stat_name = sname
-	if stat_name and name_label:
-		name_label.text = sname.capitalize()
-	experience = stats.get_experience(stat_name, 0) if stats else 0
-
-
-func _on_stats_changed() -> void:
-	if experience == stats.get_experience(stat_name): return
-	var delta: int = stats.get_experience(stat_name) - experience
-	experience += delta
+func _on_xp_change(new_xp: int) -> void:
+	if xp == new_xp: return
+	var delta: int = new_xp - xp
+	xp += delta
 	display_xp_change(delta)
 
 
-func set_stats(val: Stats) -> void:
-	if stats and stats.changed.is_connected(_on_stats_changed):
-		stats.changed.disconnect(_on_stats_changed)
-	if val and not val.changed.is_connected(_on_stats_changed):
-		val.changed.connect(_on_stats_changed)
-	
-	stats = val
-	experience = stats.get_experience(stat_name, 0) if stats else 0
+func disconnect_stats() -> void:
+	for c: Dictionary in get_incoming_connections():
+		if c.callable != _on_xp_change: continue
+		c.signal.disconnect(_on_xp_change)
+
+
+func reconnect_stats() -> void:
+	disconnect_stats()
+	xp = stats.get_xp(stat_name, 0) if stats else 0
+	if stats and stat_name:
+		stats.connect_signal(stat_name, "xp", _on_xp_change)
+	# TODO: Add points implementation
 
 
 func _on_level_up() -> void:
@@ -108,19 +97,38 @@ func display_xp_change(delta: int) -> void:
 	
 	# TEXT SPEED HERE
 	tw.tween_method(set_value_delta_text, delta, 0, abs(delta) / maxf(bar.fill_speed, 1.0)) 
-	
-	#tw.tween_property(value_delta_label, ^"modulate:a", 0.0, MODULATE_TWEEN_DURATION_SEC)
+
 
 func set_value_delta_text(delta: int) -> void:
-	value_label.text = "%04.0f" % (experience - delta)
+	value_label.text = "%04.0f" % (xp - delta)
 	if delta:
 		value_delta_label.text = ("+" if delta > 0 else "-") + " %2.0d" % abs(delta)
 	else:
 		value_delta_label.modulate.a = 0.0
 
 
-func get_experience() -> int:
+func get_xp() -> int:
 	return (level_label.text.trim_prefix("LV. ").to_int() if level_label.text.trim_prefix("LV. ").is_valid_int() else 0) + bar.value
+
+
+func set_font_sizes(main_fs: int = 28, level_fs : int = 10, level_up_fs: int = level_up_font_size) -> void:
+	name_label.add_theme_font_size_override("font_size", main_fs)
+	value_label.add_theme_font_size_override("font_size", main_fs)
+	value_delta_label.add_theme_font_size_override("font_size", main_fs)
+	level_label.add_theme_font_size_override("font_size", level_fs)
+	level_up_font_size = main_fs + level_fs
+	level_up_font_size = level_up_fs
+
+
+func set_stat_name(sname: StringName = &"") -> void:
+	stat_name = sname
+	if name_label:
+		name_label.text = sname.capitalize()
+	reconnect_stats()
+
+func set_stats(val: Stats) -> void:
+	stats = val
+	reconnect_stats()
 
 func _get_minimum_size() -> Vector2:
 	return get_child(0).get_combined_minimum_size()

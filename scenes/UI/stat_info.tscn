@@ -11,7 +11,6 @@ offset_right = 236.0
 offset_bottom = 54.0
 mouse_filter = 1
 script = ExtResource("1_p1ri4")
-stat_name = &"test"
 speed_modifier = 1.5
 name_label = NodePath("StatInfo/HBoxContainer/StatName")
 value_label = NodePath("StatInfo/HBoxContainer/Value")
@@ -33,7 +32,6 @@ layout_mode = 2
 [node name="StatName" type="Label" parent="StatInfo/HBoxContainer"]
 layout_mode = 2
 theme_type_variation = &"HeaderLarge"
-text = "Test"
 
 [node name="Seperator2" type="Control" parent="StatInfo/HBoxContainer"]
 custom_minimum_size = Vector2(16, 0)
@@ -43,7 +41,7 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"HeaderLarge"
-text = "0000"
+text = "0028"
 horizontal_alignment = 2
 
 [node name="ValueDelta" type="Label" parent="StatInfo/HBoxContainer/Value"]
@@ -53,15 +51,17 @@ layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 offset_top = -42.0
+offset_right = 4.0
 offset_bottom = -8.0
 grow_horizontal = 0
 grow_vertical = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_type_variation = &"HeaderLarge"
-theme_override_colors/font_color = Color(1, 0.7, 0.7, 1)
-text = "-  0"
+theme_override_colors/font_color = Color(0.7, 1, 0.7, 1)
+text = "+  1"
 horizontal_alignment = 2
+text_overrun_behavior = 3
 metadata/_edit_lock_ = true
 
 [node name="LevelsHBox" type="HBoxContainer" parent="StatInfo"]
@@ -72,7 +72,7 @@ theme_override_constants/separation = 0
 layout_mode = 2
 size_flags_vertical = 0
 theme_type_variation = &"HeaderDetail"
-text = "LV. 0"
+text = "LV.  3"
 vertical_alignment = 1
 
 [node name="Seperator" type="Control" parent="StatInfo/LevelsHBox"]
@@ -83,7 +83,7 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("3_xil7a")
-value = 0
+value = 4
 fill_speed = 10.0
 fill_color = Color(0.722556, 0.70114, 0.252287, 1)
 bg_color = Color(0.304462, 0.304462, 0.304462, 0.588235)

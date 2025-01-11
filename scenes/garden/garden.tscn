@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://models/floor_model.gd" id="3_t8pvy"]
 [ext_resource type="Material" uid="uid://bi4su0loiqr6w" path="res://resources/wood_material.tres" id="4_1iuqp"]
 [ext_resource type="PackedScene" uid="uid://cp1lbtskoh1sx" path="res://scenes/Pet/pet.tscn" id="4_drwvd"]
-[ext_resource type="Script" path="res://scripts/stats.gd" id="5_1l8wm"]
+[ext_resource type="Script" path="res://scripts/stats/stats.gd" id="5_1l8wm"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_doq1q"]
 sky_top_color = Color(0, 0, 0, 1)
@@ -28,34 +28,81 @@ tonemap_white = 3.61
 
 [sub_resource type="Resource" id="Resource_qmwxs"]
 script = ExtResource("5_1l8wm")
-name = &"Garfield"
-fur_color = Color(1, 1, 1, 1)
-life = 100.0
-hunger = 0.0
-fatigue = 0.0
-stress = 0.0
-stamina = 0.0
-run = 0.0
-fly = 0.0
-swim = 0.0
-power = 0.0
-ranks = {
-"fly": 21.3035,
-"power": 13.1098,
-"run": 15.3544,
-"stamina": 18.6063,
-"swim": 21.3367
+data = {
+"fatigue": {
+"points": 0,
+"rank": 1,
+"xp": 0
+},
+"fly": {
+"points": 0,
+"rank": 0,
+"xp": 0
+},
+"hunger": {
+"points": 0,
+"rank": 3,
+"xp": 0
+},
+"life": {
+"points": 0,
+"rank": 2,
+"xp": 0
+},
+"power": {
+"points": 0,
+"rank": 1,
+"xp": 0
+},
+"run": {
+"points": 0,
+"rank": 2,
+"xp": 0
+},
+"stamina": {
+"points": 0,
+"rank": 3,
+"xp": 0
+},
+"stress": {
+"points": 0,
+"rank": 1,
+"xp": 0
+},
+"swim": {
+"points": 0,
+"rank": 3,
+"xp": 0
 }
-rank_stamina = 18.6063
-rank_run = 15.3544
-rank_swim = 21.3367
-rank_fly = 21.3035
-rank_power = 13.1098
-experience_stamina = 0
-experience_run = 0
-experience_swim = 0
-experience_fly = 0
-experience_power = 0
+}
+name = &"Garfield"
+stamina/rank = 3
+stamina/xp = 0
+stamina/points = 0
+run/rank = 2
+run/xp = 0
+run/points = 0
+swim/rank = 3
+swim/xp = 0
+swim/points = 0
+fly/rank = 0
+fly/xp = 0
+fly/points = 0
+power/rank = 1
+power/xp = 0
+power/points = 0
+life/rank = 2
+life/xp = 0
+life/points = 0
+hunger/rank = 3
+hunger/xp = 0
+hunger/points = 0
+fatigue/rank = 1
+fatigue/xp = 0
+fatigue/points = 0
+stress/rank = 1
+stress/xp = 0
+stress/points = 0
 
 [node name="Garden" type="Node3D"]
 script = ExtResource("1_y2d6v")
@@ -85,7 +132,6 @@ spot_angle = 61.3
 spot_angle_attenuation = 5.27802
 metadata/_edit_lock_ = true
 
-[node name="Pet" parent="." node_paths=PackedStringArray("state_machine") instance=ExtResource("4_drwvd")]
+[node name="Pet" parent="." instance=ExtResource("4_drwvd")]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, -5.96046e-08, 0)
 stats = SubResource("Resource_qmwxs")
-state_machine = NodePath("StateMachine")
