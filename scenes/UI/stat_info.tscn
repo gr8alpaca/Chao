@@ -1,20 +1,100 @@
-[gd_scene load_steps=4 format=3 uid="uid://c2j5335dvfv8o"]
+[gd_scene load_steps=6 format=3 uid="uid://c2j5335dvfv8o"]
 
 [ext_resource type="Script" path="res://scenes/UI/stat_info.gd" id="1_p1ri4"]
+[ext_resource type="Script" path="res://scripts/stats/stats.gd" id="2_d6yos"]
 [ext_resource type="Material" uid="uid://b7oj5jh74yjqh" path="res://resources/materials/float_material.tres" id="2_vjhmy"]
 [ext_resource type="Script" path="res://scripts/UI/level_progress_bar.gd" id="3_xil7a"]
 
-[node name="StatInfo" type="Control" node_paths=PackedStringArray("name_label", "value_label", "value_delta_label", "level_label", "bar")]
+[sub_resource type="Resource" id="Resource_ggmal"]
+script = ExtResource("2_d6yos")
+data = {
+"fatigue": {
+"points": 0,
+"rank": 0,
+"xp": 0
+},
+"fly": {
+"points": 0,
+"rank": 1,
+"xp": 0
+},
+"hunger": {
+"points": 0,
+"rank": 3,
+"xp": 0
+},
+"life": {
+"points": 0,
+"rank": 3,
+"xp": 0
+},
+"power": {
+"points": 0,
+"rank": 1,
+"xp": 0
+},
+"run": {
+"points": 0,
+"rank": 4,
+"xp": 0
+},
+"stamina": {
+"points": 0,
+"rank": 0,
+"xp": 0
+},
+"stress": {
+"points": 0,
+"rank": 0,
+"xp": 0
+},
+"swim": {
+"points": 0,
+"rank": 0,
+"xp": 0
+}
+}
+name = &"Garfield"
+stamina/rank = 0
+stamina/xp = 0
+stamina/points = 0
+run/rank = 4
+run/xp = 0
+run/points = 0
+swim/rank = 0
+swim/xp = 0
+swim/points = 0
+fly/rank = 1
+fly/xp = 0
+fly/points = 0
+power/rank = 1
+power/xp = 0
+power/points = 0
+life/rank = 3
+life/xp = 0
+life/points = 0
+hunger/rank = 3
+hunger/xp = 0
+hunger/points = 0
+fatigue/rank = 0
+fatigue/xp = 0
+fatigue/points = 0
+stress/rank = 0
+stress/xp = 0
+stress/points = 0
+
+[node name="StatInfo" type="Control" node_paths=PackedStringArray("name_label", "point_label", "point_delta_label", "level_label", "bar")]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 236.0
 offset_bottom = 54.0
 mouse_filter = 1
 script = ExtResource("1_p1ri4")
+stats = SubResource("Resource_ggmal")
 speed_modifier = 1.5
 name_label = NodePath("StatInfo/HBoxContainer/StatName")
-value_label = NodePath("StatInfo/HBoxContainer/Value")
-value_delta_label = NodePath("StatInfo/HBoxContainer/Value/ValueDelta")
+point_label = NodePath("StatInfo/HBoxContainer/Point")
+point_delta_label = NodePath("StatInfo/HBoxContainer/Point/PointDelta")
 level_label = NodePath("StatInfo/LevelsHBox/Level")
 bar = NodePath("StatInfo/LevelsHBox/LevelProgressBar")
 
@@ -37,32 +117,31 @@ theme_type_variation = &"HeaderLarge"
 custom_minimum_size = Vector2(16, 0)
 layout_mode = 2
 
-[node name="Value" type="Label" parent="StatInfo/HBoxContainer"]
+[node name="Point" type="Label" parent="StatInfo/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"HeaderLarge"
-text = "0028"
+text = "0000"
 horizontal_alignment = 2
 
-[node name="ValueDelta" type="Label" parent="StatInfo/HBoxContainer/Value"]
+[node name="PointDelta" type="Label" parent="StatInfo/HBoxContainer/Point"]
 modulate = Color(1, 1, 1, 0)
 material = ExtResource("2_vjhmy")
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
-offset_top = -42.0
-offset_right = 4.0
-offset_bottom = -8.0
-grow_horizontal = 0
-grow_vertical = 0
+anchor_bottom = 1.0
+offset_top = -44.0
+offset_bottom = -44.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_type_variation = &"HeaderLarge"
 theme_override_colors/font_color = Color(0.7, 1, 0.7, 1)
-text = "+  1"
+text = "LV.  0"
 horizontal_alignment = 2
 text_overrun_behavior = 3
-metadata/_edit_lock_ = true
 
 [node name="LevelsHBox" type="HBoxContainer" parent="StatInfo"]
 layout_mode = 2
@@ -83,9 +162,8 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("3_xil7a")
-value = 4
+value = 0
 fill_speed = 10.0
 fill_color = Color(0.722556, 0.70114, 0.252287, 1)
 bg_color = Color(0.304462, 0.304462, 0.304462, 0.588235)
-skew_degrees = 45.0
 text_color = Color(0.172143, 0.661345, 0.279524, 1)

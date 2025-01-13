@@ -28,6 +28,8 @@ const MAX_LEVEL: int = 99
 const XP_PER_LEVEL: int = 8
 
 const MAX_POINTS: int = 9999
+const POINTS_PER_RANK: int = 3
+const SIGNAL_LEVEL: String = "_level_changed"
 
 #@export_storage var stat_format: Dictionary
 @export_storage var data: Dictionary:
@@ -39,18 +41,24 @@ const MAX_POINTS: int = 9999
 func _init(_seed: int = randi()) -> void:
 	for stat: String in STATS: 
 		data[stat] = {}
-		add_user_signal(get_signal(stat, ""))
+		add_user_signal(get_signal(stat, "level"))
 		for substat: String in SUBSTATS:
 			data[stat][substat] = 0
-			add_user_signal(get_signal(stat, substat), [{name = "new_value", type = TYPE_INT}])
+			add_user_signal(get_signal(stat, substat), [{name = "delta", type = TYPE_INT}])
+		
+		connect(get_signal(stat, "xp"), _on_xp_change.bind(stat))
+	
 	
 	var rng:= RandomNumberGenerator.new()
 	rng.seed = _seed
 	for s: StringName in STATS:
 		set_rank(s, rng.rand_weighted(WEIGHT_RANK))
 
-func add_xp(stat: StringName, amount: int = 0) -> void:
+func add_xp(stat: StringName, amount: int) -> void:
 	set_xp(stat, get_xp(stat, 0) + amount)
+	
+func add_points(stat: StringName, amount: int) -> void:
+	set_points(stat, get_points(stat, 0) + amount)
 
 func GET(stat: StringName, substat: StringName, default: int) -> int:
 	return data.get(stat, {}).get(substat, default)
@@ -62,10 +70,26 @@ func SET(stat: StringName, substat: StringName, value: int) -> void:
 	if substat not in SUBSTATS:
 		printerr("'%s' is not a valid substat." % substat)
 		return
-		
+	
+	var delta: int = value - GET(stat, substat, 0)
 	data[stat][substat] = value
-	emit_signal(get_signal(stat, substat), value)
+	emit_signal(get_signal(stat, substat), delta)
 
+
+func _on_xp_change(delta: int, stat: StringName,) -> void:
+	var new_xp: int = GET(stat, "xp", 0)
+	var level_delta: int = xp_to_level(new_xp) - xp_to_level(new_xp - delta)
+	for i: int in level_delta:
+		on_level_up(stat)
+
+
+func on_level_up(stat: StringName) -> void:
+	var level_points: int = roll_level_points(get_rank(stat))
+	add_points(stat, level_points)
+	emit_signal(get_signal(stat, "level"), level_points)
+
+func roll_level_points(rank: int) -> int:
+	return POINTS_PER_RANK * rank + randi_range(11, 15)
 
 func get_rank(stat: StringName, default: int = 0) -> int:
 	return GET(stat, &"rank", default)
@@ -83,11 +107,10 @@ func get_fatigue() -> int:
 func get_stress() -> int:
 	return data.stress
 
-func set_rank(stat: StringName, value: int) -> void:
-	SET(stat, &"rank", clampi(value, 0, RANKS.size() - 1))
 func set_xp(stat: StringName, value: int = 0) -> void:
 	SET(stat, &"xp", clampi(value, 0, MAX_LEVEL * XP_PER_LEVEL))
-	#TODO Process Level changes
+func set_rank(stat: StringName, value: int) -> void:
+	SET(stat, &"rank", clampi(value, 0, RANKS.size() - 1))
 func set_points(stat: StringName, value: int) -> void:
 	SET(stat, &"points", clampi(value, 0, MAX_POINTS))
 
@@ -101,13 +124,12 @@ func set_stress(val: int) -> void:
 	data.stress = val
 
 
-
 func get_level(stat: StringName, default: int = 0) -> int:
-	return get_xp(stat) / XP_PER_LEVEL
-
+	return xp_to_level(get_xp(stat, default * XP_PER_LEVEL))
+func xp_to_level(xp: int) -> int:
+	return xp / XP_PER_LEVEL
 func get_level_progress(stat: StringName, default: int = 0) -> int:
 	return get_xp(stat) % XP_PER_LEVEL
-
 func get_grade(stat: StringName) -> String:
 	return RANKS[get_rank(stat)]
 
@@ -115,18 +137,18 @@ func get_grade(stat: StringName) -> String:
 func get_signal(stat: String, substat: String = "") -> StringName:
 	return StringName("%s_%s_changed" % [stat, substat]) if substat else stat + "_changed"
 func is_connected_signal(stat: String, substat: String, method: Callable) -> bool:
-	return is_connected(get_signal(stat, substat), method)
+	return is_connected(get_signal(stat, substat), method) if has_signal(get_signal(stat, substat)) else false
 func connect_signal(stat: String, substat: String, method: Callable) -> int:
+	if Engine.is_editor_hint() and not has_signal(get_signal(stat, substat)): return ERR_DOES_NOT_EXIST
 	return connect(get_signal(stat, substat), method)
-func disconnect_signal(stat: String, substat: String, method: Callable, flags: ConnectFlags) -> int:
-	return connect(get_signal(stat, substat), method, flags)
-
+func disconnect_signal(stat: String, substat: String, method: Callable, flags: ConnectFlags) -> void:
+	if is_connected_signal(stat, substat, method): disconnect(get_signal(stat, substat), method)
 
 func _validate_property(property: Dictionary) -> void:
 	if not Engine.is_editor_hint() or not property.name.contains("/"): return
 	match property.name.get_slice("/", 1):
 		"rank": property.hint_string = "0,%s,1,suffix:%s"%[RANKS.size()-1,get_grade(property.name.get_slice("/", 0))]
-		"xp": property.hint_string = "0,%s" % (MAX_LEVEL * XP_PER_LEVEL)
+		"xp": property.hint_string = "0,%s,1,suffix:lv%d" % [(MAX_LEVEL * XP_PER_LEVEL), get_level(property.name.get_slice("/", 0), 0)]
 		"points": property.hint_string = "0,%s" % MAX_POINTS
 		"life", "stress", "fatigue", "hunger":
 			property.hint_string = "0,100,1,suffix:%"
@@ -145,6 +167,7 @@ func _get_property_list() -> Array[Dictionary]:
 					usage = PROPERTY_USAGE_DEFAULT
 				})
 	return props
+
 
 func _set(property: StringName, value: Variant) -> bool:
 	if property.contains("/") and property.get_slice("/", 0) in STATS:
