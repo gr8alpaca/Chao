@@ -63,7 +63,7 @@ func reconnect_stats() -> void:
 
 func _on_bar_level_up(delta: int) -> void:
 	const VELOCITY: Vector2 = Vector2(-8, -32)
-	const DURATION_SEC: float = 1.8 
+	const DURATION_SEC: float = 1.8
 	
 	level_label.text = "LV. %2.0d" % (get_level())
 	
@@ -75,7 +75,6 @@ func _on_bar_level_up(delta: int) -> void:
 
 
 func animate_point_change(delta: int) -> void:
-	#const MODULATE_TWEEN_
 	const MODULATE_TWEEN_DURATION_SEC: float = 0.4
 	const PRE_ANIMATION_DELAY: float = 1.0
 	

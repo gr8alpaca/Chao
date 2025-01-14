@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://c2j5335dvfv8o"]
+[gd_scene load_steps=7 format=3 uid="uid://c2j5335dvfv8o"]
 
 [ext_resource type="Script" path="res://scenes/UI/stat_info.gd" id="1_p1ri4"]
 [ext_resource type="Script" path="res://scripts/stats/stats.gd" id="2_d6yos"]
 [ext_resource type="Material" uid="uid://b7oj5jh74yjqh" path="res://resources/materials/float_material.tres" id="2_vjhmy"]
+[ext_resource type="Script" path="res://scripts/UI/point_label.gd" id="3_v5ue8"]
 [ext_resource type="Script" path="res://scripts/UI/level_progress_bar.gd" id="3_xil7a"]
 
 [sub_resource type="Resource" id="Resource_ggmal"]
@@ -34,9 +35,9 @@ data = {
 "xp": 0
 },
 "run": {
-"points": 0,
+"points": 125,
 "rank": 4,
-"xp": 0
+"xp": 42
 },
 "stamina": {
 "points": 0,
@@ -49,9 +50,9 @@ data = {
 "xp": 0
 },
 "swim": {
-"points": 0,
+"points": 26,
 "rank": 0,
-"xp": 0
+"xp": 18
 }
 }
 name = &"Garfield"
@@ -59,11 +60,11 @@ stamina/rank = 0
 stamina/xp = 0
 stamina/points = 0
 run/rank = 4
-run/xp = 0
-run/points = 0
+run/xp = 42
+run/points = 125
 swim/rank = 0
-swim/xp = 0
-swim/points = 0
+swim/xp = 18
+swim/points = 26
 fly/rank = 1
 fly/xp = 0
 fly/points = 0
@@ -90,6 +91,7 @@ offset_right = 236.0
 offset_bottom = 54.0
 mouse_filter = 1
 script = ExtResource("1_p1ri4")
+stat_name = &"swim"
 stats = SubResource("Resource_ggmal")
 speed_modifier = 1.5
 name_label = NodePath("StatInfo/HBoxContainer/StatName")
@@ -108,21 +110,24 @@ grow_vertical = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="StatInfo"]
 layout_mode = 2
+theme_override_constants/separation = 0
 
 [node name="StatName" type="Label" parent="StatInfo/HBoxContainer"]
 layout_mode = 2
 theme_type_variation = &"HeaderLarge"
+text = "Swim"
 
 [node name="Seperator2" type="Control" parent="StatInfo/HBoxContainer"]
-custom_minimum_size = Vector2(16, 0)
+custom_minimum_size = Vector2(8, 0)
 layout_mode = 2
 
 [node name="Point" type="Label" parent="StatInfo/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"HeaderLarge"
-text = "0000"
+text = "0026"
 horizontal_alignment = 2
+script = ExtResource("3_v5ue8")
 
 [node name="PointDelta" type="Label" parent="StatInfo/HBoxContainer/Point"]
 modulate = Color(1, 1, 1, 0)
@@ -133,15 +138,16 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = -44.0
 offset_bottom = -44.0
-grow_horizontal = 2
-grow_vertical = 2
+grow_horizontal = 0
+grow_vertical = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_type_variation = &"HeaderLarge"
 theme_override_colors/font_color = Color(0.7, 1, 0.7, 1)
-text = "LV.  0"
+text = "+  1"
 horizontal_alignment = 2
 text_overrun_behavior = 3
+script = ExtResource("3_v5ue8")
 
 [node name="LevelsHBox" type="HBoxContainer" parent="StatInfo"]
 layout_mode = 2
@@ -151,7 +157,7 @@ theme_override_constants/separation = 0
 layout_mode = 2
 size_flags_vertical = 0
 theme_type_variation = &"HeaderDetail"
-text = "LV.  3"
+text = "LV.  2"
 vertical_alignment = 1
 
 [node name="Seperator" type="Control" parent="StatInfo/LevelsHBox"]
@@ -162,7 +168,6 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("3_xil7a")
-value = 0
 fill_speed = 10.0
 fill_color = Color(0.722556, 0.70114, 0.252287, 1)
 bg_color = Color(0.304462, 0.304462, 0.304462, 0.588235)

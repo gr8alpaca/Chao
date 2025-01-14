@@ -1,11 +1,11 @@
 @tool
 class_name Main extends Node3D
+const GROUP: StringName = &"Main"
 
 const PATH:={
 	PET = "res://scenes/Pet/pet.tscn",
 	GARDEN = "res://scenes/garden/garden.tscn",
 	RACE = "res://scenes/race/race.tscn",
-	
 	DEFAULT = "res://scenes/garden/garden.tscn",
 }
 
@@ -17,10 +17,20 @@ const SIGNAL_QUEUE_ADVANCE: StringName = &"main_queue_advance"
 
 const TRANSITION_TIME_SEC: float = 1.3
 
+signal scene_changed(new_scene: Node)
+
+@export_custom(3, "", 6) var start_scene: String = &"GARDEN"
+
 var rect: ColorRect
-var focus_label: Label 
+var focus_label: Label
 
 var queue: Array[Node]
+
+var scene: Node:
+	set(val): scene = val; scene_changed.emit(val)
+
+func _init() -> void:
+	add_to_group(GROUP)
 
 func _ready() -> void:
 	process_mode = PROCESS_MODE_ALWAYS
@@ -30,11 +40,11 @@ func _ready() -> void:
 		rect.hide()
 		return
 	
-	enter_scene(load(PATH.GARDEN).instantiate())
+	enter_scene(load(PATH[start_scene]).instantiate())
 
 
 func change_scene(node: Node) -> void:
-	if (get_child_count() and get_child(0) == node) or Engine.is_editor_hint(): return
+	if (scene == node) or Engine.is_editor_hint(): return
 	
 	await exit_scene()
 	enter_scene(node)
@@ -63,19 +73,16 @@ func enter_scene(node: Node) -> void:
 		node.connect(SIGNAL_QUEUE_ADVANCE, advance_queue)
 	
 	add_child(node, true)
+	scene = node
 	tween_modulate(false)
 
 
 func exit_scene(free_scene: bool = true) -> void:
 	#print_debug("Exiting Scene (%s)..." % (get_child(0).name if get_child_count() else ""))
 	await tween_modulate(true).finished
-	if get_child_count():
-		var child: Node = get_child(0)
-		remove_child(child)
-		if free_scene: 
-			child.free()
-	
-	#print_debug("Scene Exited")
+	if scene: remove_child(scene)
+	if scene and free_scene: scene.free()
+			
 
 func add_scene_to_queue(node: Node) -> void:
 	queue.push_back(node)
@@ -120,8 +127,12 @@ func create_canvas() -> void:
 		focus_label.modulate.a = 0.4
 		focus_label.hide()
 		get_window().gui_focus_changed.connect(_on_gui_focus_changed)
-		
+	
 	add_child(canvas, false, INTERNAL_MODE_FRONT)
 
 func _on_gui_focus_changed(control: Control) -> void:
 	focus_label.text = "Current Focus: %s" % (control.name if control else "None")
+
+func _validate_property(property: Dictionary) -> void:
+	match property.name:
+		&"start_scene": property.hint_string = ",".join(PATH.keys())

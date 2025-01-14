@@ -20,6 +20,12 @@ func _enter_tree() -> void:
 	if Engine.is_editor_hint(): return
 	if not pet_stats:
 		set_stats(Stats.new())
+	
+
+func check_pet_status() -> void:
+	assert(is_inside_tree() and get_pet() and pet_stats)
+	
+
 
 
 func set_stats(stats: Stats) -> void:
@@ -28,7 +34,7 @@ func set_stats(stats: Stats) -> void:
 	var pet: Pet = get_pet()
 	pet.connect(Interactable.SIGNAL_INTERACTION_STARTED, interact_menu.set_pet.bind(pet))
 	pet.stats = stats
-
+	
 
 func _on_start_week_pressed(schedule: Array[Activity]) -> void:
 	get_pet().emit_signal(StateMachine.SIGNAL_STATE, &"idle")

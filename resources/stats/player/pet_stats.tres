@@ -6,7 +6,7 @@
 script = ExtResource("1_l370v")
 data = {
 "fatigue": {
-"points": 0,
+"points": 113,
 "rank": 3,
 "xp": 0
 },
@@ -75,7 +75,7 @@ hunger/xp = 0
 hunger/points = 0
 fatigue/rank = 3
 fatigue/xp = 0
-fatigue/points = 0
+fatigue/points = 113
 stress/rank = 0
 stress/xp = 0
 stress/points = 0
