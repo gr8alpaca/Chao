@@ -36,6 +36,7 @@ func _init() -> void:
 
 func _ready() -> void:
 	schedule = get_tree().get_first_node_in_group(Schedule.GROUP)
+	if Engine.is_editor_hint(): return
 	schedule.changed.connect(_on_schedule_changed)
 
 func _on_schedule_changed() -> void:

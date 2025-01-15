@@ -60,9 +60,18 @@ func _init(_seed: int = randi()) -> void:
 
 func add_xp(stat: StringName, amount: int) -> void:
 	set_xp(stat, get_xp(stat, 0) + amount)
-
+	
 func add_points(stat: StringName, amount: int) -> void:
 	set_points(stat, get_points(stat, 0) + amount)
+
+func add_life(amount: int) -> void:
+	set_life(get_life() + amount)
+func add_hunger(amount: int) -> void:
+	set_hunger(get_hunger() + amount)
+func add_fatigue(amount: int) -> void:
+	set_fatigue(get_fatigue() + amount)
+func add_stress(amount: int) -> void:
+	set_stress(get_stress() + amount)
 
 func GET(stat: StringName, substat: StringName, default: int) -> int:
 	return data.get(stat, {}).get(substat, default)

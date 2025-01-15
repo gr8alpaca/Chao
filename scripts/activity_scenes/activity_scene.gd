@@ -1,6 +1,9 @@
 @tool
 class_name ActivityScene extends Node3D
 
+const FATIGUE_PER_POINT: int = 11
+const FATIGUE_VARIANCE: int = 3
+
 @export var initial_pet_state: StringName = &"sleep"
 
 var auto_continue: bool = true
@@ -35,11 +38,19 @@ func _ready() -> void:
 func _play() -> void:
 	overlay.open()
 
+func apply_fatigue() -> void:
+	var rest_bonus: int = -stats.get_fatigue() / 2 if activity.name == &"rest" else 0
+	stats.add_fatigue(rest_bonus + _roll_fatigue())
+
 
 func apply_activity_deltas() -> void:
-	var deltas: Dictionary = ActivityXP.roll_exercise(activity)
+	apply_fatigue()
+	var deltas: Dictionary = activity.roll_stat_changes(stats)
 	for stat: StringName in deltas.keys():
 		stats.add_xp(stat, deltas[stat])
+
+func _roll_fatigue() -> int:
+	return activity.fatigue * FATIGUE_PER_POINT + randi_range(-FATIGUE_VARIANCE, FATIGUE_VARIANCE) 
 
 
 func _on_overlay_opened() -> void:

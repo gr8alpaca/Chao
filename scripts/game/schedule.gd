@@ -36,12 +36,12 @@ func remove_last_activity() -> void:
 
 func clear() -> void:
 	set_schedule()
-	
+
 func is_empty() -> bool:
 	for i: int in SCHEDULE_SIZE:
 		if schedule[i]: return false
 	return true
-	
+
 func is_filled() -> bool:
 	for i: int in SCHEDULE_SIZE:
 		if not schedule[i]: return false

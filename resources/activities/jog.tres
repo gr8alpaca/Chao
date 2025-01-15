@@ -5,7 +5,7 @@
 [resource]
 resource_name = "Jog"
 script = ExtResource("1_qtqck")
-fatigue = -1
+fatigue = 1
 run = 1
 swim = 0
 fly = 0

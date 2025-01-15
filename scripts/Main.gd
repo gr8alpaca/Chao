@@ -113,7 +113,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif Input.is_key_pressed(KEY_COMMA):
 			Engine.time_scale /= 2.0
 			print("Time Scale -> %3.0d%%" % (Engine.time_scale * 100.0))
-
+		elif Input.is_key_pressed(KEY_BRACKETRIGHT):
+			
+			print_orphan_nodes()
 
 func get_scene() -> Node:
 	return get_child(0) if get_child_count() else null

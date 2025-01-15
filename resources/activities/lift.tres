@@ -5,7 +5,7 @@
 [resource]
 resource_name = "Lift"
 script = ExtResource("1_4joom")
-fatigue = -1
+fatigue = 1
 run = 0
 swim = 0
 fly = 0

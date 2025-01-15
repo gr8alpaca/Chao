@@ -5,7 +5,7 @@
 [resource]
 resource_name = "Paddle"
 script = ExtResource("1_2rs33")
-fatigue = -1
+fatigue = 1
 run = 0
 swim = 1
 fly = 0
