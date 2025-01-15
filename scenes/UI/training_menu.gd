@@ -20,7 +20,6 @@ signal add_activity(activity: Activity)
 
 @export var main_stat_vbox: VBoxContainer
 @export var skill_changes_hbox: HBoxContainer
-@export var schedule_ui: ScheduleUI
 
 @onready var exercise_label: Label = %ExerciseName
 
@@ -112,8 +111,9 @@ func focus_button(but: BaseButton) -> void:
 
 
 func _on_exercise_pressed(exercise: Exercise) -> void:
-	if schedule_ui: 
-		schedule_ui.add_activity(exercise)
+	print("CALLED")
+	get_tree().get_first_node_in_group(Schedule.GROUP).add_activity(exercise)
+	#get_tree().call_group(Schedule.GROUP, &"add_activiy", exercise)
 
 func _on_exercise_focus_enter(exercise: Exercise) -> void:
 	display_exercise(exercise)

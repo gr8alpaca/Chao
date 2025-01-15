@@ -64,7 +64,7 @@ func _on_button_pressed(but: BaseButton) -> void:
 
 func _on_button_gui_input(event: InputEvent, activity: Activity) -> void:
 	if event is InputEventMouseButton and event.button_mask & MOUSE_BUTTON_LEFT:
-		schedule_ui.add_activity(activity)
+		get_tree().call_group(Schedule.GROUP, &"add_activiy", activity)
 		accept_event()
 
 

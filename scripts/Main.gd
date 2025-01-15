@@ -27,10 +27,15 @@ var queue: Array[Node]
 
 func _init() -> void:
 	add_to_group(GROUP)
-	child_exiting_tree
 	
 func _ready() -> void:
 	process_mode = PROCESS_MODE_ALWAYS
+	
+	if not Engine.is_editor_hint():
+		for child: Node in get_children():
+			remove_child(child)
+			add_child(child, false, INTERNAL_MODE_BACK)
+	
 	create_canvas()
 	
 	if Engine.is_editor_hint():

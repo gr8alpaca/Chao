@@ -84,7 +84,8 @@ func set_pet(val: Pet):
 
 func _on_start_week_pressed() -> void:
 	set_process_input(true)
-	assert(schedule_ui.slots.all(func(slot: ScheduleSlot) -> bool: return slot.activity != null), "Schedule slots not full!!")
+	var schedule: Schedule = get_tree().get_first_node_in_group(Schedule.GROUP)
+	assert(schedule.is_filled(), "Schedule slots not full!!")
 	pet = null
-	start_week_pressed.emit(schedule_ui.get_activities().duplicate())
-	schedule_ui.clear_slots()
+	start_week_pressed.emit(schedule.schedule.duplicate())
+	schedule.clear()

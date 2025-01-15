@@ -3,13 +3,10 @@ class_name ScheduleSlot extends Panel
 
 const LABEL_Y_OFFSET: int = 16
 
-
-signal activity_changed
-
 var label: Label = Label.new()
 var button: Button = Button.new()
 
-@export var activity: Activity: set = set_activity
+var schedule: Schedule
 
 func _init() -> void:
 	mouse_filter = Control.MOUSE_FILTER_STOP
@@ -31,11 +28,24 @@ func _init() -> void:
 	button.pressed.connect(set_activity.bind(null))
 	button.focus_mode = Control.FOCUS_NONE
 	button.position = -button.get_combined_minimum_size()/2.0
-	button.modulate.a = float(activity != null)
+	button.modulate.a = 0.0
 	
 	for item: CanvasItem in [label, button, self]:
 		item.material = preload("res://resources/materials/float_material.tres").duplicate()
 		item.material.set_shader_parameter(&"time_offset", randf() * TAU )
+
+func _ready() -> void:
+	schedule = get_tree().get_first_node_in_group(Schedule.GROUP)
+	schedule.changed.connect(_on_schedule_changed)
+
+func _on_schedule_changed() -> void:
+	const BUTTON_FADE_SEC: float = 0.25
+	create_tween().tween_property(button, ^"modulate:a", float(get_activity() != null), BUTTON_FADE_SEC)
+	
+	if get_activity() != null and button.has_focus():
+		button.release_focus()
+	
+	queue_redraw()
 
 
 func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
@@ -44,11 +54,13 @@ func _can_drop_data(at_position: Vector2, data: Variant) -> bool:
 
 func _drop_data(at_position: Vector2, data: Variant) -> void:
 	if data.get("source") and not (Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT) or Input.is_key_pressed(KEY_CTRL) or Input.is_key_pressed(KEY_SHIFT)):
-		data.source.activity = activity
-	activity = data.activity
+		data.source.set_activity(get_activity())
+	set_activity(data.activity)
+	
 
 
 func _get_drag_data(at_position: Vector2) -> Variant:
+	var activity: Activity = get_activity()
 	if activity:
 		var lbl := Label.new()
 		lbl.text = activity.get_drag_preview()
@@ -59,6 +71,7 @@ func _get_drag_data(at_position: Vector2) -> Variant:
 		}
 
 func _draw() -> void:
+	var activity: Activity = get_activity()
 	if not activity: return
 	const MARGINS_SIZE: int = 8
 	const FONT_OUTLINE_SIZE: int = 4
@@ -77,35 +90,23 @@ func _draw() -> void:
 	draw_string(font, draw_pos, activity_string, 0, -1, font_size)
 
 
-func clear() -> void:
-	if activity: set_activity(null)
-
-
-func set_activity(val: Activity) -> void:
-	activity = val
-	
-	const BUTTON_FADE_SEC: float = 0.25
-	create_tween().tween_property(button, ^"modulate:a", float(activity != null), BUTTON_FADE_SEC)
-	
-	if activity != null and button.has_focus():
-		button.release_focus()
-	
-	queue_redraw()
-	activity_changed.emit()
-
-
 func set_label_week(week_index: int) -> void:
 	label.text = "Week %d" % maxi(week_index, 1)
 
+func get_activity() -> Activity:
+	return schedule.get_activity(get_index()) if schedule else null
+func set_activity(activity: Activity) -> void:
+	schedule.set_activity(get_index(), activity)
+func clear() -> void:
+	set_activity(null)
 
 func position_label() -> void:
 	label.position = Vector2(0.0, size.y + LABEL_Y_OFFSET)
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_mask&MOUSE_BUTTON_LEFT and event.double_click:
-		activity = null
+		clear()
 		accept_event()
-
 
 func _notification(what: int) -> void:
 	match what:
