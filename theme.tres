@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=9 format=3 uid="uid://d4ixlnscgkmi8"]
+[gd_resource type="Theme" load_steps=8 format=3 uid="uid://d4ixlnscgkmi8"]
 
 [ext_resource type="StyleBox" uid="uid://dgvkljulenyi" path="res://assets/styleboxes/glass_stylebox.tres" id="1_htnmm"]
 [ext_resource type="FontVariation" uid="uid://cd52j3vtw37yc" path="res://assets/BabyGemoyVariation.tres" id="2_10hku"]
@@ -27,8 +27,6 @@ draw_on_right = false
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_vs1ht"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8l10f"]
-
 [resource]
 default_base_scale = 2.0
 default_font = ExtResource("2_10hku")
@@ -51,7 +49,6 @@ FlatButton/colors/icon_disabled_color = Color(1, 1, 1, 1)
 FlatButton/icons/icon = SubResource("CompressedTexture2D_vs1ht")
 HeaderDetail/base_type = &"Label"
 HeaderDetail/font_sizes/font_size = 10
-HeaderDetail/styles/normal = SubResource("StyleBoxEmpty_8l10f")
 HeaderLarge/font_sizes/font_size = 28
 HeaderMedium/font_sizes/font_size = 24
 HeaderSmall/font_sizes/font_size = 20

@@ -28,7 +28,7 @@ func _ready() -> void:
 	overlay.init(activity, stats, week_index)
 	overlay.opened.connect(_on_overlay_opened)
 	flicker_light()
-	create_tween().tween_callback(_play)#.set_delay(0.5)
+	create_tween().tween_callback(_play)
 
 
 ## Override for custom behavior

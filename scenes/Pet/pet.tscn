@@ -90,31 +90,31 @@ stress/rank = 2
 stress/xp = 0
 stress/points = 0
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_007w7"]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_h276i"]
 load_path = "res://.godot/imported/fabric_0034_color_1k.jpg-0106fc4b6c0caf80cd1c3273babc7397.s3tc.ctex"
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_1bwil"]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_t0kq0"]
 load_path = "res://.godot/imported/fabric_0034_height_1k.png-f1520aab52bc276da43d940723a4fb4c.s3tc.ctex"
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_niet1"]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_xlgob"]
 load_path = "res://.godot/imported/fabric_0034_normal_opengl_1k.png-29f3e83723e6984e3f2c4dd93ac9d291.s3tc.ctex"
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_r5dxi"]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_d57ol"]
 load_path = "res://.godot/imported/fabric_0034_roughness_1k.jpg-32eeb83bc82f5da82a4c68847046d285.s3tc.ctex"
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_247m8"]
-albedo_texture = SubResource("CompressedTexture2D_007w7")
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ubqav"]
+albedo_texture = SubResource("CompressedTexture2D_h276i")
 metallic_specular = 0.1
 roughness = 0.5
-roughness_texture = SubResource("CompressedTexture2D_r5dxi")
+roughness_texture = SubResource("CompressedTexture2D_d57ol")
 normal_enabled = true
-normal_texture = SubResource("CompressedTexture2D_niet1")
+normal_texture = SubResource("CompressedTexture2D_xlgob")
 heightmap_enabled = true
 heightmap_scale = 4.0
-heightmap_texture = SubResource("CompressedTexture2D_1bwil")
+heightmap_texture = SubResource("CompressedTexture2D_t0kq0")
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_2twwm"]
-material = SubResource("StandardMaterial3D_247m8")
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_q1ndu"]
+material = SubResource("StandardMaterial3D_ubqav")
 radius = 0.1
 height = 0.5
 
@@ -183,7 +183,7 @@ state_machine = NodePath("StateMachine")
 [node name="BodyMesh" type="MeshInstance3D" parent="."]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0.25, 0)
 material_overlay = ExtResource("3_uymjs")
-mesh = SubResource("CapsuleMesh_2twwm")
+mesh = SubResource("CapsuleMesh_q1ndu")
 
 [node name="EyeWhiteR" type="MeshInstance3D" parent="BodyMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.037779, 0.2, 0.0677326)

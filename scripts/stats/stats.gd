@@ -24,6 +24,7 @@ const SUBSTATS: PackedStringArray = [
 	"points",
 	]
 
+const MIN_LEVEL: int = 1
 const MAX_LEVEL: int = 99
 const XP_PER_LEVEL: int = 8
 
@@ -51,7 +52,6 @@ func _init(_seed: int = randi()) -> void:
 			add_user_signal(get_signal(stat, substat), [{name = "delta", type = TYPE_INT}])
 		
 		connect(get_signal(stat, "xp"), _on_xp_change.bind(stat))
-	
 	
 	var rng:= RandomNumberGenerator.new()
 	rng.seed = _seed
@@ -92,11 +92,11 @@ func on_level_up(stat: StringName) -> void:
 	emit_signal(get_signal(stat, "level"), level_points)
 
 func roll_level_points(rank: int) -> int:
-	return roundi((POINTS_PER_RANK * rank + randi_range(11, 15)) * get_level_penalty())
+	return roundi((POINTS_PER_RANK * rank + randi_range(11, 15)) * (1.0 - get_level_penalty()))
 
 func get_level_penalty() -> float:
-	# TODO: Ease?
-	return clampf((get_stress() * 1.0 + get_fatigue() * 3 - 30.0)/ 165.0,0.0, 0.8)
+	const MAX_PENALTY: float = 0.8
+	return clampf(ease(get_fatigue()/ 100.0, 1.5) * MAX_PENALTY, 0.0, MAX_PENALTY)
 
 func get_rank(stat: StringName, default: int = 0) -> int:
 	return GET(stat, &"rank", default)
@@ -134,7 +134,7 @@ func set_stress(val: int) -> void:
 func get_level(stat: StringName, default: int = 0) -> int:
 	return xp_to_level(get_xp(stat, default * XP_PER_LEVEL))
 func xp_to_level(xp: int) -> int:
-	return xp / XP_PER_LEVEL
+	return clampi(xp / XP_PER_LEVEL + 1, MIN_LEVEL, MAX_LEVEL)
 func get_level_progress(stat: StringName, default: int = 0) -> int:
 	return get_xp(stat) % XP_PER_LEVEL
 func get_grade(stat: StringName) -> String:
@@ -160,7 +160,7 @@ func _validate_property(property: Dictionary) -> void:
 		"xp": property.hint_string = "0,%s,1,suffix:lv%2.0d" % [(MAX_LEVEL * XP_PER_LEVEL), get_level(slices[0], 0)]
 		"points" when slices[0] in ["life", "stress", "fatigue", "hunger"]:
 			property.hint_string = "0,100,1,suffix:%"
-		"points": 
+		"points":
 			property.hint_string = "0,%s" % MAX_POINTS 
 
 

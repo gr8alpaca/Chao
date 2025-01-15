@@ -131,11 +131,12 @@ func set_stats(val: Stats) -> void:
 	stats = val
 	reconnect_stats()
 
+
 func set_point_label_text(val: int) -> void:
 	if point_label: point_label.text = "%04.0d" % val
 
 func set_level_label_text(val: int) -> void:
-	if point_delta_label: point_delta_label.text = "LV. %2.0d" % val
+	if level_label: level_label.text = "LV. %02.d" % val
 
 func _get_minimum_size() -> Vector2:
 	return get_child(0).get_combined_minimum_size()

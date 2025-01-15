@@ -17,8 +17,6 @@ const SIGNAL_QUEUE_ADVANCE: StringName = &"main_queue_advance"
 
 const TRANSITION_TIME_SEC: float = 1.3
 
-signal scene_changed(new_scene: Node)
-
 @export_custom(3, "", 6) var start_scene: String = &"GARDEN"
 
 var rect: ColorRect
@@ -26,12 +24,11 @@ var focus_label: Label
 
 var queue: Array[Node]
 
-var scene: Node:
-	set(val): scene = val; scene_changed.emit(val)
 
 func _init() -> void:
 	add_to_group(GROUP)
-
+	child_exiting_tree
+	
 func _ready() -> void:
 	process_mode = PROCESS_MODE_ALWAYS
 	create_canvas()
@@ -44,7 +41,7 @@ func _ready() -> void:
 
 
 func change_scene(node: Node) -> void:
-	if (scene == node) or Engine.is_editor_hint(): return
+	if (get_scene() == node) or Engine.is_editor_hint(): return
 	
 	await exit_scene()
 	enter_scene(node)
@@ -73,16 +70,18 @@ func enter_scene(node: Node) -> void:
 		node.connect(SIGNAL_QUEUE_ADVANCE, advance_queue)
 	
 	add_child(node, true)
-	scene = node
 	tween_modulate(false)
 
 
 func exit_scene(free_scene: bool = true) -> void:
 	#print_debug("Exiting Scene (%s)..." % (get_child(0).name if get_child_count() else ""))
 	await tween_modulate(true).finished
-	if scene: remove_child(scene)
-	if scene and free_scene: scene.free()
-			
+	var scene: Node = get_scene()
+	if scene: 
+		remove_child(scene)
+		if free_scene: 
+			scene.free()
+
 
 func add_scene_to_queue(node: Node) -> void:
 	queue.push_back(node)
@@ -102,13 +101,17 @@ func _unhandled_input(event: InputEvent) -> void:
 			focus_label.visible = !focus_label.visible
 		elif Input.is_key_pressed(KEY_P):
 			get_tree().paused = !get_tree().paused
-			
+		
 		elif Input.is_key_pressed(KEY_PERIOD):
 			Engine.time_scale *= 2.0
 			print("Time Scale -> %3.0d%%" % (Engine.time_scale * 100.0))
 		elif Input.is_key_pressed(KEY_COMMA):
 			Engine.time_scale /= 2.0
 			print("Time Scale -> %3.0d%%" % (Engine.time_scale * 100.0))
+
+
+func get_scene() -> Node:
+	return get_child(0) if get_child_count() else null
 
 
 func create_canvas() -> void:
