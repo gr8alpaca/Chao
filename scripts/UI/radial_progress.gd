@@ -1,16 +1,17 @@
 @tool
-class_name LevelProgressBar extends Control
+class_name RadialProgressBar extends Control
 
-signal level_hit
-
-const MAX_VALUE: int = 8
-const MIN_VALUE: int = 0
+signal filled
 const FILL_COLOR: Color = Color(0.723, 0.701, 0.252, 1.0)
 
 
-@export var value: int = 2: set = set_value
-@export_custom(0, "", PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_READ_ONLY)
-var drawn_value: float: set = set_drawn_value
+@export var value: int = 0: set = set_value
+@export var drawn_value: float: set = set_drawn_value
+
+@export var test_add_value: int:
+	set(val): add_value(val)
+
+@export_range(1, 100, 1, "or_greater") var segment_count: int = 8
 
 @export_range(1.0, 10.0, 0.25, "suffix:segment/sec")
 var fill_speed: float = 1.0
@@ -31,15 +32,11 @@ var fill_speed: float = 1.0
 		queue_redraw()
 
 
-@export var rect_border_width: float = 2.0:
+@export_range(0.0, 8.0, 0.5, "or_greater", "suffix:px") var circle_border_width: float = 2.0:
 	set(val):
-		rect_border_width = val
+		circle_border_width = val
 		queue_redraw()
 
-@export_range(-90.0, 90.0, 0.5, "radians_as_degrees") var skew: float = PI/4.0:
-	set(val):
-		skew = val
-		queue_redraw()
 
 @export_subgroup("Level Text")
 
@@ -66,7 +63,7 @@ func init_value(val: float) -> void:
 
 func _process(delta: float) -> void:
 	if value == drawn_value:
-		if value == MAX_VALUE:
+		if value == segment_count:
 			level_up()
 			return
 		set_process(false)
@@ -76,17 +73,17 @@ func _process(delta: float) -> void:
 
 
 func add_value(val: int) -> void:
-	while val > MAX_VALUE - value:
-		val -= (MAX_VALUE - value)
-		value += (MAX_VALUE - value)
-		await level_hit
+	while val > segment_count - value:
+		val -= (segment_count - value)
+		value += (segment_count - value)
+		await filled
 	
 	value += val
 
 
 func level_up() -> void:
 	clear()
-	emit_signal.call_deferred(&"level_hit")
+	filled.emit()
 
 
 func clear() -> void:
@@ -95,7 +92,7 @@ func clear() -> void:
 
 
 func set_value(val: int) -> void:
-	value = clampi(val, MIN_VALUE, MAX_VALUE)
+	value = clampi(val, 0, segment_count)
 	set_process(value != drawn_value)
 
 
@@ -108,19 +105,22 @@ func _get_minimum_size() -> Vector2:
 	return Vector2(16, 8)
 	
 
-func draw_bar() -> void:
-	var segement_width: float = size.x / MAX_VALUE
-	var bound_offsets: Vector2 = Vector2(0, size.y).rotated(skew)
-	
-	var x_ratio: float = abs(bound_offsets.x + size.x) / size.x
-	var y_component: float = (size.y / bound_offsets.y) * size.y
-	draw_set_transform_matrix(Transform2D(rotation, scale * Vector2(x_ratio, 1.0) * scale, skew, Vector2(-bound_offsets.x + rect_border_width, 0.0)))
-
-	draw_rect(Rect2(0, 0, size.x, y_component), bg_color)
-	draw_rect(Rect2(0, 0, drawn_value * segement_width, y_component), fill_color)
-	for i: int in MAX_VALUE:
-		draw_rect(Rect2(i * segement_width, 0, segement_width, y_component), border_color, false, rect_border_width, false)
+#
 
 
 func _draw() -> void:
-	draw_bar()
+	draw_circle(size/2.0, maxf(size.x/2.0, size.y/2.0), bg_color) # Background
+	
+
+#func draw_bar() -> void:
+	#var segement_width: float = size.x / segment_count
+	#var bound_offsets: Vector2 = Vector2(0, size.y).rotated(skew)
+	#
+	#var x_ratio: float = abs(bound_offsets.x + size.x) / size.x
+	#var y_component: float = (size.y / bound_offsets.y) * size.y
+	#draw_set_transform_matrix(Transform2D(rotation, scale * Vector2(x_ratio, 1.0) * scale, skew, Vector2(-bound_offsets.x + circle_border_width, 0.0)))
+#
+	#draw_rect(Rect2(0, 0, size.x, y_component), bg_color)
+	#draw_rect(Rect2(0, 0, drawn_value * segement_width, y_component), fill_color)
+	#for i: int in segment_count:
+		#draw_rect(Rect2(i * segement_width, 0, segement_width, y_component), border_color, false, circle_border_width, false)

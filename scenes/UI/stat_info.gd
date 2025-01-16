@@ -1,6 +1,8 @@
 @tool
 class_name StatInfo extends Control
 
+const UP_ARROW_UNICODE: int = 11014
+
 @export var stat_name: StringName: set = set_stat_name
 @export var stats: Stats: set = set_stats
 
@@ -15,6 +17,7 @@ var speed_modifier: float = 1.0
 @export var point_label: Label
 @export var point_delta_label: Label
 @export var level_label: Label
+@export var xp_delta_label: Label
 
 @export var bar: LevelProgressBar
 
@@ -96,6 +99,10 @@ func set_point_delta_label_text(delta: int) -> void:
 
 func _on_xp_change(delta: int) -> void:
 	bar.add_value(delta)
+	animate_xp_change(delta)
+
+func animate_xp_change(delta: int) -> void:
+	pass
 
 func _on_level_changed(delta: int) -> void:
 	if bar.level_hit.is_connected(_on_bar_level_up):
@@ -116,6 +123,7 @@ func set_font_sizes(main_fs: int = 28, level_fs : int = 10, level_up_fs: int = l
 	point_label.add_theme_font_size_override("font_size", main_fs)
 	point_delta_label.add_theme_font_size_override("font_size", main_fs)
 	level_label.add_theme_font_size_override("font_size", level_fs)
+	xp_delta_label.add_theme_font_size_override("font_size", level_fs)
 	level_up_font_size = main_fs + level_fs
 	level_up_font_size = level_up_fs
 
@@ -131,12 +139,15 @@ func set_stats(val: Stats) -> void:
 	stats = val
 	reconnect_stats()
 
-
 func set_point_label_text(val: int) -> void:
 	if point_label: point_label.text = "%04.0d" % val
 
 func set_level_label_text(val: int) -> void:
 	if level_label: level_label.text = "LV. %02.d" % val
+
+func set_xp_label_text(val: int) -> void:
+	if xp_delta_label: xp_delta_label.text = char(UP_ARROW_UNICODE) + " %02.d" % val
+
 
 func _get_minimum_size() -> Vector2:
 	return get_child(0).get_combined_minimum_size()

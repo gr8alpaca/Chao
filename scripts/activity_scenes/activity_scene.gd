@@ -33,24 +33,28 @@ func _ready() -> void:
 	flicker_light()
 	create_tween().tween_callback(_play)
 
-
 ## Override for custom behavior
 func _play() -> void:
 	overlay.open()
 
-func apply_fatigue() -> void:
+func roll_fatigue() -> int:
+	var base_delta: int = activity.fatigue * FATIGUE_PER_POINT 
+	var variance_roll : int = randi_range(-FATIGUE_VARIANCE * abs(activity.fatigue), FATIGUE_VARIANCE * abs(activity.fatigue))
 	var rest_bonus: int = -stats.get_fatigue() / 2 if activity.name == &"rest" else 0
-	stats.add_fatigue(rest_bonus + _roll_fatigue())
+	return base_delta + variance_roll + rest_bonus
+	
 
+func roll_stat_changes() -> Dictionary:
+	var deltas: Dictionary
+	
+	return deltas
 
 func apply_activity_deltas() -> void:
-	apply_fatigue()
+	var fatigue_change: int = roll_fatigue()
 	var deltas: Dictionary = activity.roll_stat_changes(stats)
 	for stat: StringName in deltas.keys():
 		stats.add_xp(stat, deltas[stat])
 
-func _roll_fatigue() -> int:
-	return activity.fatigue * FATIGUE_PER_POINT + randi_range(-FATIGUE_VARIANCE, FATIGUE_VARIANCE) 
 
 
 func _on_overlay_opened() -> void:

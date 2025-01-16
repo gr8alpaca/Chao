@@ -1,11 +1,32 @@
-[gd_scene load_steps=5 format=3 uid="uid://c2j5335dvfv8o"]
+[gd_scene load_steps=9 format=3 uid="uid://c2j5335dvfv8o"]
 
 [ext_resource type="Script" path="res://scenes/UI/stat_info.gd" id="1_p1ri4"]
 [ext_resource type="Material" uid="uid://b7oj5jh74yjqh" path="res://resources/materials/float_material.tres" id="2_vjhmy"]
 [ext_resource type="Script" path="res://scripts/UI/mono_label.gd" id="3_v5ue8"]
 [ext_resource type="Script" path="res://scripts/UI/level_progress_bar.gd" id="3_xil7a"]
+[ext_resource type="Shader" path="res://scripts/shaders/circular_progress_bar.gdshader" id="5_w142e"]
 
-[node name="StatInfo" type="Control" node_paths=PackedStringArray("name_label", "point_label", "point_delta_label", "level_label", "bar")]
+[sub_resource type="Curve" id="Curve_lalt3"]
+_data = [Vector2(1, 0.050715), 0.0, 0.0, 0, 0]
+point_count = 1
+
+[sub_resource type="CurveTexture" id="CurveTexture_s7m5u"]
+width = 64
+curve = SubResource("Curve_lalt3")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ot20h"]
+shader = ExtResource("5_w142e")
+shader_parameter/value = 0.5
+shader_parameter/segments = 8
+shader_parameter/radius = 10.0
+shader_parameter/hollow_radius = 0.5
+shader_parameter/margin = 0.064
+shader_parameter/rotation = null
+shader_parameter/progress_rotation = null
+shader_parameter/use_value_gradient = false
+shader_parameter/radius_curve = SubResource("CurveTexture_s7m5u")
+
+[node name="StatInfo" type="Control" node_paths=PackedStringArray("name_label", "point_label", "point_delta_label", "level_label", "xp_delta_label", "bar")]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 236.0
@@ -18,6 +39,7 @@ name_label = NodePath("StatInfo/HBoxContainer/StatName")
 point_label = NodePath("StatInfo/HBoxContainer/Point")
 point_delta_label = NodePath("StatInfo/HBoxContainer/Point/PointDelta")
 level_label = NodePath("StatInfo/LevelsHBox/Level")
+xp_delta_label = NodePath("XPLabel")
 bar = NodePath("StatInfo/LevelsHBox/LevelProgressBar")
 
 [node name="StatInfo" type="VBoxContainer" parent="."]
@@ -57,7 +79,9 @@ material = ExtResource("2_vjhmy")
 custom_minimum_size = Vector2(107, 28)
 layout_mode = 1
 anchors_preset = -1
+anchor_left = 1.0
 anchor_right = 1.0
+offset_left = -151.0
 offset_top = -44.0
 offset_bottom = -11.0
 grow_horizontal = 0
@@ -87,7 +111,6 @@ script = ExtResource("3_v5ue8")
 sample_string = "LV. 88"
 
 [node name="Seperator" type="Control" parent="StatInfo/LevelsHBox"]
-visible = false
 custom_minimum_size = Vector2(8, 0)
 layout_mode = 2
 
@@ -100,3 +123,25 @@ fill_speed = 10.0
 fill_color = Color(0.722556, 0.70114, 0.252287, 1)
 bg_color = Color(0.304462, 0.304462, 0.304462, 0.588235)
 text_color = Color(0.172143, 0.661345, 0.279524, 1)
+
+[node name="XPLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 8.0
+offset_top = -19.0
+offset_right = 127.0
+offset_bottom = 19.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.7, 1, 0.7, 1)
+text = "⬆"
+
+[node name="Control" type="ColorRect" parent="XPLabel"]
+material = SubResource("ShaderMaterial_ot20h")
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0

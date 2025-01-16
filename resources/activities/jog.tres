@@ -5,11 +5,11 @@
 [resource]
 resource_name = "Jog"
 script = ExtResource("1_qtqck")
-fatigue = 1
 run = 1
 swim = 0
 fly = 0
 power = 0
 name = &"Jog"
+fatigue = 1
 drag_unicode_code = 127939
 symbol = "🏃"

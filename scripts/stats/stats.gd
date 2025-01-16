@@ -60,10 +60,8 @@ func _init(_seed: int = randi()) -> void:
 
 func add_xp(stat: StringName, amount: int) -> void:
 	set_xp(stat, get_xp(stat, 0) + amount)
-	
 func add_points(stat: StringName, amount: int) -> void:
 	set_points(stat, get_points(stat, 0) + amount)
-
 func add_life(amount: int) -> void:
 	set_life(get_life() + amount)
 func add_hunger(amount: int) -> void:

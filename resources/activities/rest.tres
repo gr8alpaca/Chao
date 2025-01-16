@@ -5,11 +5,11 @@
 [resource]
 resource_name = "Rest"
 script = ExtResource("1_t8ue5")
-fatigue = -2
 run = 0
 swim = 0
 fly = 0
 power = 0
 name = &"Rest"
+fatigue = -2
 drag_unicode_code = 128164
 symbol = "💤"

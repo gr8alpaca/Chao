@@ -111,9 +111,8 @@ func focus_button(but: BaseButton) -> void:
 
 
 func _on_exercise_pressed(exercise: Exercise) -> void:
-	print("CALLED")
 	get_tree().get_first_node_in_group(Schedule.GROUP).add_activity(exercise)
-	#get_tree().call_group(Schedule.GROUP, &"add_activiy", exercise)
+
 
 func _on_exercise_focus_enter(exercise: Exercise) -> void:
 	display_exercise(exercise)
