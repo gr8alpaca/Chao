@@ -1,12 +1,12 @@
 shader_type canvas_item;
 
-uniform float value : hint_range(0.0, 1.0) = 1.0;
-uniform int segments = 1;
-uniform float radius = 0.475;
-uniform float hollow_radius = 0.0;
-uniform float margin : hint_range(0.0, 1.0) = 0.0;
-uniform float rotation : hint_range(-1.0, 1.0);
-uniform float progress_rotation : hint_range(-1.0, 1.0);
+uniform float value : hint_range(0.0, 1.0, 0.01) = 1.0;
+uniform int segments : hint_range(0, 500, 1) = 1;
+uniform float radius  : hint_range(0.0, 0.5, 0.01) = 0.475;
+uniform float hollow_radius : hint_range(0.0, 0.5, 0.01) = 0.0;
+uniform float margin : hint_range(0.0, 1.0, 0.01) = 0.0;
+uniform float bar_rotation : hint_range(-1.0, 1.0, 0.01);
+uniform float progress_rotation : hint_range(-1.0, 1.0, 0.01);
 uniform sampler2D gradient : source_color;
 uniform bool use_value_gradient = false;
 uniform sampler2D radius_curve;
@@ -48,7 +48,7 @@ float radial_shape(vec2 uv, int p_segments) {
 void fragment() {
 	vec2 uv = UV;
 	uv = rotate_uv(uv, PI/2.0); // Rotate 90 degrees, so origin pointing at north be default
-	uv = rotate_uv(uv, rotation * PI);
+	uv = rotate_uv(uv, bar_rotation * PI);
 	
 	float t = radial_shape(uv, 1);
 	if (use_value_gradient) {

@@ -1,6 +1,5 @@
 @tool
 class_name TrainingMenu extends Control
-const EXERCISE_META: StringName = &"Exercise"
 
 const UP_ARROW_TEXTURE: Texture2D = preload("res://assets/UI/ArrowUp.svg")
 const DOWN_ARROW_TEXTURE: Texture2D = preload("res://assets/UI/ArrowUp.svg")

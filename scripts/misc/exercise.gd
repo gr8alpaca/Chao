@@ -1,17 +1,12 @@
 @tool
 class_name Exercise extends Activity
 
-@export_enum("DownDouble:-2", "DownSingle:-1", "None:0", "UpSingle:1", "UpDouble:2")
-var run: int = 0
 
-@export_enum("DownDouble:-2", "DownSingle:-1", "None:0", "UpSingle:1", "UpDouble:2")
-var swim: int = 0
+@export_range(-MAX_DELTA, MAX_DELTA, 1) var run: int = 0
+@export_range(-MAX_DELTA, MAX_DELTA, 1) var swim: int = 0
+@export_range(-MAX_DELTA, MAX_DELTA, 1) var fly: int = 0
+@export_range(-MAX_DELTA, MAX_DELTA, 1) var power: int = 0
 
-@export_enum("DownDouble:-2", "DownSingle:-1", "None:0", "UpSingle:1", "UpDouble:2")
-var fly: int = 0
-
-@export_enum("DownDouble:-2", "DownSingle:-1", "None:0", "UpSingle:1", "UpDouble:2")
-var power: int = 0
 
 func get_stat_changes() -> PackedStringArray:
 	var stat_changes: PackedStringArray

@@ -52,6 +52,7 @@ data = {
 }
 }
 name = &"Garfield"
+age = 0
 stamina/rank = 0
 stamina/xp = 0
 stamina/points = 0

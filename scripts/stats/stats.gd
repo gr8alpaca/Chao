@@ -30,10 +30,9 @@ const XP_PER_LEVEL: int = 8
 
 const MAX_POINTS: int = 9999
 const POINTS_PER_RANK: int = 3
-const SIGNAL_LEVEL: String = "_level_changed"
 
-
-const FATIGUE_PENALTY_THRESHOLD: int = 32
+const LIFE_INDEX_PER_FATIGUE: int = 2
+const LIFE_INDEX_PER_STRESS: int = 3
 
 
 #@export_storage var stat_format: Dictionary
@@ -41,6 +40,7 @@ const FATIGUE_PENALTY_THRESHOLD: int = 32
 	set(val): data.merge(val, true)
 
 @export var name: StringName = &"Garfield"
+@export_range(0, 2000, 1, "suffix:mo") var age: int = 0
 
 #TODO - Add inhereted stats/props
 func _init(_seed: int = randi()) -> void:
@@ -99,11 +99,7 @@ func on_level_up(stat: StringName) -> void:
 	emit_signal(get_signal(stat, "level"), level_points)
 
 func roll_level_points(rank: int) -> int:
-	return roundi((POINTS_PER_RANK * rank + randi_range(11, 15)) * (1.0 - get_level_penalty()))
-
-func get_level_penalty() -> float:
-	const MAX_PENALTY: float = 0.8
-	return clampf(ease(get_fatigue()/ 100.0, 1.5) * MAX_PENALTY, 0.0, MAX_PENALTY)
+	return roundi((POINTS_PER_RANK * rank + randi_range(11, 15)))
 
 func get_rank(stat: StringName, default: int = 0) -> int:
 	return GET(stat, &"rank", default)
@@ -147,6 +143,10 @@ func get_level_progress(stat: StringName, default: int = 0) -> int:
 func get_grade(stat: StringName) -> String:
 	return RANKS[get_rank(stat)]
 
+func get_life_index() -> int:
+	return LIFE_INDEX_PER_STRESS * get_stress() + LIFE_INDEX_PER_FATIGUE * get_fatigue()
+func get_life_index_ratio() -> float:
+	return inverse_lerp(0, LIFE_INDEX_PER_FATIGUE * 100 + LIFE_INDEX_PER_STRESS * 100,get_life_index())
 
 func get_signal(stat: String, substat: String = "") -> StringName:
 	return StringName("%s_%s_changed" % [stat, substat]) if substat else stat + "_changed"

@@ -13,6 +13,8 @@ var activity: Activity
 var week_index: int
 var overlay: WeekOverlay
 
+var results: ActivityResult
+
 func init(stats: Stats, activity: Activity, week_index: int) -> void:
 	self.stats = stats
 	self.activity = activity
@@ -25,7 +27,8 @@ func init(stats: Stats, activity: Activity, week_index: int) -> void:
 	pet.stats = stats
 	if pet.has_meta(StateMachine.GROUP):
 		pet.get_meta(StateMachine.GROUP).initial_state_name = initial_pet_state
-
+	
+	results = ActivityResult.new(activity, stats)
 
 func _ready() -> void:
 	overlay.init(activity, stats, week_index)
@@ -42,19 +45,22 @@ func roll_fatigue() -> int:
 	var variance_roll : int = randi_range(-FATIGUE_VARIANCE * abs(activity.fatigue), FATIGUE_VARIANCE * abs(activity.fatigue))
 	var rest_bonus: int = -stats.get_fatigue() / 2 if activity.name == &"rest" else 0
 	return base_delta + variance_roll + rest_bonus
-	
+
 
 func roll_stat_changes() -> Dictionary:
 	var deltas: Dictionary
-	
+	for stat: StringName in activity.get_stat_changes():
+		deltas[stat] = 0
 	return deltas
 
+
 func apply_activity_deltas() -> void:
-	var fatigue_change: int = roll_fatigue()
+	var fatigue_delta: int = roll_fatigue()
+	stats.add_fatigue(fatigue_delta)
+	
 	var deltas: Dictionary = activity.roll_stat_changes(stats)
 	for stat: StringName in deltas.keys():
 		stats.add_xp(stat, deltas[stat])
-
 
 
 func _on_overlay_opened() -> void:

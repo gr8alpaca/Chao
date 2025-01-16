@@ -65,7 +65,7 @@ func enter_scene(node: Node) -> void:
 		node.connect(SIGNAL_EXIT, exit_scene.bind(false))
 	
 	if not node.has_user_signal(SIGNAL_QUEUE_ADD):
-		node.add_user_signal(SIGNAL_QUEUE_ADD, [{name = "node", type = TYPE_OBJECT}])
+		node.add_user_signal(SIGNAL_QUEUE_ADD, [{name = "node", type = TYPE_OBJECT}, {name = "queue_next", type = TYPE_BOOL}])
 	if not node.is_connected(SIGNAL_QUEUE_ADD, add_scene_to_queue):
 		node.connect(SIGNAL_QUEUE_ADD, add_scene_to_queue)
 	
@@ -88,8 +88,8 @@ func exit_scene(free_scene: bool = true) -> void:
 			scene.free()
 
 
-func add_scene_to_queue(node: Node) -> void:
-	queue.push_back(node)
+func add_scene_to_queue(node: Node, queue_next: bool = false ) -> void:
+	queue.insert(0 if queue_next else queue.size(), node)
 
 func advance_queue() -> void:
 	change_scene(load(PATH.DEFAULT).instantiate() if queue.is_empty() else queue.pop_front())
