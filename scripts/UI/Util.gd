@@ -22,5 +22,5 @@ static func tween_fade(control: Control, final_alpha_value: float = 0.0, time_se
 	return tw
 
 static func focus_button(but: BaseButton) -> void:
-	if but and but.visible and not but.button_pressed and not but.has_focus(): 
+	if but and but.visible and not but.button_pressed and not but.has_focus() and not Engine.is_editor_hint(): 
 		but.grab_focus()

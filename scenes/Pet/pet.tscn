@@ -1,16 +1,16 @@
 [gd_scene load_steps=29 format=3 uid="uid://cp1lbtskoh1sx"]
 
-[ext_resource type="Script" path="res://scenes/Pet/pet.gd" id="1_t3pu5"]
-[ext_resource type="Script" path="res://scripts/stats/stats.gd" id="2_0kyj0"]
+[ext_resource type="Script" uid="uid://dp5lurssoi24e" path="res://scenes/Pet/pet.gd" id="1_t3pu5"]
+[ext_resource type="Script" uid="uid://bdyvfqkan2dfg" path="res://scripts/stats/stats.gd" id="2_0kyj0"]
 [ext_resource type="Material" uid="uid://cj52sut2j38yc" path="res://resources/highlight_material.tres" id="3_uymjs"]
-[ext_resource type="Script" path="res://scripts/interactable.gd" id="4_6xcdk"]
-[ext_resource type="Script" path="res://scripts/StateMachine/StateMachine.gd" id="6_b7k50"]
-[ext_resource type="Script" path="res://scripts/StateMachine/State.gd" id="7_crvk2"]
-[ext_resource type="Script" path="res://scripts/StateMachine/States/Pet/idle_state.gd" id="8_fdymg"]
-[ext_resource type="Script" path="res://scripts/StateMachine/States/Pet/interaction_state.gd" id="9_nnr34"]
-[ext_resource type="Script" path="res://scripts/StateMachine/States/Pet/tpose_state.gd" id="10_fvavy"]
-[ext_resource type="Script" path="res://scripts/StateMachine/States/Pet/race_state.gd" id="11_2cmky"]
-[ext_resource type="Script" path="res://scripts/StateMachine/States/Pet/sleep_state.gd" id="12_015lu"]
+[ext_resource type="Script" uid="uid://cdpw8c4rvvvxn" path="res://scripts/interactable.gd" id="4_6xcdk"]
+[ext_resource type="Script" uid="uid://cvlsrl14gidfx" path="res://scripts/StateMachine/StateMachine.gd" id="6_b7k50"]
+[ext_resource type="Script" uid="uid://cn0cnk585l6ox" path="res://scripts/StateMachine/State.gd" id="7_crvk2"]
+[ext_resource type="Script" uid="uid://2y8x4wr8ydvl" path="res://scripts/StateMachine/States/Pet/idle_state.gd" id="8_fdymg"]
+[ext_resource type="Script" uid="uid://c5kjvaoxkrh4n" path="res://scripts/StateMachine/States/Pet/interaction_state.gd" id="9_nnr34"]
+[ext_resource type="Script" uid="uid://bnd5r5p3x7xfi" path="res://scripts/StateMachine/States/Pet/tpose_state.gd" id="10_fvavy"]
+[ext_resource type="Script" uid="uid://du6cipqq1kh1w" path="res://scripts/StateMachine/States/Pet/race_state.gd" id="11_2cmky"]
+[ext_resource type="Script" uid="uid://ctbr0axaegpbm" path="res://scripts/StateMachine/States/Pet/sleep_state.gd" id="12_015lu"]
 
 [sub_resource type="Resource" id="Resource_daiye"]
 script = ExtResource("2_0kyj0")
@@ -90,31 +90,31 @@ stress/rank = 2
 stress/xp = 0
 stress/points = 0
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_h276i"]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_7ehhj"]
 load_path = "res://.godot/imported/fabric_0034_color_1k.jpg-0106fc4b6c0caf80cd1c3273babc7397.s3tc.ctex"
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_t0kq0"]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_f06qi"]
 load_path = "res://.godot/imported/fabric_0034_height_1k.png-f1520aab52bc276da43d940723a4fb4c.s3tc.ctex"
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_xlgob"]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_0852n"]
 load_path = "res://.godot/imported/fabric_0034_normal_opengl_1k.png-29f3e83723e6984e3f2c4dd93ac9d291.s3tc.ctex"
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_d57ol"]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_5s5nm"]
 load_path = "res://.godot/imported/fabric_0034_roughness_1k.jpg-32eeb83bc82f5da82a4c68847046d285.s3tc.ctex"
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ubqav"]
-albedo_texture = SubResource("CompressedTexture2D_h276i")
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rxle1"]
+albedo_texture = SubResource("CompressedTexture2D_7ehhj")
 metallic_specular = 0.1
 roughness = 0.5
-roughness_texture = SubResource("CompressedTexture2D_d57ol")
+roughness_texture = SubResource("CompressedTexture2D_5s5nm")
 normal_enabled = true
-normal_texture = SubResource("CompressedTexture2D_xlgob")
+normal_texture = SubResource("CompressedTexture2D_0852n")
 heightmap_enabled = true
 heightmap_scale = 4.0
-heightmap_texture = SubResource("CompressedTexture2D_t0kq0")
+heightmap_texture = SubResource("CompressedTexture2D_f06qi")
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_q1ndu"]
-material = SubResource("StandardMaterial3D_ubqav")
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_d2sjc"]
+material = SubResource("StandardMaterial3D_rxle1")
 radius = 0.1
 height = 0.5
 
@@ -174,6 +174,8 @@ name = &"sleep"
 collision_layer = 7
 input_capture_on_drag = true
 velocity = Vector3(0, -16.3333, 0)
+wall_min_slide_angle = 3.14159
+floor_max_angle = 1.0472
 floor_snap_length = 0.0
 script = ExtResource("1_t3pu5")
 stats = SubResource("Resource_daiye")
@@ -183,7 +185,7 @@ state_machine = NodePath("StateMachine")
 [node name="BodyMesh" type="MeshInstance3D" parent="."]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0.25, 0)
 material_overlay = ExtResource("3_uymjs")
-mesh = SubResource("CapsuleMesh_q1ndu")
+mesh = SubResource("CapsuleMesh_d2sjc")
 
 [node name="EyeWhiteR" type="MeshInstance3D" parent="BodyMesh"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.037779, 0.2, 0.0677326)

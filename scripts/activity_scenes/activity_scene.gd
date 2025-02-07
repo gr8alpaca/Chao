@@ -49,9 +49,10 @@ func roll_stat_changes() -> Dictionary:
 	
 	return deltas
 
+
 func apply_activity_deltas() -> void:
 	var fatigue_change: int = roll_fatigue()
-	var deltas: Dictionary = activity.roll_stat_changes(stats)
+	var deltas: Dictionary = roll_stat_changes()
 	for stat: StringName in deltas.keys():
 		stats.add_xp(stat, deltas[stat])
 

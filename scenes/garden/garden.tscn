@@ -1,10 +1,10 @@
 [gd_scene load_steps=10 format=3 uid="uid://c770nfk4mfj0s"]
 
-[ext_resource type="Script" path="res://scenes/garden/garden.gd" id="1_y2d6v"]
-[ext_resource type="Script" path="res://models/floor_model.gd" id="3_t8pvy"]
+[ext_resource type="Script" uid="uid://cndwvrru8nar2" path="res://scenes/garden/garden.gd" id="1_y2d6v"]
+[ext_resource type="Script" uid="uid://csecldva2maro" path="res://models/floor_model.gd" id="3_t8pvy"]
 [ext_resource type="Material" uid="uid://bi4su0loiqr6w" path="res://resources/wood_material.tres" id="4_1iuqp"]
 [ext_resource type="PackedScene" uid="uid://cp1lbtskoh1sx" path="res://scenes/Pet/pet.tscn" id="4_drwvd"]
-[ext_resource type="Script" path="res://scripts/stats/stats.gd" id="5_1l8wm"]
+[ext_resource type="Script" uid="uid://bdyvfqkan2dfg" path="res://scripts/stats/stats.gd" id="5_1l8wm"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_doq1q"]
 sky_top_color = Color(0, 0, 0, 1)

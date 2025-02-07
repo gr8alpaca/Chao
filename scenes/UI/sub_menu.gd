@@ -45,7 +45,7 @@ func _on_menu_button_pressed(but: BaseButton) -> void:
 	if pressed_button and pressed_button.has_focus():
 		pressed_button.release_focus()
 	
-	elif but and but.visible and not but.has_focus():
+	elif but and but.visible and not but.has_focus() and not Engine.is_editor_hint():
 		but.grab_focus()
 
 
@@ -56,7 +56,7 @@ func _on_main_button_toggled(is_toggled: bool, button: BaseButton, tweak: Tweak,
 	tweak.side = enter_side if is_toggled else exit_side
 	tweak.active = is_toggled
 	
-	if not is_toggled and button and button.visible and button.focus_mode and not button.has_focus():
+	if not is_toggled and button and button.visible and button.focus_mode and not button.has_focus() and not Engine.is_editor_hint():
 		button.grab_focus()
 	
 	if is_toggled and button.has_focus():

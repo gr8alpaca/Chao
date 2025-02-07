@@ -106,7 +106,7 @@ func display_exercise(exercise: Exercise) -> void:
 
 
 func focus_button(but: BaseButton) -> void:
-	if but and but.visible and not but.button_pressed and not but.has_focus(): 
+	if but and but.visible and not but.button_pressed and not but.has_focus() and not Engine.is_editor_hint(): 
 		but.grab_focus()
 
 

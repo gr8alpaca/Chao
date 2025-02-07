@@ -27,7 +27,7 @@ const NEGATIVE_COLOR: Color = Color(1.0, 0.70, 0.70, 1.0)
 
 func _ready() -> void:
 	point_delta_label.modulate.a = 0.0
-	
+	xp_delta_label.modulate.a = 0.0
 	update_display()
 	
 	if Engine.is_editor_hint(): return
@@ -61,7 +61,6 @@ func reconnect_stats() -> void:
 		stats.connect_signal(stat_name, "level", _on_level_changed)
 	
 	update_display()
-
 
 
 func _on_bar_level_up(delta: int) -> void:
@@ -101,8 +100,27 @@ func _on_xp_change(delta: int) -> void:
 	bar.add_value(delta)
 	animate_xp_change(delta)
 
+
 func animate_xp_change(delta: int) -> void:
-	pass
+	if not xp_delta_label: return
+	const LABEL_OFFSET: float = 4.0
+	const FADE_DURATION_SEC: float = 0.8
+	
+	
+	var font: Font = get_theme_default_font()
+	var text: String = char(UP_ARROW_UNICODE) + " %d" % delta
+	var font_size: int = 1
+	
+	while font.get_string_size(text, 0, -1, font_size + 1,).y < (xp_delta_label.size.y):
+		font_size += 1
+	
+	xp_delta_label.add_theme_font_size_override("font_size", font_size)
+	var tw: Tween = create_tween()
+	tw.tween_property(xp_delta_label, ^"modulate:a", 1.0, FADE_DURATION_SEC)
+	if Engine.is_editor_hint():
+		tw.tween_interval(1.0)
+		tw.tween_property(xp_delta_label, ^"modulate:a", 0.0, FADE_DURATION_SEC)
+
 
 func _on_level_changed(delta: int) -> void:
 	if bar.level_hit.is_connected(_on_bar_level_up):
@@ -123,7 +141,6 @@ func set_font_sizes(main_fs: int = 28, level_fs : int = 10, level_up_fs: int = l
 	point_label.add_theme_font_size_override("font_size", main_fs)
 	point_delta_label.add_theme_font_size_override("font_size", main_fs)
 	level_label.add_theme_font_size_override("font_size", level_fs)
-	xp_delta_label.add_theme_font_size_override("font_size", level_fs)
 	level_up_font_size = main_fs + level_fs
 	level_up_font_size = level_up_fs
 
@@ -145,8 +162,10 @@ func set_point_label_text(val: int) -> void:
 func set_level_label_text(val: int) -> void:
 	if level_label: level_label.text = "LV. %02.d" % val
 
+
 func set_xp_label_text(val: int) -> void:
-	if xp_delta_label: xp_delta_label.text = char(UP_ARROW_UNICODE) + " %02.d" % val
+	if xp_delta_label: 
+		xp_delta_label.text = char(UP_ARROW_UNICODE) + " %02.d" % val
 
 
 func _get_minimum_size() -> Vector2:

@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://b21nq6vbh5e6h"]
+
+[ext_resource type="Script" uid="uid://bhvddp5u8cf60" path="res://scenes/UI/arrow_effect.gd" id="1_woll5"]
+[ext_resource type="FontVariation" uid="uid://cd52j3vtw37yc" path="res://assets/BabyGemoyVariation.tres" id="2_plk7m"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5lcst"]
+
+[node name="ArrowEffect" type="Control"]
+top_level = true
+texture_repeat = 2
+material = SubResource("ShaderMaterial_5lcst")
+layout_mode = 3
+anchors_preset = 0
+offset_right = 15.0
+offset_bottom = 14.0
+script = ExtResource("1_woll5")
+font = ExtResource("2_plk7m")
+cycle_delta_max = 2.5
+metadata/_custom_type_script = ExtResource("1_woll5")

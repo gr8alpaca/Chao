@@ -35,7 +35,6 @@ const SIGNAL_LEVEL: String = "_level_changed"
 
 const FATIGUE_PENALTY_THRESHOLD: int = 32
 
-
 #@export_storage var stat_format: Dictionary
 @export_storage var data: Dictionary:
 	set(val): data.merge(val, true)
@@ -44,6 +43,7 @@ const FATIGUE_PENALTY_THRESHOLD: int = 32
 
 #TODO - Add inhereted stats/props
 func _init(_seed: int = randi()) -> void:
+	
 	for stat: String in STATS: 
 		data[stat] = {}
 		add_user_signal(get_signal(stat, "level"))

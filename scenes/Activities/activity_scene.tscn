@@ -1,13 +1,15 @@
 [gd_scene load_steps=8 format=3 uid="uid://dfq43tgits8jp"]
 
-[ext_resource type="Script" path="res://scripts/activity_scenes/activity_scene.gd" id="1_16bwb"]
+[ext_resource type="Script" uid="uid://c5i5ops2t37i8" path="res://scripts/activity_scenes/activity_scene.gd" id="1_16bwb"]
 [ext_resource type="Material" uid="uid://bi4su0loiqr6w" path="res://resources/wood_material.tres" id="3_dvw40"]
-[ext_resource type="Script" path="res://models/floor_model.gd" id="3_q05lj"]
+[ext_resource type="Script" uid="uid://csecldva2maro" path="res://models/floor_model.gd" id="3_q05lj"]
 [ext_resource type="Texture2D" uid="uid://c4s5e5dylcmsn" path="res://assets/plaid_cloth.png" id="4_earwt"]
 [ext_resource type="PackedScene" uid="uid://cp1lbtskoh1sx" path="res://scenes/Pet/pet.tscn" id="5_5qx8t"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sshqe"]
 transparency = 1
+depth_draw_mode = 1
+specular_mode = 2
 albedo_texture = ExtResource("4_earwt")
 metallic_specular = 0.2
 
@@ -48,7 +50,9 @@ spot_angle = 49.09
 spot_angle_attenuation = 2.54913
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Environment"]
-transform = Transform3D(1.5, 0, 0, 0, 1, 0, 0, 0, 1.6, -0.406, 0.001, -2.543)
+transform = Transform3D(1.5, 0, 0, 0, 1, 0, 0, 0, 1.6, -0.4, 0.03, -2.5)
+cast_shadow = 0
+extra_cull_margin = 2311.85
 mesh = SubResource("PlaneMesh_u1hrr")
 metadata/_edit_lock_ = true
 

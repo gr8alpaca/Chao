@@ -26,7 +26,10 @@ var symbol: String
 
 func get_drag_preview() -> String:
 	return symbol + " " + name
-	
+
+func _roll_deltas(rand: PackedInt64Array = rand_from_seed(randi())) -> Dictionary:
+	return {}
+
 func get_stat_changes() -> PackedStringArray:
 	return PackedStringArray()
 

@@ -57,7 +57,7 @@ func release_current_focus() -> void:
 
 
 func focus_button(control: Control) -> void:
-	if control and control.focus_mode and control.visible and control.is_inside_tree() and not control.has_focus(): 
+	if control and control.focus_mode and control.visible and control.is_inside_tree() and not control.has_focus() and not Engine.is_editor_hint(): 
 		control.grab_focus()
 
 func _input(event: InputEvent) -> void:
