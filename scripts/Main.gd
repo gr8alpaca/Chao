@@ -1,6 +1,5 @@
 @tool
 class_name Main extends Node3D
-const GROUP: StringName = &"Main"
 
 const PATH:={
 	PET = "res://scenes/Pet/pet.tscn",
@@ -25,24 +24,17 @@ var focus_label: Label
 var queue: Array[Node]
 
 
-func _init() -> void:
-	add_to_group(GROUP)
-	
 func _ready() -> void:
+	if Engine.is_editor_hint(): return
 	process_mode = PROCESS_MODE_ALWAYS
 	
-	if not Engine.is_editor_hint():
-		for child: Node in get_children():
-			remove_child(child)
-			add_child(child, false, INTERNAL_MODE_BACK)
+	for child: Node in get_children():
+		remove_child(child)
+		add_child(child, false, INTERNAL_MODE_BACK)
 	
 	create_canvas()
-	
-	if Engine.is_editor_hint():
-		rect.hide()
-		return
-	
 	enter_scene(load(PATH[start_scene]).instantiate())
+
 
 
 func change_scene(node: Node) -> void:
@@ -122,26 +114,29 @@ func get_scene() -> Node:
 
 
 func create_canvas() -> void:
+	if Engine.is_editor_hint(): return
 	var canvas: CanvasLayer = CanvasLayer.new()
 	canvas.layer = 100
 	rect = ColorRect.new()
+	rect.visible = false
 	rect.set_anchors_preset(Control.PRESET_FULL_RECT)
 	rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	rect.color = Color(0.0, 0.0, 0.0, 1.0)
 	canvas.add_child(rect)
-	get_tree().paused
-	if not Engine.is_editor_hint():
-		focus_label = Label.new()
-		canvas.add_child(focus_label)
-		focus_label.position += Vector2(12, 12)
-		focus_label.modulate.a = 0.4
-		focus_label.hide()
-		get_window().gui_focus_changed.connect(_on_gui_focus_changed)
+	focus_label = Label.new()
+	canvas.add_child(focus_label)
+	focus_label.position += Vector2(12, 12)
+	focus_label.modulate.a = 0.4
+	focus_label.hide()
+	get_window().gui_focus_changed.connect(_on_gui_focus_changed)
 	
 	add_child(canvas, false, INTERNAL_MODE_FRONT)
 
 func _on_gui_focus_changed(control: Control) -> void:
 	focus_label.text = "Current Focus: %s" % (control.name if control else "None")
+
+static func get_main() -> Main:
+	return null if Engine.is_editor_hint() else Engine.get_main_loop().root.get_child(0)
 
 func _validate_property(property: Dictionary) -> void:
 	match property.name:

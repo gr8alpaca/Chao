@@ -1,6 +1,8 @@
 @tool
 class_name Garden extends Node3D
 
+const DEFAULT_ACTIVITY_SCENE: PackedScene = preload("res://scenes/Activities/activity_scene.tscn")
+
 const MAX_DISTANCE: float = 3.0
 
 #@export var interact_menu_scene: PackedScene
@@ -8,6 +10,7 @@ const MAX_DISTANCE: float = 3.0
 var pet_stats: Stats
 var interact_menu: InteractMenu
 var block_free: bool = true
+var main: Main
 
 func _init() -> void:
 	if Engine.is_editor_hint(): return
@@ -21,16 +24,12 @@ func _enter_tree() -> void:
 	if not pet_stats:
 		set_stats(Stats.new())
 
-func _ready() -> void:
-	if Engine.is_editor_hint(): return
-
 
 func check_pet_status() -> void:
 	assert(is_inside_tree() and get_pet() and pet_stats)
 
 func set_stats(stats: Stats) -> void:
 	pet_stats = stats
-	
 	var pet: Pet = get_pet()
 	pet.connect(Interactable.SIGNAL_INTERACTION_STARTED, interact_menu.set_pet.bind(pet))
 	pet.stats = stats
@@ -41,8 +40,10 @@ func _on_start_week_pressed(schedule: Array[Activity]) -> void:
 	emit_signal(Main.SIGNAL_EXIT)
 	
 	for i: int in schedule.size():
+		assert(schedule[i] != null)
 		var act: Activity = schedule[i]
-		var scene: ActivityScene = act.get_scene().instantiate()
+		var scene: ActivityScene = DEFAULT_ACTIVITY_SCENE.instantiate()
+		
 		scene.init(pet_stats, act, i+1)
 		emit_signal(Main.SIGNAL_QUEUE_ADD, scene)
 	

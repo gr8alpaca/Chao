@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="Exercise" load_steps=2 format=3 uid="uid://cscuycdixjxoh"]
 
-[ext_resource type="Script" path="res://scripts/misc/exercise.gd" id="1_t1hxv"]
+[ext_resource type="Script" uid="uid://c8wxtu5clqcnq" path="res://scripts/activity/exercise.gd" id="1_t1hxv"]
 
 [resource]
 resource_name = "Jump"

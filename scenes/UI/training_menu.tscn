@@ -1,9 +1,9 @@
 [gd_scene load_steps=10 format=3 uid="uid://cipgok3b55loo"]
 
-[ext_resource type="Script" path="res://scenes/UI/training_menu.gd" id="1_0oqrm"]
-[ext_resource type="Script" path="res://scripts/misc/exercise.gd" id="2_s5xrk"]
+[ext_resource type="Script" uid="uid://dmb6wasa614v6" path="res://scenes/UI/training_menu.gd" id="1_0oqrm"]
+[ext_resource type="Script" uid="uid://c8wxtu5clqcnq" path="res://scripts/activity/exercise.gd" id="2_s5xrk"]
 [ext_resource type="StyleBox" uid="uid://dgvkljulenyi" path="res://assets/styleboxes/glass_stylebox.tres" id="3_3h1uk"]
-[ext_resource type="Shader" path="res://scripts/shaders/float.gdshader" id="3_748eg"]
+[ext_resource type="Shader" uid="uid://4t28kt71wg7g" path="res://scripts/shaders/float.gdshader" id="3_748eg"]
 [ext_resource type="Resource" uid="uid://beyby2d1l24ow" path="res://resources/activities/jog.tres" id="3_wqvxc"]
 [ext_resource type="Resource" uid="uid://biy0se4thneor" path="res://resources/activities/paddle.tres" id="4_h8tq1"]
 [ext_resource type="Resource" uid="uid://cscuycdixjxoh" path="res://resources/activities/jump.tres" id="5_eon55"]

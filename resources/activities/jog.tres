@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="Exercise" load_steps=2 format=3 uid="uid://beyby2d1l24ow"]
 
-[ext_resource type="Script" uid="uid://c8wxtu5clqcnq" path="res://scripts/misc/exercise.gd" id="1_qtqck"]
+[ext_resource type="Script" uid="uid://c8wxtu5clqcnq" path="res://scripts/activity/exercise.gd" id="1_qtqck"]
 
 [resource]
 resource_name = "Jog"

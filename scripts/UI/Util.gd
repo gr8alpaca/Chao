@@ -14,7 +14,6 @@ static func tween_position(control: Control, from: Vector2 = Vector2.ZERO, to: V
 	tw.tween_property(control, scale_property, 1.0, duration / 1.5).from(0.1)
 	tw.tween_callback(control.set_visible.bind(true))
 	return tw
-	
 
 static func tween_fade(control: Control, final_alpha_value: float = 0.0, time_sec: float = 0.25) -> Tween:
 	var tw: Tween = control.create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
@@ -24,3 +23,10 @@ static func tween_fade(control: Control, final_alpha_value: float = 0.0, time_se
 static func focus_button(but: BaseButton) -> void:
 	if but and but.visible and not but.button_pressed and not but.has_focus() and not Engine.is_editor_hint(): 
 		but.grab_focus()
+
+static func rand_advance(rand: PackedInt64Array = []) -> PackedInt64Array:
+	if rand.is_empty(): return rand_from_seed(randi())
+	var new_rand: PackedInt64Array = rand_from_seed(rand[0])
+	rand[0] = new_rand[0]
+	rand[1] = new_rand[1]
+	return rand

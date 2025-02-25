@@ -13,14 +13,12 @@ var activity: Activity
 var week_index: int
 var overlay: WeekOverlay
 
+
+
 func init(stats: Stats, activity: Activity, week_index: int) -> void:
 	self.stats = stats
 	self.activity = activity
 	self.week_index = week_index
-	overlay = preload("res://scenes/UI/week_overlay.tscn").instantiate()
-	add_child(overlay, true, INTERNAL_MODE_FRONT)
-	overlay.get_node(^"%NextWeekButton").pressed.connect(emit_signal.bind(Main.SIGNAL_QUEUE_ADVANCE), CONNECT_ONE_SHOT)
-	
 	var pet: Pet = %Pet
 	pet.stats = stats
 	if pet.has_meta(StateMachine.GROUP):
@@ -28,7 +26,13 @@ func init(stats: Stats, activity: Activity, week_index: int) -> void:
 
 
 func _ready() -> void:
+	if Engine.is_editor_hint(): return
+	
+	overlay = preload("res://scenes/UI/week_overlay.tscn").instantiate()
+	add_child(overlay, true, INTERNAL_MODE_FRONT)
 	overlay.init(activity, stats, week_index)
+	
+	overlay.get_node(^"%NextWeekButton").pressed.connect(emit_signal.bind(Main.SIGNAL_QUEUE_ADVANCE), CONNECT_ONE_SHOT)
 	overlay.opened.connect(_on_overlay_opened)
 	flicker_light()
 	create_tween().tween_callback(_play)
@@ -55,7 +59,6 @@ func apply_activity_deltas() -> void:
 	var deltas: Dictionary = roll_stat_changes()
 	for stat: StringName in deltas.keys():
 		stats.add_xp(stat, deltas[stat])
-
 
 
 func _on_overlay_opened() -> void:

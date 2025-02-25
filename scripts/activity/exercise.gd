@@ -19,10 +19,13 @@ func get_stat_changes() -> PackedStringArray:
 		if get(stat) != 0: stat_changes.push_back(stat)
 	return stat_changes
 
-func _roll_deltas(rand: PackedInt64Array = rand_from_seed(randi())) -> Dictionary:
-	var dict:= super(rand)
+func roll_deltas(rand: PackedInt64Array = rand_from_seed(randi())) -> Dictionary:
+	var dict: Dictionary = super(rand)
 	for stat: StringName in get_stat_changes():
-		
-		var t: float = (rand[0] % 1001) / 1000.0
+		var t: float = float(rand[0] % 1001) / 1000.0
 		rand = rand_from_seed(rand[0])
-	return {}
+		
+		
+		
+		
+	return dict
