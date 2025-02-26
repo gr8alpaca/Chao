@@ -13,6 +13,7 @@ var activity: Activity
 var week_index: int
 var overlay: WeekOverlay
 
+var results: ActivityResult
 
 
 func init(stats: Stats, activity: Activity, week_index: int) -> void:
@@ -23,13 +24,15 @@ func init(stats: Stats, activity: Activity, week_index: int) -> void:
 	pet.stats = stats
 	if pet.has_meta(StateMachine.GROUP):
 		pet.get_meta(StateMachine.GROUP).initial_state_name = initial_pet_state
-
+	
+	results = activity.get_result(rand_from_seed(randi()), stats)
 
 func _ready() -> void:
 	if Engine.is_editor_hint(): return
 	
 	overlay = preload("res://scenes/UI/week_overlay.tscn").instantiate()
 	add_child(overlay, true, INTERNAL_MODE_FRONT)
+	# TODO ALERT add results to params 
 	overlay.init(activity, stats, week_index)
 	
 	overlay.get_node(^"%NextWeekButton").pressed.connect(emit_signal.bind(Main.SIGNAL_QUEUE_ADVANCE), CONNECT_ONE_SHOT)
@@ -41,24 +44,11 @@ func _ready() -> void:
 func _play() -> void:
 	overlay.open()
 
-func roll_fatigue() -> int:
-	var base_delta: int = activity.fatigue * FATIGUE_PER_POINT 
-	var variance_roll : int = randi_range(-FATIGUE_VARIANCE * abs(activity.fatigue), FATIGUE_VARIANCE * abs(activity.fatigue))
-	var rest_bonus: int = -stats.get_fatigue() / 2 if activity.name == &"rest" else 0
-	return base_delta + variance_roll + rest_bonus
-	
-
-func roll_stat_changes() -> Dictionary:
-	var deltas: Dictionary
-	
-	return deltas
-
-
 func apply_activity_deltas() -> void:
-	var fatigue_change: int = roll_fatigue()
-	var deltas: Dictionary = roll_stat_changes()
-	for stat: StringName in deltas.keys():
-		stats.add_xp(stat, deltas[stat])
+	assert(results)
+	stats.add_fatigue(results.fatigue_delta)
+	for stat: StringName in results.deltas.keys():
+		stats.add_xp(stat, results.deltas[stat])
 
 
 func _on_overlay_opened() -> void:
