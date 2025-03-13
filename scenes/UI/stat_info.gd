@@ -106,15 +106,8 @@ func animate_xp_change(delta: int) -> void:
 	const LABEL_OFFSET: float = 4.0
 	const FADE_DURATION_SEC: float = 0.8
 	
+	xp_delta_label.text = char(UP_ARROW_UNICODE) + " %dxp" % delta
 	
-	var font: Font = get_theme_default_font()
-	var text: String = char(UP_ARROW_UNICODE) + " %d" % delta
-	var font_size: int = 1
-	
-	while font.get_string_size(text, 0, -1, font_size + 1,).y < (xp_delta_label.size.y):
-		font_size += 1
-	
-	xp_delta_label.add_theme_font_size_override("font_size", font_size)
 	var tw: Tween = create_tween()
 	tw.tween_property(xp_delta_label, ^"modulate:a", 1.0, FADE_DURATION_SEC)
 	if Engine.is_editor_hint():
@@ -141,7 +134,7 @@ func set_font_sizes(main_fs: int = 28, level_fs : int = 10, level_up_fs: int = l
 	point_label.add_theme_font_size_override("font_size", main_fs)
 	point_delta_label.add_theme_font_size_override("font_size", main_fs)
 	level_label.add_theme_font_size_override("font_size", level_fs)
-	level_up_font_size = main_fs + level_fs
+	xp_delta_label.add_theme_font_size_override("font_size", int((main_fs + level_fs)*1.25))
 	level_up_font_size = level_up_fs
 
 

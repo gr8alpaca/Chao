@@ -30,3 +30,10 @@ static func rand_advance(rand: PackedInt64Array = []) -> PackedInt64Array:
 	rand[0] = new_rand[0]
 	rand[1] = new_rand[1]
 	return rand
+
+## Calculates largest font size that fits within given height value
+static func get_fs(font: Font, container_height: float) -> float:
+	var font_size: int = 1
+	while (font.get_height(font_size)) < container_height:
+		font_size += 1
+	return font_size 

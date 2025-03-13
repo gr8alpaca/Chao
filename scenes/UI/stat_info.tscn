@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://c2j5335dvfv8o"]
+[gd_scene load_steps=6 format=3 uid="uid://c2j5335dvfv8o"]
 
 [ext_resource type="Script" uid="uid://cnrs4cbsflr7" path="res://scenes/UI/stat_info.gd" id="1_p1ri4"]
 [ext_resource type="Material" uid="uid://b7oj5jh74yjqh" path="res://resources/materials/float_material.tres" id="2_vjhmy"]
 [ext_resource type="Script" uid="uid://bdb4u3fuke05d" path="res://scripts/UI/mono_label.gd" id="3_v5ue8"]
 [ext_resource type="Script" uid="uid://bhaa124j7ua2i" path="res://scripts/UI/level_progress_bar.gd" id="3_xil7a"]
+[ext_resource type="Script" uid="uid://qvqlk1s86n7" path="res://scripts/UI/bounce_component.gd" id="5_27vii"]
 
 [node name="StatInfo" type="Control" node_paths=PackedStringArray("name_label", "point_label", "point_delta_label", "level_label", "xp_delta_label", "bar")]
 layout_mode = 3
@@ -18,7 +19,7 @@ name_label = NodePath("StatInfo/HBoxContainer/StatName")
 point_label = NodePath("StatInfo/HBoxContainer/Point")
 point_delta_label = NodePath("StatInfo/HBoxContainer/Point/PointDelta")
 level_label = NodePath("StatInfo/LevelsHBox/Level")
-xp_delta_label = NodePath("StatInfo/LevelsHBox/LevelProgressBar/XPLabel")
+xp_delta_label = NodePath("BounceContainer/XPLabel")
 bar = NodePath("StatInfo/LevelsHBox/LevelProgressBar")
 
 [node name="StatInfo" type="VBoxContainer" parent="."]
@@ -103,17 +104,25 @@ fill_color = Color(0.722556, 0.70114, 0.252287, 1)
 bg_color = Color(0.304462, 0.304462, 0.304462, 0.588235)
 text_color = Color(0.172143, 0.661345, 0.279524, 1)
 
-[node name="XPLabel" type="Label" parent="StatInfo/LevelsHBox/LevelProgressBar"]
+[node name="BounceContainer" type="Container" parent="."]
 layout_mode = 1
-anchors_preset = 11
-anchor_left = 1.0
-anchor_right = 1.0
+anchors_preset = -1
 anchor_bottom = 1.0
-offset_left = 7.0
-offset_right = 12.0
+offset_left = -45.0
+offset_right = -14.0
 grow_horizontal = 0
 grow_vertical = 2
+script = ExtResource("5_27vii")
+max_bounce_offset = Vector2(0, -15)
+metadata/_custom_type_script = "uid://qvqlk1s86n7"
+metadata/_edit_lock_ = true
+
+[node name="XPLabel" type="Label" parent="BounceContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
 theme_override_colors/font_color = Color(0.7, 1, 0.7, 1)
-theme_override_font_sizes/font_size = 8
-text = "⬆"
+theme_override_font_sizes/font_size = 35
+text = "⬆ "
+horizontal_alignment = 2
 vertical_alignment = 1
+metadata/_edit_lock_ = true

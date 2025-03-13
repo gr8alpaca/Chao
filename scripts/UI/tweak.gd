@@ -155,11 +155,14 @@ func _notification(what: int) -> void:
 			mouse_filter = MOUSE_FILTER_PASS
 			set_notify_transform.call_deferred(true)
 			if not Engine.is_editor_hint():
-				get_viewport().size_changed.connect(_on_viewport_size_changed)
+				var viewport:= get_viewport()
+				viewport.size_changed.connect(_on_viewport_size_changed)
 				screen = get_viewport_rect().size
 			
 		NOTIFICATION_TRANSFORM_CHANGED:
 			calculate_delta()
+		
+		
 		
 		NOTIFICATION_INTERNAL_PROCESS when target:
 			set_elapsed(elapsed_sec)
@@ -225,6 +228,7 @@ func update_pivot() -> void:
 
 
 func _on_viewport_size_changed() -> void:
+	if not is_inside_tree(): return
 	screen = get_viewport_rect().size
 	
 

@@ -79,9 +79,7 @@ func _process(delta: float) -> void:
 	drawn_value = move_toward(drawn_value, value, delta * fill_speed) if drawn_value < value else float(value)
 	
 	if floori(previous_drawn_value) != floori(drawn_value):
-		print("Subtracting ")
 		current_text_delta = maxi(current_text_delta - 1, 0)
-
 
 
 func add_value(val: int) -> void:

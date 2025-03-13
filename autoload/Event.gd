@@ -1,6 +1,6 @@
 @tool
 extends Node
-#TBR 
+## TBR 
 
 signal race_entered(race: Race, first_waypoint: Waypoint)
 signal race_started
